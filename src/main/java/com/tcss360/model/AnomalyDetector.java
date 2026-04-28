@@ -49,12 +49,14 @@ public class AnomalyDetector {
      * 
      * @return array list of anomaly records
      */
-    public ArrayList<AnomalyRecord> detectAnomalies() {
-        ArrayList<AnomalyRecord> theRecords = new ArrayList<>();
+    public ArrayList<AnomalyRecord> detectAnomalies(ArrayList<Drone> theDrones, 
+        ArrayList<DroneSnapshot> theDroneSnapshots) {
+            
+            ArrayList<AnomalyRecord> theRecords = new ArrayList<>();
 
-        /* Implement logic here */
+            /* Implement logic here */
 
-        return theRecords;
+            return theRecords;
     }
 
     /**
