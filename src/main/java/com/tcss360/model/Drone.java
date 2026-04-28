@@ -15,25 +15,25 @@ package com.tcss360.model;
 public class Drone {
 
     /** The ID of the Drone */
-    int myID;
+    private final int myID;
     
     /** The current longitude of the Drone */
-    double myLongitude;
+    private double myLongitude;
 
     /** The current latitude of the Drone */
-    double myLatitude;
+    private double myLatitude;
 
     /** The current altitude of the Drone */
-    double myAltitude;
+    private double myAltitude;
 
     /** The current battery level of the Drone */
-    int myBatteryLevel;
+    private int myBatteryLevel;
 
     /** The current heading of the Drone */
-    double myHeading;
+    private double myHeading;
 
     /** The current speed of the Drone */
-    double mySpeed;
+    private double mySpeed;
 
     /**
      * Constructor
