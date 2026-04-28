@@ -1,4 +1,4 @@
-package com.tcss360;
+package com.tcss360.controller;
 
 /**
  * 
