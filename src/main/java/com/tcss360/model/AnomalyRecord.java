@@ -96,8 +96,23 @@ public class AnomalyRecord {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        /* Implement logic here */
-
+        sb.append("AnomalyRecord[");
+        sb.append("RecordID=");
+        sb.append(myRecordID);
+        sb.append(", ");
+        sb.append("DroneID=");
+        sb.append(myDroneID);
+        sb.append(", ");
+        sb.append("Timestamp=");
+        sb.append(myTimestamp);
+        sb.append(", ");
+        sb.append("AnomalyType=");
+        sb.append(myAnomalyType);
+        sb.append(", ");
+        sb.append("AnomalyDetails=");
+        sb.append(myAnomalyDetails);
+        sb.append("]");
+        
         return sb.toString();
     }
 }
