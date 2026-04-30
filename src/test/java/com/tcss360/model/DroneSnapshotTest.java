@@ -57,7 +57,7 @@ public class DroneSnapshotTest {
      */
     @Test
     public void testSnapshotLongitude() {
-        /* check getPreviousLongitude matches TEST_LONGITUDE */
+        assertEquals(TEST_LONGITUDE, mySnapshot.getPreviousLongitude(), 0.0001);
     }
 
     /**
@@ -65,7 +65,7 @@ public class DroneSnapshotTest {
      */
     @Test
     public void testSnapshotLatitude() {
-        /* check getPreviousLatitude matches TEST_LATITUDE */
+        assertEquals(TEST_LATITUDE, mySnapshot.getPreviousLatitude(), 0.0001);
     }
 
     /**

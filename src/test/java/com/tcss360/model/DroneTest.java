@@ -63,7 +63,7 @@ public class DroneTest {
      */
     @Test
     public void testConstructorLatitude() {
-        /* check getLatitude matches TEST_LATITUDE */
+        assertEquals(TEST_LATITUDE, myDrone.getLatitude(), 0.0001);
     }
 
     /**
@@ -71,7 +71,7 @@ public class DroneTest {
      */
     @Test
     public void testConstructorAltitude() {
-        /* check getAltitude matches TEST_ALTITUDE */
+        assertEquals(TEST_ALTITUDE, myDrone.getAltitude(), 0.0001);
     }
 
     /**
