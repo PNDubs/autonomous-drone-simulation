@@ -79,7 +79,7 @@ public class DroneTest {
      */
     @Test
     public void testConstructorBatteryLevel() {
-        /* check getBatteryLevel matches TEST_BATTERY */
+        assertEquals(TEST_BATTERY, myDrone.getBatteryLevel());
     }
 
     /**
@@ -87,7 +87,7 @@ public class DroneTest {
      */
     @Test
     public void testConstructorHeading() {
-        /* check getHeading matches TEST_HEADING */
+        assertEquals(TEST_HEADING, myDrone.getHeading(), 0.0001);
     }
 
     /**
@@ -95,7 +95,7 @@ public class DroneTest {
      */
     @Test
     public void testConstructorSpeed() {
-        /* check getSpeed matches TEST_SPEED */
+        assertEquals(TEST_SPEED, myDrone.getSpeed(), 0.0001);
     }
 
     /**
@@ -103,7 +103,8 @@ public class DroneTest {
      */
     @Test
     public void testSetLongitude() {
-        /* set a new longitude, check it matches */
+        myDrone.setLongitude(-118.2437);
+        assertEquals(-118.2437, myDrone.getLongitude(), 0.0001);
     }
 
     /**
@@ -111,7 +112,8 @@ public class DroneTest {
      */
     @Test
     public void testSetLatitude() {
-        /* set a new latitude, check it matches */
+        myDrone.setLatitude(34.0522);
+        assertEquals(34.0522, myDrone.getLatitude(), 0.0001);
     }
 
     /**
@@ -119,7 +121,8 @@ public class DroneTest {
      */
     @Test
     public void testSetAltitude() {
-        /* set a new altitude, check it matches */
+        myDrone.setAltitude(200.0);
+        assertEquals(200.0, myDrone.getAltitude(), 0.0001);
     }
 
     /**
@@ -127,7 +130,8 @@ public class DroneTest {
      */
     @Test
     public void testSetBatteryLevel() {
-        /* set a new battery level, check it matches */
+        myDrone.setBatteryLevel(50);
+        assertEquals(50, myDrone.getBatteryLevel());
     }
 
     /**
@@ -135,7 +139,8 @@ public class DroneTest {
      */
     @Test
     public void testSetHeading() {
-        /* set a new heading, check it matches */
+        myDrone.setHeading(90.0);
+        assertEquals(90.0, myDrone.getHeading(), 0.0001);
     }
 
     /**
@@ -143,6 +148,7 @@ public class DroneTest {
      */
     @Test
     public void testSetSpeed() {
-        /* set a new speed, check it matches */
+        myDrone.setSpeed(25.0);
+        assertEquals(25.0, myDrone.getSpeed(), 0.0001);
     }
 }

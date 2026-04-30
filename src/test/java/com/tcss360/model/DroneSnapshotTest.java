@@ -73,7 +73,7 @@ public class DroneSnapshotTest {
      */
     @Test
     public void testSnapshotAltitude() {
-        /* check getPreviousAltitude matches TEST_ALTITUDE */
+        assertEquals(TEST_ALTITUDE, mySnapshot.getPreviousAltitude(), 0.0001);
     }
 
     /**
@@ -81,7 +81,7 @@ public class DroneSnapshotTest {
      */
     @Test
     public void testSnapshotBatteryLevel() {
-        /* check getPreviousBatteryLevel matches TEST_BATTERY */
+        assertEquals(TEST_BATTERY, mySnapshot.getPreviousBatteryLevel());
     }
 
     /**
@@ -89,7 +89,7 @@ public class DroneSnapshotTest {
      */
     @Test
     public void testSnapshotHeading() {
-        /* check getPreviousHeading matches TEST_HEADING */
+        assertEquals(TEST_HEADING, mySnapshot.getPreviousHeading(), 0.0001);
     }
 
     /**
@@ -97,6 +97,6 @@ public class DroneSnapshotTest {
      */
     @Test
     public void testSnapshotSpeed() {
-        /* check getPreviousSpeed matches TEST_SPEED */
+        assertEquals(TEST_SPEED, mySnapshot.getPreviousSpeed(), 0.0001);
     }
 }
