@@ -75,8 +75,21 @@ public final class TelemetryGenerator {
 
                 /*
                  * Desired effect:
-                 * drones fly directly right 10m
-                 * drones will begin flying in a circle with r = 10m at speed 3 m/s
+                 * assume the use of a unit circle for relation of degrees to direction
+                 * from starting position drone is initialized to 0 degrees
+                 * drones fly forward for 10m then stop
+                 * drone changes heading to 90 degrees
+                 * drones will begin flying in a counter clockwise circle of r = 10m at speed 3 m/s
+                 * circumference approximately 62.83m
+                 * full rotation about circumference should take ~20.94 seconds
+                 * heading at (10,0) = 90 degrees
+                 * heading at (10(root(2))/2, 10(root(2))/2) = 135 degrees
+                 * heading at (0,10) = 180
+                 * heading at (-10(root(2))/2, 10(root(2))/2) = 225 degrees
+                 * heading at (-10,0) = 270
+                 * heading at (-10(root(2))/2, -10(root(2))/2) = 315 degrees
+                 * heading at (0,-10) = 0
+                 * heading at (10(root(2))/2, -10(root(2))/2) = 45 degrees
                  */
 
             }
