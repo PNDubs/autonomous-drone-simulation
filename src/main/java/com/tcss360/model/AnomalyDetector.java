@@ -19,10 +19,7 @@ public class AnomalyDetector {
     /** The battery level that indicates an anomaly */
     private final double myLowBatteryThreshold;
 
-    /** The change in altitude that indicates an anomaly */
-    private final double myAltitudeThreshold;
-
-    /** The change in longitude or latitude that indicates an anomaly */
+    /** The change in longitude, latitude, or altitude that indicates an anomaly */
     private final double myGPSJumpThreshold;
 
     /** The change in heading that indicates an anomaly */
@@ -36,11 +33,9 @@ public class AnomalyDetector {
      * @param theHeadingThreshold the change in heading indicating an anomaly
      */
     public AnomalyDetector(double theLowBatteryThreshold, 
-        double theAltitudeThreshold, double theGPSJumpThreshold, 
-        double theHeadingThreshold) {
+        double theGPSJumpThreshold, double theHeadingThreshold) {
 
             myLowBatteryThreshold = theLowBatteryThreshold;
-            myAltitudeThreshold = theAltitudeThreshold;
             myGPSJumpThreshold = theGPSJumpThreshold;
             myHeadingThreshold = theHeadingThreshold;
     }
@@ -66,22 +61,6 @@ public class AnomalyDetector {
      * @return true if anomaly, false otherwise
      */
     private boolean checkLowBattery(Drone theDrone, 
-        DroneSnapshot theDroneSnapshot) {
-
-            boolean isAnomaly = false;
-
-            /* Implement logic here */
-
-            return isAnomaly;
-    }
-
-    /**
-     * 
-     * @param theDrone the current drone state
-     * @param theDroneSnapshot the previous drone state
-     * @return true if anomaly, false otherwise
-     */
-    private boolean checkAltitude(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
             boolean isAnomaly = false;
