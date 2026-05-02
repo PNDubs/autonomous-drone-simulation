@@ -10,20 +10,32 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * The TelemetryGenerator is a utility class designed to simulate a
- * telemetry data stream.
+ * The TelemetryGenerator is designed to simulate a telemetry data stream.
  * @author Logan Black
- * @version 30 APR 2026
+ * @version 01 May 2026
  */
 public final class TelemetryGenerator {
 
-    /**  */
-    private static final int ANOMALY_PERCENT = 31;
+    /** The percent chance of an anomaly to occur */
+    private static final int ANOMALY_PERCENT = 30;
+
+    /** The number of ticks per second */
+    private static final double TICKS_PER_SECOND = 4;
+
+    /** The default straight travel distance for scripted drone travel */
+    private static final double STRAIGHT_DISTANCE = 10.0;
+
+    /** The default circle radius for scripted drone travel */
+    private static final double SCRIPTED_RADIUS = 10.0;
+
+    /** The tick count state for telemetry generation */
+    private int myTickCount;
 
     /**
-     * Private constructor to prevent instantiation
+     * Constructor
      */
-    private TelemetryGenerator() {
+    public TelemetryGenerator() {
+        myTickCount = 0;
     }
 
     /**
@@ -31,7 +43,7 @@ public final class TelemetryGenerator {
      * with as a percent chance defined by ANOMALY_PERCENT
      * @return array list of drone snapshots
      */
-    public static ArrayList<DroneSnapshot> generateTelemetry(ArrayList<Drone> theDrones) {
+    public ArrayList<DroneSnapshot> generateTelemetry(ArrayList<Drone> theDrones) {
 
         ArrayList<DroneSnapshot> theSnapshots = new ArrayList<>();
         Random rand = new Random(System.nanoTime());
@@ -39,64 +51,19 @@ public final class TelemetryGenerator {
         for (Drone drone : theDrones) {
 
             theSnapshots.add(new DroneSnapshot(drone)); // Always create the snapshot first
-            int anomaly = rand.nextInt(1, 101);
 
-            if (anomaly < ANOMALY_PERCENT) {
+            int anomaly = rand.nextInt(0, 100);
 
-                int select = rand.nextInt(1, 5);
+            if (anomaly < ANOMALY_PERCENT) applyAnomaly(rand, drone); // possible anomaly applied to this scripted update
+            
+            applyScriptedMovement(drone); // apply the scripted update
 
-                switch (select) {
-                    case 1 -> { // longitude change
-                        double val = rand.nextDouble(0.25, 2.0);
-                        drone.setLongitude(drone.getLongitude() + val);
-                    }
-                    case 2 -> { // latitude change
-                        double val = rand.nextDouble(0.25, 2.0);
-                        drone.setLatitude(drone.getLatitude() + val);
-                    }
-                    case 3 -> { // altitude change
-                        double val = rand.nextDouble(0.25, 2.0);
-                        drone.setAltitude(drone.getAltitude() + val);
-                    }
-                    case 4 -> { // heading change
-                        double val = rand.nextDouble(45.0, 50.0);
-                        int dir = rand.nextInt(2);
-                        if (dir == 1) val *= -1;
-                        drone.setHeading(normalizeHeading(drone.getHeading(), val));
-                    }
-                    default -> {
-                        System.err.println("An unknown error occured durring anomalous telemetry generation.");
-                    }
-                }
-
-            } else {
-
-                // INSERT SCRIPTED LOGIC HERE
-
-                /*
-                 * Desired effect:
-                 * assume the use of a unit circle for relation of degrees to direction
-                 * from starting position drone is initialized to 0 degrees
-                 * drones fly forward for 10m then stop
-                 * drone changes heading to 90 degrees
-                 * drones will begin flying in a counter clockwise circle of r = 10m at speed 3 m/s
-                 * circumference approximately 62.83m
-                 * full rotation about circumference should take ~20.94 seconds
-                 * heading at (10,0) = 90 degrees
-                 * heading at (10(root(2))/2, 10(root(2))/2) = 135 degrees
-                 * heading at (0,10) = 180
-                 * heading at (-10(root(2))/2, 10(root(2))/2) = 225 degrees
-                 * heading at (-10,0) = 270
-                 * heading at (-10(root(2))/2, -10(root(2))/2) = 315 degrees
-                 * heading at (0,-10) = 0
-                 * heading at (10(root(2))/2, -10(root(2))/2) = 45 degrees
-                 */
-
-            }
         }
 
+        myTickCount++;
+
         return theSnapshots;
-        
+
     }
 
     /**
@@ -106,9 +73,97 @@ public final class TelemetryGenerator {
      * @param theChange The change in heading in degrees
      * @return the normalized heading 0 through 360 degrees
      */
-    private static double normalizeHeading(double theCurrentHeading, double theChange) {
+    private double normalizeHeading(double theCurrentHeading, double theChange) {
         double heading = theCurrentHeading + theChange;
         return (heading % 360 + 360) % 360;
     }
 
+    /**
+     * 
+     * @param theRandom
+     * @param theDrone
+     */
+    private void applyAnomaly(Random theRandom, Drone theDrone) {
+
+        int select = theRandom.nextInt(1, 5);
+
+        switch (select) {
+            case 1 -> { // longitude change
+                double val = theRandom.nextDouble(0.25, 2.0);
+                theDrone.setLongitude(theDrone.getLongitude() + val);
+            }
+            case 2 -> { // latitude change
+                double val = theRandom.nextDouble(0.25, 2.0);
+                theDrone.setLatitude(theDrone.getLatitude() + val);
+            }
+            case 3 -> { // altitude change
+                double val = theRandom.nextDouble(0.25, 2.0);
+                theDrone.setAltitude(theDrone.getAltitude() + val);
+            }
+            case 4 -> { // heading change
+                double val = theRandom.nextDouble(45.0, 50.0);
+                int dir = theRandom.nextInt(2);
+                if (dir == 1) val *= -1;
+                theDrone.setHeading(normalizeHeading(theDrone.getHeading(), val));
+            }
+            default -> {
+                System.err.println("An unknown error occured durring anomalous telemetry generation.");
+            }
+        }
+    }
+
+    /**
+     * This method is designed to apply scripted movement to each drone.
+     * @param theDrone
+     */
+    public void applyScriptedMovement(Drone theDrone) {
+
+        /*
+         * If no anomalies occur, the drone should travel in an approximated 
+         * circle. If an anomaly does occur, the drone will apply the next 
+         * set of movement instructions with no correction. This design choice 
+         * is explicit such that anomalies can be seen in real time. e.g. if 
+         * an anomaly changes the heading of the drone, the script will 
+         * continue from that new heading.
+         * 
+         * A future update may use an updated formula for movement which requires
+         * a fixed center to produce a mathematically perfect circle. That
+         * approach would require storing each drone's start position and circle
+         * center.
+         * 
+         * To ensure the persistence of anomalies, latitude and longitude anomalies
+         * should be tracked as offsets from the scripted path. Recalculating
+         * position without the offsets would result in the drone 'snapping back'
+         * to the correct path on the next update.
+         * 
+         * Another future update may include corrective measures that visualize
+         * the drone returning to its correct path after an anomaly.
+         */
+
+        double distancePerTick = theDrone.getSpeed() / TICKS_PER_SECOND;
+        int straightTicks = (int) Math.round(STRAIGHT_DISTANCE / distancePerTick);
+
+        double headingRadians = Math.toRadians(theDrone.getHeading());
+        double longitudeChange;
+        double latitudeChange;
+
+        if (myTickCount < straightTicks) {
+
+            longitudeChange = distancePerTick * Math.cos(headingRadians);
+            latitudeChange = distancePerTick * Math.sin(headingRadians);
+
+        } else {
+
+            double headingChange = Math.toDegrees(distancePerTick / SCRIPTED_RADIUS);
+
+            theDrone.setHeading(normalizeHeading(theDrone.getHeading(), headingChange));
+
+            headingRadians = Math.toRadians(theDrone.getHeading());
+            longitudeChange = distancePerTick * Math.cos(headingRadians);
+            latitudeChange = distancePerTick * Math.sin(headingRadians);
+        }
+
+        theDrone.setLongitude(theDrone.getLongitude() + longitudeChange);
+        theDrone.setLatitude(theDrone.getLatitude() + latitudeChange);
+    }
 }

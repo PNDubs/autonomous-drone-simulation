@@ -36,7 +36,7 @@ public class DroneMonitorApp {
     private static final double DEFAULT_HEADING = 0.0;
 
     /** Default speed of 3.0 meters / second for initialization */
-    private static final double DEFAULT_SPEED = 3.0;
+    private static final double DEFAULT_SPEED = 2.0;
 
     /** Default altitude of 100 meters for initialization */
     private static final double DEFAULT_ALTITUDE = 100.0;
@@ -51,13 +51,13 @@ public class DroneMonitorApp {
      * The change in longitude, latitude, or altitude in meters over 
      * 0.25 seconds constituting an anomlay 
      */
-    private static final double GPS_JUMP_THRESHOLD = 0.25;
+    private static final double GPS_JUMP_THRESHOLD = 2;
 
     /** The change in degrees over 0.25 seconds constituting an anomaly */
     private static final double HEADING_THRESHOLD = 45.0;
 
-    /** System time period representative of 240 Hz */
-    private static final long PERIOD = (long) (1_000_000_000.0 / 240.0);
+    /** System time period representative of 4 Hz */
+    private static final long PERIOD = (long) (1_000_000_000.0 / 4.0);
 
     /** The number of drones to simulate */
     private static final int NUM_DRONES = 3;
@@ -67,6 +67,8 @@ public class DroneMonitorApp {
 
     /** The current drone snapshots for anomaly detection */
     private ArrayList<DroneSnapshot> myDroneSnapshots;
+
+    private TelemetryGenerator myTelemetryGenerator;
 
     /** The anomaly detector */
     private final AnomalyDetector myAnomalyDetector;
@@ -83,6 +85,7 @@ public class DroneMonitorApp {
     public DroneMonitorApp() {
         myDrones = initializeDrones();
         myDroneSnapshots = new ArrayList<>();
+        myTelemetryGenerator = new TelemetryGenerator();
         myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD, 
             HEADING_THRESHOLD, GPS_JUMP_THRESHOLD);
         myMonitorDashboard = initializeMonitorDashboard();
@@ -132,7 +135,7 @@ public class DroneMonitorApp {
      * @return a list of previous drone states
      */
     private void updateTelemetry() {
-        myDroneSnapshots = TelemetryGenerator.generateTelemetry(myDrones);
+        myDroneSnapshots = myTelemetryGenerator.generateTelemetry(myDrones);
     }
 
     /**
