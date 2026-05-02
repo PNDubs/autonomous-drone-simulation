@@ -79,9 +79,9 @@ public final class TelemetryGenerator {
     }
 
     /**
-     * 
-     * @param theRandom
-     * @param theDrone
+     * A helper method used to apply random anomalies to drones.
+     * @param theRandom random object used to anomaly selection
+     * @param theDrone the drone receiving the anomaly
      */
     private void applyAnomaly(Random theRandom, Drone theDrone) {
 
@@ -114,7 +114,7 @@ public final class TelemetryGenerator {
 
     /**
      * This method is designed to apply scripted movement to each drone.
-     * @param theDrone
+     * @param theDrone the drone being updated
      */
     public void applyScriptedMovement(Drone theDrone) {
 
