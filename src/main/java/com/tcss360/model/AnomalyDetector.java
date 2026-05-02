@@ -49,12 +49,40 @@ public class AnomalyDetector {
      * 
      * @return array list of anomaly records
      */
-    public ArrayList<AnomalyRecord> detectAnomalies(ArrayList<Drone> theDrones, 
+    public ArrayList<AnomalyRecord> detectAnomalies(ArrayList<Drone> theDrones,
         ArrayList<DroneSnapshot> theDroneSnapshots) {
-            
+
             ArrayList<AnomalyRecord> theRecords = new ArrayList<>();
 
-            /* Implement logic here */
+            for (int i = 0; i < theDrones.size(); i++) {
+                Drone drone = theDrones.get(i);
+                DroneSnapshot snapshot = theDroneSnapshots.get(i);
+
+                if (checkLowBattery(drone, snapshot)) {
+                    theRecords.add(createAnomalyRecord(drone.getID(),
+                        "LOW_BATTERY",
+                        "Battery at " + drone.getBatteryLevel() + "%"));
+                }
+                if (checkAltitude(drone, snapshot)) {
+                    theRecords.add(createAnomalyRecord(drone.getID(),
+                        "ALTITUDE_CHANGE",
+                        "Altitude changed from " + snapshot.getPreviousAltitude()
+                        + " to " + drone.getAltitude()));
+                }
+                if (checkGPSSpoofing(drone, snapshot)) {
+                    theRecords.add(createAnomalyRecord(drone.getID(),
+                        "GPS_SPOOFING",
+                        "GPS jumped from (" + snapshot.getPreviousLatitude() + ", "
+                        + snapshot.getPreviousLongitude() + ") to ("
+                        + drone.getLatitude() + ", " + drone.getLongitude() + ")"));
+                }
+                if (checkUnsafeMovement(drone, snapshot)) {
+                    theRecords.add(createAnomalyRecord(drone.getID(),
+                        "UNSAFE_MOVEMENT",
+                        "Heading changed from " + snapshot.getPreviousHeading()
+                        + " to " + drone.getHeading()));
+                }
+            }
 
             return theRecords;
     }
@@ -65,14 +93,10 @@ public class AnomalyDetector {
      * @param theDroneSnapshot the previous drone state
      * @return true if anomaly, false otherwise
      */
-    private boolean checkLowBattery(Drone theDrone, 
+    private boolean checkLowBattery(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
-            boolean isAnomaly = false;
-
-            /* Implement logic here */
-
-            return isAnomaly;
+            return theDrone.getBatteryLevel() <= myLowBatteryThreshold;
     }
 
     /**
@@ -84,11 +108,8 @@ public class AnomalyDetector {
     private boolean checkAltitude(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
-            boolean isAnomaly = false;
-
-            /* Implement logic here */
-
-            return isAnomaly;
+            double change = Math.abs(theDrone.getAltitude() - theDroneSnapshot.getPreviousAltitude());
+            return change > myAltitudeThreshold;
     }
 
     /**
@@ -100,11 +121,9 @@ public class AnomalyDetector {
     private boolean checkGPSSpoofing(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
-            boolean isAnomaly = false;
-
-            /* Implement logic here */
-
-            return isAnomaly;
+            double latChange = Math.abs(theDrone.getLatitude() - theDroneSnapshot.getPreviousLatitude());
+            double lonChange = Math.abs(theDrone.getLongitude() - theDroneSnapshot.getPreviousLongitude());
+            return latChange > myGPSJumpThreshold || lonChange > myGPSJumpThreshold;
     }
 
     /**
@@ -113,14 +132,11 @@ public class AnomalyDetector {
      * @param theDroneSnapshot the previous drone state
      * @return true if anomaly, false otherwise
      */
-    private boolean checkUnsafeMovement(Drone theDrone, 
+    private boolean checkUnsafeMovement(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
-            boolean isAnomaly = false;
-
-            /* Implement logic here */
-
-            return isAnomaly;
+            double change = Math.abs(theDrone.getHeading() - theDroneSnapshot.getPreviousHeading());
+            return change > myHeadingThreshold;
     }
 
     /**
@@ -133,10 +149,8 @@ public class AnomalyDetector {
     private AnomalyRecord createAnomalyRecord(int theDroneID, 
         String theAnomalyType, String theAnomalyDetails) {
 
-            AnomalyRecord theRecord = new AnomalyRecord(theDroneID, 
+            AnomalyRecord theRecord = new AnomalyRecord(theDroneID,
                 theAnomalyType, theAnomalyDetails);
-
-            /* Implement logic here */
 
             return theRecord;
     }
