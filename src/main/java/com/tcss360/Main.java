@@ -17,7 +17,7 @@ public class Main {
      * The main entry point for program start
      * @param theArgs not used
      */
-    public static void main( String[] theArgs ) {
+    public static void main(String[] theArgs) {
 
         /* Insert logic here */
 

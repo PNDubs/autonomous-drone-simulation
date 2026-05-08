@@ -67,56 +67,10 @@ public final class TelemetryGenerator {
     }
 
     /**
-     * A helper method used to normalize a heading ensuring it's value 
-     * is always 0 thru 360 degrees
-     * @param theCurrentHeading The current drone heading in degrees
-     * @param theChange The change in heading in degrees
-     * @return the normalized heading 0 through 360 degrees
-     */
-    private double normalizeHeading(double theCurrentHeading, double theChange) {
-        double heading = theCurrentHeading + theChange;
-        return (heading % 360 + 360) % 360;
-    }
-
-    /**
-     * A helper method used to apply random anomalies to drones.
-     * @param theRandom random object used to anomaly selection
-     * @param theDrone the drone receiving the anomaly
-     */
-    private void applyAnomaly(Random theRandom, Drone theDrone) {
-
-        int select = theRandom.nextInt(1, 5);
-
-        switch (select) {
-            case 1 -> { // longitude change
-                double val = theRandom.nextDouble(0.25, 2.0);
-                theDrone.setLongitude(theDrone.getLongitude() + val);
-            }
-            case 2 -> { // latitude change
-                double val = theRandom.nextDouble(0.25, 2.0);
-                theDrone.setLatitude(theDrone.getLatitude() + val);
-            }
-            case 3 -> { // altitude change
-                double val = theRandom.nextDouble(0.25, 2.0);
-                theDrone.setAltitude(theDrone.getAltitude() + val);
-            }
-            case 4 -> { // heading change
-                double val = theRandom.nextDouble(45.0, 50.0);
-                int dir = theRandom.nextInt(2);
-                if (dir == 1) val *= -1;
-                theDrone.setHeading(normalizeHeading(theDrone.getHeading(), val));
-            }
-            default -> {
-                System.err.println("An unknown error occured durring anomalous telemetry generation.");
-            }
-        }
-    }
-
-    /**
      * This method is designed to apply scripted movement to each drone.
      * @param theDrone the drone being updated
      */
-    public void applyScriptedMovement(Drone theDrone) {
+    private void applyScriptedMovement(Drone theDrone) {
 
         /*
          * If no anomalies occur, the drone should travel in an approximated 
@@ -165,5 +119,51 @@ public final class TelemetryGenerator {
 
         theDrone.setLongitude(theDrone.getLongitude() + longitudeChange);
         theDrone.setLatitude(theDrone.getLatitude() + latitudeChange);
+    }
+
+    /**
+     * A helper method used to normalize a heading ensuring it's value 
+     * is always 0 thru 360 degrees
+     * @param theCurrentHeading The current drone heading in degrees
+     * @param theChange The change in heading in degrees
+     * @return the normalized heading 0 through 360 degrees
+     */
+    private double normalizeHeading(double theCurrentHeading, double theChange) {
+        double heading = theCurrentHeading + theChange;
+        return (heading % 360 + 360) % 360;
+    }
+
+    /**
+     * A helper method used to apply random anomalies to drones.
+     * @param theRandom random object used to anomaly selection
+     * @param theDrone the drone receiving the anomaly
+     */
+    private void applyAnomaly(Random theRandom, Drone theDrone) {
+
+        int select = theRandom.nextInt(1, 5);
+
+        switch (select) {
+            case 1 -> { // longitude change
+                double val = theRandom.nextDouble(0.25, 2.0);
+                theDrone.setLongitude(theDrone.getLongitude() + val);
+            }
+            case 2 -> { // latitude change
+                double val = theRandom.nextDouble(0.25, 2.0);
+                theDrone.setLatitude(theDrone.getLatitude() + val);
+            }
+            case 3 -> { // altitude change
+                double val = theRandom.nextDouble(0.25, 2.0);
+                theDrone.setAltitude(theDrone.getAltitude() + val);
+            }
+            case 4 -> { // heading change
+                double val = theRandom.nextDouble(45.0, 50.0);
+                int dir = theRandom.nextInt(2);
+                if (dir == 1) val *= -1;
+                theDrone.setHeading(normalizeHeading(theDrone.getHeading(), val));
+            }
+            default -> {
+                System.err.println("An unknown error occured durring anomalous telemetry generation.");
+            }
+        }
     }
 }

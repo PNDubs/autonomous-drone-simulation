@@ -68,7 +68,7 @@ public class DroneMonitorApp {
     /** The current drone snapshots for anomaly detection */
     private ArrayList<DroneSnapshot> myDroneSnapshots;
 
-    private TelemetryGenerator myTelemetryGenerator;
+    private final TelemetryGenerator myTelemetryGenerator;
 
     /** The anomaly detector */
     private final AnomalyDetector myAnomalyDetector;
