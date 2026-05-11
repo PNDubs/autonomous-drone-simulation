@@ -12,9 +12,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import com.tcss360.model.AnomalyRecord;
 import com.tcss360.model.Drone;
+
+import java.io.IOException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
@@ -97,10 +106,41 @@ public class MonitorDashboard {
      * 
      * @param theFilePath the file save path
      */
-    private void exportAnomalyLogToCSV(String theFilePath) {
+    private void exportAnomalyLogToPDF(String theFilePath) {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
 
-        /* Insert Logic Here */
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            contentStream.newLineAtOffset(50, 750);
+
+            String logText = (myAlertLog == null) ? "" : myAlertLog.getText();
+            if (logText == null || logText.isEmpty()) {
+                contentStream.showText("No anomaly log entries available.");
+            } else {
+                String[] lines = logText.split("\\n");
+                int lineCount = 0;
+
+                for (String line : lines) {
+                    if (lineCount >= 45) {
+                        break;
+                    }
+                    contentStream.showText(line);
+                    contentStream.newLineAtOffset(0, -15);
+                    lineCount++;
+                }
+            }
+
+            contentStream.endText();
+            contentStream.close();
+
+            document.save(theFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -108,10 +148,17 @@ public class MonitorDashboard {
      * @return
      */
     private JMenuBar buildMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
 
-        /* Insert Logic Here */
+        JMenu fileMenu = new JMenu("File");
 
-        return null;
+        JMenuItem exportPdfItem = new JMenuItem("Export Anomaly Log to PDF");
+        exportPdfItem.addActionListener(e -> exportAnomalyLogToPDF("anomaly_log.pdf"));
+
+        fileMenu.add(exportPdfItem);
+        menuBar.add(fileMenu);
+
+        return menuBar;
     }
 
     /**

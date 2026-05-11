@@ -88,30 +88,29 @@ public class MonitorDashboardTest {
     }
 
     /**
-     * Confirms exportAnomalyLogToCSV does not throw with a normal file path.
-     */
+     *Confirms exportAnomalyLogToPDF does not throw with a normal file path.     */
     @Test
-    public void testExportAnomalyLogToCSVDoesNotThrow() throws Exception {
+    public void testExportAnomalyLogToPDFDoesNotThrow() throws Exception {
         MonitorDashboard dashboard = new MonitorDashboard();
 
-        Method method = MonitorDashboard.class.getDeclaredMethod(
-                "exportAnomalyLogToCSV", String.class);
+        Method method = MonitorDashboard.class.getDeclaredMethod("exportAnomalyLogToPDF", String.class);        method.setAccessible(true);
         method.setAccessible(true);
-        method.invoke(dashboard, "alerts.csv");
+        method.invoke(dashboard, "test.pdf");
+
     }
 
     /**
      * Confirms buildMenuBar currently returns null.
      */
     @Test
-    public void testBuildMenuBarReturnsNullForNow() throws Exception {
+    public void testBuildMenuBarReturnsMenuBar() throws Exception {
         MonitorDashboard dashboard = new MonitorDashboard();
 
         Method method = MonitorDashboard.class.getDeclaredMethod("buildMenuBar");
         method.setAccessible(true);
 
         JMenuBar menuBar = (JMenuBar) method.invoke(dashboard);
-        assertNull(menuBar);
+        assertNotNull(menuBar);
     }
 
     /**
