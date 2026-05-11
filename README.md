@@ -11,6 +11,6 @@ Team Members:
 https://github.com/PNDubs/autonomous-drone-simulation
 
 # GUI Testing
-Open a terminal window at autonomous-drone-simulation
-Run command "mvn compile"
-Run command "java -cp target/classes com.tcss360.view.MonitorDashboard"
+* Open a terminal window at autonomous-drone-simulation
+* Run command "mvn compile"
+* Run command "java -cp target/classes com.tcss360.view.MonitorDashboard"
