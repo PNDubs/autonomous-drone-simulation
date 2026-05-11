@@ -6,6 +6,7 @@
 
 package com.tcss360.model;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,7 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 /**
  * The AnomalyDatabase class acts as the bridge between the controller and
  * the anomaly database.
@@ -35,14 +35,7 @@ public class AnomalyDatabase {
      * Constructor
      */
     public AnomalyDatabase() {
-
-        try {
-            myConnection = DriverManager.getConnection(DB_URL);
-            initializeDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        initializeDatabase();
     }
 
     /**
@@ -50,27 +43,26 @@ public class AnomalyDatabase {
      * @param theRecords the anomaly record to store
      */
     public void saveRecord(ArrayList<AnomalyRecord> theRecords) {
+        if (theRecords == null || theRecords.isEmpty()) {
+            return;
+        }
 
-        String sql = "INSERT INTO anomalies (record_id, drone_id, timestamp, anomaly_type, anomaly_details) VALUES (?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO anomalies "
+                + "(record_id, drone_id, timestamp, anomaly_type, anomaly_details) "
+                + "VALUES (?, ?, ?, ?, ?)";
 
-        try {
-            PreparedStatement stmt = myConnection.prepareStatement(sql);
-
+        try (PreparedStatement pstmt = myConnection.prepareStatement(sql)) {
             for (AnomalyRecord record : theRecords) {
-                stmt.setString(1, record.getRecordID().toString());
-                stmt.setInt(2, record.getDroneID());
-                stmt.setString(3, record.getTimestap().toString());
-                stmt.setString(4, record.getAnomalyType());
-                stmt.setString(5, record.getAnomalyDetails());
-                stmt.executeUpdate();
+                pstmt.setString(1, record.getRecordID().toString());
+                pstmt.setInt(2, record.getDroneID());
+                pstmt.setString(3, record.getTimestamp().toString());
+                pstmt.setString(4, record.getAnomalyType());
+                pstmt.setString(5, record.getAnomalyDetails());
+                pstmt.executeUpdate();
             }
-
-            stmt.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -78,61 +70,58 @@ public class AnomalyDatabase {
      * @param theDroneID the drone for which anomaly records are desired
      * @return a list of anomalies for a specific drone
      */
-    public ArrayList<AnomalyRecord> getAnomaliesForDrone(int theDroneID) {
+    public ArrayList<AnomalyRecord> getAnomaliesForDrone(final int theDroneID) {
+        ArrayList<AnomalyRecord> records = new ArrayList<>();
 
-        ArrayList<AnomalyRecord> theRecords = new ArrayList<>();
-        String sql = "SELECT * FROM anomalies WHERE drone_id = ?";
+        final String sql = "SELECT * FROM anomalies WHERE drone_id = ?";
 
-        try {
-            PreparedStatement stmt = myConnection.prepareStatement(sql);
-            stmt.setInt(1, theDroneID);
-            ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement pstmt = myConnection.prepareStatement(sql)) {
+            pstmt.setInt(1, theDroneID);
 
-            while (rs.next()) {
-                int droneID = rs.getInt("drone_id");
-                String anomalyType = rs.getString("anomaly_type");
-                String anomalyDetails = rs.getString("anomaly_details");
-                theRecords.add(new AnomalyRecord(droneID, anomalyType, anomalyDetails));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    AnomalyRecord record = new AnomalyRecord(
+                            rs.getInt("drone_id"),
+                            rs.getString("anomaly_type"),
+                            rs.getString("anomaly_details")
+                    );
+                    records.add(record);
+                }
             }
-
-            stmt.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return theRecords;
+        return records;
     }
-
     /**
      * Retrieves all anomaly records of a specific type from the database
      * @param theType the type of anomaly for which records are desired
      * @return a list of anomalies of a specific type
      */
-    public ArrayList<AnomalyRecord> getAnomaliesByType(String theType) {
+    public ArrayList<AnomalyRecord> getAnomaliesByType(final String theType) {
+        ArrayList<AnomalyRecord> records = new ArrayList<>();
 
-        ArrayList<AnomalyRecord> theRecords = new ArrayList<>();
-        String sql = "SELECT * FROM anomalies WHERE anomaly_type = ?";
+        final String sql = "SELECT * FROM anomalies WHERE anomaly_type = ?";
 
-        try {
-            PreparedStatement stmt = myConnection.prepareStatement(sql);
-            stmt.setString(1, theType);
-            ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement pstmt = myConnection.prepareStatement(sql)) {
+            pstmt.setString(1, theType);
 
-            while (rs.next()) {
-                int droneID = rs.getInt("drone_id");
-                String anomalyType = rs.getString("anomaly_type");
-                String anomalyDetails = rs.getString("anomaly_details");
-                theRecords.add(new AnomalyRecord(droneID, anomalyType, anomalyDetails));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    AnomalyRecord record = new AnomalyRecord(
+                            rs.getInt("drone_id"),
+                            rs.getString("anomaly_type"),
+                            rs.getString("anomaly_details")
+                    );
+                    records.add(record);
+                }
             }
-
-            stmt.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return theRecords;
+        return records;
     }
 
     /**
@@ -141,103 +130,92 @@ public class AnomalyDatabase {
      * @param theEnd the end time
      * @return a list of anomaly records present over a period of time
      */
-    public ArrayList<AnomalyRecord> getAnomaliesBetween(LocalDateTime theStart,
-        LocalDateTime theEnd) {
+    public ArrayList<AnomalyRecord> getAnomaliesBetween(final LocalDateTime theStart,
+                                                        final LocalDateTime theEnd) {
+        ArrayList<AnomalyRecord> records = new ArrayList<>();
 
-            ArrayList<AnomalyRecord> theRecords = new ArrayList<>();
-            String sql = "SELECT * FROM anomalies WHERE timestamp BETWEEN ? AND ?";
+        final String sql = "SELECT * FROM anomalies WHERE timestamp >= ? AND timestamp <= ?";
 
-            try {
-                PreparedStatement stmt = myConnection.prepareStatement(sql);
-                stmt.setString(1, theStart.toString());
-                stmt.setString(2, theEnd.toString());
-                ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement pstmt = myConnection.prepareStatement(sql)) {
+            pstmt.setString(1, theStart.toString());
+            pstmt.setString(2, theEnd.toString());
 
+            try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int droneID = rs.getInt("drone_id");
-                    String anomalyType = rs.getString("anomaly_type");
-                    String anomalyDetails = rs.getString("anomaly_details");
-                    theRecords.add(new AnomalyRecord(droneID, anomalyType, anomalyDetails));
+                    AnomalyRecord record = new AnomalyRecord(
+                            rs.getInt("drone_id"),
+                            rs.getString("anomaly_type"),
+                            rs.getString("anomaly_details")
+                    );
+                    records.add(record);
                 }
-
-                stmt.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-            return theRecords;
+        return records;
     }
-
     /**
      * Exports all anomaly records in the database to a .CSV file
      * @param theFilePath where the .CSV file will be saved to
      */
-    public void exportToCSV(String theFilePath) {
+    public void exportToCSV(final String theFilePath) {
+        final String sql = "SELECT * FROM anomalies";
 
-        String sql = "SELECT * FROM anomalies";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(theFilePath));
+             Statement stmt = myConnection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-        try {
-            Statement stmt = myConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            FileWriter writer = new FileWriter(theFilePath);
-
-            writer.write("RecordID,DroneID,Timestamp,AnomalyType,AnomalyDetails\n");
+            writer.write("record_id,drone_id,timestamp,anomaly_type,anomaly_details");
+            writer.newLine();
 
             while (rs.next()) {
-                String line = rs.getString("record_id") + ","
-                    + rs.getInt("drone_id") + ","
-                    + rs.getString("timestamp") + ","
-                    + rs.getString("anomaly_type") + ","
-                    + rs.getString("anomaly_details") + "\n";
-                writer.write(line);
+                writer.write(rs.getString("record_id") + ","
+                        + rs.getInt("drone_id") + ","
+                        + rs.getString("timestamp") + ","
+                        + rs.getString("anomaly_type") + ","
+                        + rs.getString("anomaly_details"));
+                writer.newLine();
             }
-
-            writer.close();
-            stmt.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * closes the anomaly database
      */
     public void close() {
-
-        try {
-            if (myConnection != null) {
+        if (myConnection != null) {
+            try {
                 myConnection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
 
     /**
      * Initializes the anomaly database
      */
     private void initializeDatabase() {
-
-        String sql = "CREATE TABLE IF NOT EXISTS anomalies ("
-            + "record_id TEXT PRIMARY KEY, "
-            + "drone_id INTEGER NOT NULL, "
-            + "timestamp TEXT NOT NULL, "
-            + "anomaly_type TEXT NOT NULL, "
-            + "anomaly_details TEXT NOT NULL)";
-
         try {
-            Statement stmt = myConnection.createStatement();
-            stmt.execute(sql);
-            stmt.close();
+            myConnection = DriverManager.getConnection(DB_URL);
+
+            final String sql = "CREATE TABLE IF NOT EXISTS anomalies ("
+                    + "record_id TEXT PRIMARY KEY, "
+                    + "drone_id INTEGER NOT NULL, "
+                    + "timestamp TEXT NOT NULL, "
+                    + "anomaly_type TEXT NOT NULL, "
+                    + "anomaly_details TEXT NOT NULL"
+                    + ")";
+
+            try (Statement stmt = myConnection.createStatement()) {
+                stmt.execute(sql);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }
