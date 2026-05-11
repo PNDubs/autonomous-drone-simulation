@@ -9,6 +9,9 @@ package com.tcss360.controller;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.SwingUtilities;
 
 import com.tcss360.model.AnomalyDatabase;
 import com.tcss360.model.AnomalyDetector;
@@ -22,7 +25,7 @@ import com.tcss360.view.MonitorDashboard;
  * The DroneMonitorApp class is the main controller for the autonomous
  * drone simulation program
  * @author Logan Black
- * @version 01 May 2026
+ * @version 10 May 2026
  */
 public class DroneMonitorApp {
 
@@ -56,7 +59,7 @@ public class DroneMonitorApp {
     /** The change in degrees over 0.25 seconds constituting an anomaly */
     private static final double HEADING_THRESHOLD = 45.0;
 
-    /** System time period representative of 4 Hz */
+    /** System time period representative of 250_000_000 ns for 4 Hz refresh rate */
     private static final long PERIOD = (long) (1_000_000_000.0 / 4.0);
 
     /** The number of drones to simulate */
@@ -77,18 +80,21 @@ public class DroneMonitorApp {
     private final AnomalyDatabase myAnomalyDatabase;
 
     /** The monitor dashboard */
-    private MonitorDashboard myMonitorDashboard;
+    private final MonitorDashboard myMonitorDashboard;
 
     /** The system telemetry generation timer */
-    private ScheduledExecutorService myExecutor;
+    private final ScheduledExecutorService myExecutor;
 
+    /**
+     * Constructor
+     */
     public DroneMonitorApp() {
         myDrones = initializeDrones();
         myDroneSnapshots = new ArrayList<>();
         myTelemetryGenerator = new TelemetryGenerator();
         myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD, 
             HEADING_THRESHOLD, GPS_JUMP_THRESHOLD);
-        myMonitorDashboard = initializeMonitorDashboard();
+        myMonitorDashboard = new MonitorDashboard();
         myAnomalyDatabase = new AnomalyDatabase();
         myExecutor = Executors.newSingleThreadScheduledExecutor();
     }
@@ -98,7 +104,13 @@ public class DroneMonitorApp {
      */
     public void start() {
 
-        /* Insert logic here */
+        SwingUtilities.invokeLater(() -> myMonitorDashboard.display(myDrones));
+
+        myExecutor.scheduleAtFixedRate(() -> {
+            updateTelemetry();
+            checkForAnomalies();
+            SwingUtilities.invokeLater(() -> refreshGUI());
+        }, 0, PERIOD, TimeUnit.NANOSECONDS);
 
     }
 
@@ -121,16 +133,6 @@ public class DroneMonitorApp {
     }
 
     /**
-     * Helper method to initialize the monitor dashboard
-     */
-    private MonitorDashboard initializeMonitorDashboard() {
-
-        /* Insert logic here */
-
-        return null;
-    }
-
-    /**
      * Helper method used to simulate telemetry stream
      * @return a list of previous drone states
      */
@@ -140,7 +142,6 @@ public class DroneMonitorApp {
 
     /**
      * Helper method used to check for anomalies
-     * @return
      */
     private void checkForAnomalies() {
         ArrayList<AnomalyRecord> theRecords = myAnomalyDetector.
