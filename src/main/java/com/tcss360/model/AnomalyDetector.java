@@ -31,7 +31,7 @@ public class AnomalyDetector {
      * @param theGPSJumpThreshold the change in longitude or latitude indicating an anomaly
      * @param theHeadingThreshold the change in heading indicating an anomaly
      */
-    public AnomalyDetector(double theLowBatteryThreshold,
+    public AnomalyDetector(double theLowBatteryThreshold, 
         double theGPSJumpThreshold, double theHeadingThreshold) {
 
             myLowBatteryThreshold = theLowBatteryThreshold;
@@ -73,18 +73,6 @@ public class AnomalyDetector {
             }
 
             return theRecords;
-    }
-
-    /**
-     *
-     * @param theDrone the current drone state
-     * @param theDroneSnapshot the previous drone state
-     * @return true if anomaly, false otherwise
-     */
-    private boolean checkLowBattery(Drone theDrone,
-        DroneSnapshot theDroneSnapshot) {
-
-            return theDrone.getBatteryLevel() <= myLowBatteryThreshold;
     }
 
     /**

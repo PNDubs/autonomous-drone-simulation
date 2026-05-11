@@ -6,10 +6,12 @@
 
 package com.tcss360;
 
+import com.tcss360.controller.DroneMonitorApp;
+
 /**
  * The Main class for the autonomous drone simulation program
  * @author Logan Black
- * @version 28 APR 2026
+ * @version  10 May 2026
  */
 public class Main {
 
@@ -17,10 +19,9 @@ public class Main {
      * The main entry point for program start
      * @param theArgs not used
      */
-    public static void main( String[] theArgs ) {
+    public static void main(String[] theArgs) {
 
-        /* Insert logic here */
+        new DroneMonitorApp().start();
 
     }
-
 }

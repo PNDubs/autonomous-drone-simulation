@@ -1,4 +1,4 @@
-package com.tcss360;
+package com.tcss360.controller;
 
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
