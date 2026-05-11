@@ -28,10 +28,11 @@ public class AnomalyDatabaseTest {
      */
 
     @Test
-    public void testAnomaliesForDroneReturnsNullForNow() {
+    public void testAnomaliesForDroneReturnsEmptyListForNow() {
         AnomalyDatabase database = new AnomalyDatabase();
         ArrayList<AnomalyRecord> result = database.getAnomaliesForDrone(5);
-        assertNull(result);
+        assertNotNull(result);
+        assertEquals(0, result.size());
     }
 
     /**
@@ -39,10 +40,11 @@ public class AnomalyDatabaseTest {
      */
 
     @Test
-    public void testGetAnomaliesByTypeReturnsNullForNow() {
+    public void testGetAnomaliesByTypeReturnsEmptyListForNow() {
         AnomalyDatabase database = new AnomalyDatabase();
         ArrayList<AnomalyRecord> result = database.getAnomaliesByType("Low Battery");
-        assertNull(result);
+        assertNotNull(result);
+        assertEquals(0, result.size());
     }
 
     /**
@@ -50,11 +52,11 @@ public class AnomalyDatabaseTest {
      */
 
     @Test
-    public void testGetAnomaliesBetweenReturnsNullForNow() {
+    public void testGetAnomaliesBetweenReturnsEmptyListForNow() {
         AnomalyDatabase database = new AnomalyDatabase();
         ArrayList<AnomalyRecord> result = database.getAnomaliesBetween(LocalDateTime.now().minusHours(1), LocalDateTime.now());
-        assertNull(result);
-    }
+        assertNotNull(result);
+        assertEquals(0, result.size());    }
 
     /**
      * Confirms exportToCSV does not throw an exception with a normal file path.
