@@ -164,7 +164,7 @@ public class DroneMonitorApp {
      */
     private void refreshGUI() {
 
-        /* Insert logic here */
+        myMonitorDashboard.display(myDrones);
 
     }
 }

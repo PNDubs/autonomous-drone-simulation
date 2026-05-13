@@ -69,8 +69,8 @@ public class MonitorDashboard {
      */
     public void display(ArrayList<Drone> theDrones) {
 
-        /* Insert Logic Here */
-        
+        updateDroneTelemetry(theDrones);
+
     }
 
     /**
@@ -79,7 +79,7 @@ public class MonitorDashboard {
      */
     public void addAlert(AnomalyRecord theRecord) {
 
-        /* Insert Logic Here */
+        myTextArea.append(theRecord.toString() + "\n");
 
     }
 
