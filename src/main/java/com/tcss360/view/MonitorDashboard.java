@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -179,11 +180,40 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
+     *
      */
     private void showQueryScreen() {
 
-        /* Insert Logic Here */
+        String[] options = {"By Drone ID", "By Anomaly Type", "By Time Range"};
+
+        int choice = JOptionPane.showOptionDialog(
+            null,
+            "Select a query type:",
+            "Query Anomaly Database",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+
+        if (choice == 0) {
+            String input = JOptionPane.showInputDialog("Enter Drone ID:");
+            if (input != null) {
+                JOptionPane.showMessageDialog(null, "Querying anomalies for Drone ID: " + input);
+            }
+        } else if (choice == 1) {
+            String input = JOptionPane.showInputDialog("Enter Anomaly Type (e.g. LOW_BATTERY):");
+            if (input != null) {
+                JOptionPane.showMessageDialog(null, "Querying anomalies of type: " + input);
+            }
+        } else if (choice == 2) {
+            String start = JOptionPane.showInputDialog("Enter start time (yyyy-MM-ddTHH:mm:ss):");
+            String end = JOptionPane.showInputDialog("Enter end time (yyyy-MM-ddTHH:mm:ss):");
+            if (start != null && end != null) {
+                JOptionPane.showMessageDialog(null, "Querying anomalies between: " + start + " and " + end);
+            }
+        }
 
     }
 
