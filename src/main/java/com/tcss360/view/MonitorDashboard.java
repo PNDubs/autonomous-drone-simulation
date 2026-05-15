@@ -223,17 +223,34 @@ public class MonitorDashboard {
      */
     private void exportAnomalyLogToCSV(String theFilePath) {
 
-        /* Insert Logic Here */
+        String logText = myTextArea.getText();
+
+        try {
+            java.io.FileWriter writer = new java.io.FileWriter(theFilePath);
+            writer.write("Timestamp,DroneID,AnomalyType,AnomalyDetails\n");
+            writer.write(logText);
+            writer.close();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     /**
-     * 
+     *
      */
     private void handleExit() {
 
-        /* Insert Logic Here */
+        int choice = JOptionPane.showConfirmDialog(
+            null,
+            "Are you sure you want to exit?",
+            "Exit",
+            JOptionPane.YES_NO_OPTION
+        );
 
+        if (choice == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
 
     }
 
