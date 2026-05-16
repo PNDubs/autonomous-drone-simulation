@@ -1,0 +1,8 @@
+# Maven build output
+target/
+
+# Java compiled classes
+*.class
+
+# macOS files
+.DS_Store
