@@ -73,7 +73,7 @@ public class MonitorDashboard {
      */
     public void display(ArrayList<Drone> theDrones) {
 
-        updateDroneTelemetry(theDrones);
+        myMapPanel.setDrones(theDrones);
 
     }
 
@@ -231,17 +231,6 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
-     * @param theDrones the drone fleet
-     */
-    private void updateDroneTelemetry(ArrayList<Drone> theDrones) {
-        myMapPanel.setDrones(theDrones);
-
-        /* Insert Logic Here */
-
-    }
-
-    /**
      *
      */
     private void showQueryScreen() {
@@ -322,7 +311,7 @@ public class MonitorDashboard {
 
 
     /**
-     * An innter class to act as a custom JPanel for drawing drone positions.
+     * An inner class to act as a custom JPanel for drawing drone positions.
      */
     private final class DroneMapPanel extends JPanel {
 
