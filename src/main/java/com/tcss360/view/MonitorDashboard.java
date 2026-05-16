@@ -14,6 +14,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,14 +31,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-import com.tcss360.model.AnomalyRecord;
-import com.tcss360.model.Drone;
-
-import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import com.tcss360.model.AnomalyRecord;
+import com.tcss360.model.Drone;
 
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
@@ -369,7 +369,7 @@ public class MonitorDashboard {
         private static final int TRAIL_RADIUS = 1;
 
         /** The maximum number of trail points to keep per drone */
-        private static final int MAX_TRAIL_POINTS = 800;
+        private static final int MAX_TRAIL_POINTS = 1200;
 
         /** The conversion rate from 1 meter to # px */
         private static final double METERS_TO_PIXELS = 4.0;
