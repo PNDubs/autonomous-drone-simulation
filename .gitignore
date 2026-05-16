@@ -6,3 +6,7 @@ target/
 
 # macOS files
 .DS_Store
+
+# IDE settings
+.idea/
+.vscode/
