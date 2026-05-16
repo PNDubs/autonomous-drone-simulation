@@ -33,6 +33,12 @@ import javax.swing.SwingConstants;
 import com.tcss360.model.AnomalyRecord;
 import com.tcss360.model.Drone;
 
+import java.io.IOException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
  * @author Logan Black
@@ -172,12 +178,17 @@ public class MonitorDashboard {
 
         JMenu fileMenu = new JMenu("File");
         JMenuItem saveCSVItem = new JMenuItem("Save Anomaly Log to CSV");
+        JMenuItem exportPdfItem = new JMenuItem("Export Anomaly Log to PDF");
+        exportPdfItem.addActionListener(e -> exportAnomalyLogToPDF("anomaly_log.pdf"));
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener(event -> handleExit());
 
         fileMenu.add(saveCSVItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exportPdfItem);
+
 
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutItem = new JMenuItem("About");
@@ -194,6 +205,43 @@ public class MonitorDashboard {
         return menuBar;
     }
 
+    private void exportAnomalyLogToPDF(String theFilePath) {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            contentStream.newLineAtOffset(50, 750);
+
+            String logText = (myAlertLog == null) ? "" : myAlertLog.getText();
+            if (logText == null || logText.isEmpty()) {
+                contentStream.showText("No anomaly log entries available.");
+            } else {
+                String[] lines = logText.split("\\n");
+                int lineCount = 0;
+
+                for (String line : lines) {
+                    if (lineCount >= 45) {
+                        break;
+                    }
+                    contentStream.showText(line);
+                    contentStream.newLineAtOffset(0, -15);
+                    lineCount++;
+                }
+            }
+
+            contentStream.endText();
+            contentStream.close();
+
+            document.save(theFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+  
     /**
      * Shows basic project information.
      */

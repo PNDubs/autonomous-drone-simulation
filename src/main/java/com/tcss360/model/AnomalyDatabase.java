@@ -6,6 +6,7 @@
 
 package com.tcss360.model;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,7 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 /**
  * The AnomalyDatabase class acts as the bridge between the controller and
  * the anomaly database.
@@ -103,7 +103,6 @@ public class AnomalyDatabase {
 
         return theRecords;
     }
-
     /**
      * Retrieves all anomaly records of a specific type from the database
      * @param theType the type of anomaly for which records are desired
@@ -168,7 +167,6 @@ public class AnomalyDatabase {
 
             return theRecords;
     }
-
     /**
      * Exports all anomaly records in the database to a .CSV file
      * @param theFilePath where the .CSV file will be saved to
