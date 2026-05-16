@@ -6,11 +6,27 @@
 
 package com.tcss360.view;
 
+import java.awt.AlphaComposite;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -28,12 +44,12 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
  * @author Logan Black
- * @version 28 APR 2026
+ * @version 15 May 2026
  */
 public class MonitorDashboard {
 
-    /** The drone table */
-    private JTable myDroneTable;
+    /** Root panel for display inside myFrame */
+    private final JPanel myRootPanel;
 
     /** The drone map panel */
     private JPanel myMapPanel;
@@ -54,7 +70,7 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
+     * Helper method to display the drones
      * @param theDrones the drone fleet
      */
     public void display(ArrayList<Drone> theDrones) {
@@ -64,7 +80,7 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
+     * Helper method to update anomaly text area
      * @param theRecord an anomaly record
      */
     public void addAlert(AnomalyRecord theRecord) {
@@ -81,6 +97,71 @@ public class MonitorDashboard {
 
         /* Insert Logic Here */
 
+    /**
+     * Helper method to build the menu bar
+     * @return completed JMenuBar
+     */
+    private JMenuBar buildMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem saveCSVItem = new JMenuItem("Save Anomaly Log to CSV");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(event -> handleExit());
+
+        fileMenu.add(saveCSVItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
+
+        JMenu helpMenu = new JMenu("Help");
+        JMenuItem aboutItem = new JMenuItem("About");
+        JMenuItem instructionsItem = new JMenuItem("Instructions");
+        aboutItem.addActionListener(event -> showAboutDialog());
+        instructionsItem.addActionListener(event -> showInstructionsDialog());
+
+        helpMenu.add(aboutItem);
+        helpMenu.add(instructionsItem);
+
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
+
+        return menuBar;
+    }
+
+    /**
+     * Shows basic project information.
+     */
+    private void showAboutDialog() {
+        JOptionPane.showMessageDialog(myRootPanel, """
+                                                   Autonomous Drone Simulation
+                                                   TCSS 360 Course Project - Spring 2026
+                                                   
+                                                   A Java-based Maven project that simulates a fleet of
+                                                   drones and random anomalous behavior employing
+                                                   object-oriented programming principles and
+                                                   collaborativedevelopment using YouTrack and GitHub.
+                                                   
+                                                   Authors: Logan Black, Ibrahim Cartan, Matthew Park""",
+            "About",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    /**
+     * Shows basic dashboard instructions.
+     */
+    private void showInstructionsDialog() {
+        JOptionPane.showMessageDialog(myRootPanel, """
+                                                   Map displays the fleet of drones
+
+                                                   Alerts dispalys all anomaly alerts
+                                                   
+                                                   Query allows for the display of specific 
+                                                   anomaly logs as selected by the user. 
+                                                   Select a query to display it.""",
+            "Instructions",
+            JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     /**
@@ -98,7 +179,40 @@ public class MonitorDashboard {
      */
     private void showQueryScreen() {
 
-        /* Insert Logic Here */
+        String[] options = {"By Drone ID", "By Anomaly Type", "By Time Range"};
+
+        int choice = JOptionPane.showOptionDialog(
+            null,
+            "Select a query type:",
+            "Query Anomaly Database",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+
+        switch (choice) {
+            case 0 ->                 {
+                    String input = JOptionPane.showInputDialog("Enter Drone ID:");
+                    if (input != null) {
+                        JOptionPane.showMessageDialog(null, "Querying anomalies for Drone ID: " + input);
+                    }                      }
+            case 1 ->                 {
+                    String input = JOptionPane.showInputDialog("Enter Anomaly Type (e.g. LOW_BATTERY):");
+                    if (input != null) {
+                        JOptionPane.showMessageDialog(null, "Querying anomalies of type: " + input);
+                    }                      }
+            case 2 -> {
+                String start = JOptionPane.showInputDialog("Enter start time (yyyy-MM-ddTHH:mm:ss):");
+                String end = JOptionPane.showInputDialog("Enter end time (yyyy-MM-ddTHH:mm:ss):");
+                if (start != null && end != null) {
+                    JOptionPane.showMessageDialog(null, "Querying anomalies between: " + start + " and " + end);
+                }
+            }
+            default -> {
+            }
+        }
 
     }
 
@@ -137,15 +251,18 @@ public class MonitorDashboard {
             contentStream.endText();
             contentStream.close();
 
-            document.save(theFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+        try {
+            try (java.io.FileWriter writer = new java.io.FileWriter(theFilePath)) {
+                writer.write("Timestamp,DroneID,AnomalyType,AnomalyDetails\n");
+                writer.write(logText);
+            }
+        } catch (java.io.IOException e) {
+            System.err.println("An error has occurred while exporting the Anomaly Log to CSV " + e);
         }
     }
 
     /**
-     * 
-     * @return
+     * Helper method for handling exit operations
      */
     private JMenuBar buildMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -164,10 +281,111 @@ public class MonitorDashboard {
     /**
      * 
      */
-    private void handleExit() {
+    private final class DroneMapPanel extends JPanel {
+
+        /** The radius of a drone object on the map in px */
+        private static final int DRONE_RADIUS = 2;
+
+        /** The radius of a drone trail point on the map in px */
+        private static final int TRAIL_RADIUS = 1;
+
+        /** The maximum number of trail points to keep per drone */
+        private static final int MAX_TRAIL_POINTS = 800;
+
+        /** The conversion rate from 1 meter to # px */
+        private static final double METERS_TO_PIXELS = 4.0;
 
         /* Insert Logic Here */
 
+        /** The drone trails keyed by drone ID */
+        private final Map<Integer, ArrayList<Point>> myDroneTrails = new HashMap<>();
 
+        /**
+         * Sets the drone positions and repaints them
+         * @param theDrones the list of drones
+         */
+        private void setDrones(ArrayList<Drone> theDrones) {
+            myDrones = theDrones;
+
+            for (Drone drone : myDrones) {
+                int x = (int) Math.round(drone.getLongitude() * METERS_TO_PIXELS);
+                int y = getHeight()
+                    - (int) Math.round(drone.getLatitude() * METERS_TO_PIXELS);
+
+                ArrayList<Point> trail = myDroneTrails.computeIfAbsent(
+                    drone.getID(),
+                    id -> new ArrayList<>()
+                );
+
+                trail.add(new Point(x, y));
+
+                if (trail.size() > MAX_TRAIL_POINTS) {
+                    trail.remove(0);
+                }
+            }
+
+            repaint();
+        }
+
+        /**
+         * Overrides graphics to paint the drones and display telemetry data
+         * above each drone object. A trail follows each drone for easy visualization of previously
+         * visited points
+         */
+        @Override
+        protected void paintComponent(Graphics theGraphics) {
+            super.paintComponent(theGraphics);
+
+            Graphics2D g2 = (Graphics2D) theGraphics.create();
+
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0875f));
+            g2.setColor(new Color(255, 120, 120));
+
+            for (ArrayList<Point> trail : myDroneTrails.values()) {
+                for (Point point : trail) {
+                    g2.fillOval(
+                        point.x - TRAIL_RADIUS,
+                        point.y - TRAIL_RADIUS,
+                        TRAIL_RADIUS * 2,
+                        TRAIL_RADIUS * 2
+                    );
+                }
+            }
+
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+            g2.setColor(Color.BLACK);
+
+            for (Drone drone : myDrones) {
+                int x = (int) Math.round(drone.getLongitude() * METERS_TO_PIXELS);
+                int y = getHeight()
+                    - (int) Math.round(drone.getLatitude() * METERS_TO_PIXELS);
+
+                g2.fillOval(
+                    x - DRONE_RADIUS,
+                    y - DRONE_RADIUS,
+                    DRONE_RADIUS * 2,
+                    DRONE_RADIUS * 2
+                );
+
+                String telemetry = String.format(
+                    "D%d lon:%.1f lat:%.1f alt:%.0f h:%.0f",
+                    drone.getID(),
+                    drone.getLongitude(),
+                    drone.getLatitude(),
+                    drone.getAltitude(),
+                    drone.getHeading()
+                );
+
+                FontMetrics metrics = g2.getFontMetrics();
+                int textWidth = metrics.stringWidth(telemetry);
+
+                int textX = x - textWidth / 2;
+                int textY = y - DRONE_RADIUS - 4;
+
+                g2.drawString(telemetry, textX, textY);
+            }
+
+            g2.dispose();
+        }
     }
 }

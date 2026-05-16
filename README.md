@@ -7,10 +7,22 @@ Team Members:
 * Ibrahim Cartan
 * Matthew Park
 
-# GitHub Repo Link
+## GitHub Repo Link
+
 https://github.com/PNDubs/autonomous-drone-simulation
 
-# GUI Testing
-* Open a terminal window at autonomous-drone-simulation
-* Run command "mvn compile"
-* Run command "java -cp target/classes com.tcss360.view.MonitorDashboard"
+## Compile and Run
+
+This project uses Maven and requires Java 21.
+
+From the project root, compile the project:
+
+```bash
+mvn compile
+```
+
+Run the application from Main.java:
+
+```bash
+mvn exec:java -Dexec.mainClass="com.tcss360.Main"
+```
