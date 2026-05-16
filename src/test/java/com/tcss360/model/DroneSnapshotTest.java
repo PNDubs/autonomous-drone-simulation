@@ -13,7 +13,8 @@ import org.junit.Test;
 /**
  * Unit tests for the DroneSnapshot class.
  * @author Matthew Park
- * @version 28 APR 2026
+ * @author Logan Black
+ * @version 15 May 2026
  */
 public class DroneSnapshotTest {
 
@@ -30,8 +31,8 @@ public class DroneSnapshotTest {
     private static final double TEST_LONGITUDE = -999.9;
     private static final double TEST_LATITUDE = 99.9;
     private static final double TEST_ALTITUDE = 99.9;
-    private static final int TEST_BATTERY = 99;
-    private static final double TEST_HEADING = 99;
+    private static final double TEST_BATTERY = 99.0;
+    private static final double TEST_HEADING = 99.0;
     private static final double TEST_SPEED = 5.0;
 
     /**
@@ -81,7 +82,7 @@ public class DroneSnapshotTest {
      */
     @Test
     public void testSnapshotBatteryLevel() {
-        assertEquals(TEST_BATTERY, mySnapshot.getPreviousBatteryLevel());
+        assertEquals(TEST_BATTERY, mySnapshot.getPreviousBatteryLevel(), 0.0001);
     }
 
     /**
