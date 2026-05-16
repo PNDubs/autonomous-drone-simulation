@@ -7,7 +7,11 @@
 package com.tcss360.controller;
 
 import java.util.ArrayList;
-import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.SwingUtilities;
 
 import com.tcss360.model.AnomalyDatabase;
 import com.tcss360.model.AnomalyDetector;
@@ -21,27 +25,62 @@ import com.tcss360.view.MonitorDashboard;
  * The DroneMonitorApp class is the main controller for the autonomous
  * drone simulation program
  * @author Logan Black
- * @version 28 APR 2026
+ * @version 15 May 2026
  */
 public class DroneMonitorApp {
 
-    /** The low battery anomaly threshold */
-    private static final int LOW_BATTERY_THRESHOLD = 15;
+    /** The refresh rate of the app */
+    private static final double TICKS_PER_SECOND = 60.0;
 
-    /** The altitude anomaly threshold */
-    private static final double ALTITUDE_THRESHOLD = 0.0; // INSERT VALUE HERE
+    /** 
+     * System time period representative of 16_666_666.667 ns for 
+     * 60 Hz refresh rate 
+     */
+    private static final long PERIOD = (long) (1_000_000_000.0 / TICKS_PER_SECOND);
 
-    //** The longitude or latitude anomlay threshold */
-    private static final double GPS_JUMP_THRESHOLD = 0.0; // INSERT VALUE HERE
+    /** The value representing a fully charged battery */
+    private static final double FULL_BATTERY_LEVEL = 100.0;
 
-    /** The heading threshold */
-    private static final double HEADING_THRESHOLD = 0.0; // INSERT VALUE HERE
+    /** The low battery level constituting an anomaly */
+    private static final double LOW_BATTERY_THRESHOLD = 15.0;
+
+    /** Default heading of 0 degrees for initialization */
+    private static final double DEFAULT_HEADING = 0.0;
+
+    /** Default speed of 2.0 meters / second for initialization */
+    private static final double DEFAULT_SPEED = 2.0;
+
+    /** Default altitude of 100 meters for initialization */
+    private static final double DEFAULT_ALTITUDE = 100.0;
+
+    /** Default longitude of 0 meters for initialization */
+    private static final double DEFAULT_LONGITUDE = 50.0;
+
+    /** Default latitude of 0 meters for initialization */
+    private static final double DEFAULT_LATITUDE = 25.0;
+
+    /** 
+     * The change in longitude, latitude, or altitude constituting an
+     * anomaly. This equates to anything above 2m/s
+     */
+    private static final double GPS_JUMP_THRESHOLD = DEFAULT_SPEED / TICKS_PER_SECOND;
+
+    /** 
+     * The change in degrees constituting an anomaly equating to
+     * 180 degrees / second
+    */
+    private static final double HEADING_THRESHOLD = 3.0;
+
+    /** The number of drones to simulate */
+    private static final int NUM_DRONES = 3;
 
     /** The drone fleet */
     private final ArrayList<Drone> myDrones;
 
     /** The current drone snapshots for anomaly detection */
     private ArrayList<DroneSnapshot> myDroneSnapshots;
+
+    private final TelemetryGenerator myTelemetryGenerator;
 
     /** The anomaly detector */
     private final AnomalyDetector myAnomalyDetector;
@@ -50,19 +89,23 @@ public class DroneMonitorApp {
     private final AnomalyDatabase myAnomalyDatabase;
 
     /** The monitor dashboard */
-    private MonitorDashboard myMonitorDashboard;
+    private final MonitorDashboard myMonitorDashboard;
 
     /** The system telemetry generation timer */
-    private Timer myUpdateTimer;
+    private final ScheduledExecutorService myExecutor;
 
+    /**
+     * Constructor
+     */
     public DroneMonitorApp() {
         myDrones = initializeDrones();
         myDroneSnapshots = new ArrayList<>();
-        myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD, 
-            HEADING_THRESHOLD, GPS_JUMP_THRESHOLD, ALTITUDE_THRESHOLD);
-        myMonitorDashboard = initializeMonitorDashboard();
+        myTelemetryGenerator = new TelemetryGenerator();
+        myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD,
+            GPS_JUMP_THRESHOLD, HEADING_THRESHOLD);
+        myMonitorDashboard = new MonitorDashboard();
         myAnomalyDatabase = new AnomalyDatabase();
-        myUpdateTimer = new Timer();
+        myExecutor = Executors.newSingleThreadScheduledExecutor();
     }
 
     /**
@@ -70,29 +113,32 @@ public class DroneMonitorApp {
      */
     public void start() {
 
-        /* Insert logic here */
+        SwingUtilities.invokeLater(() -> myMonitorDashboard.display(myDrones));
+
+        myExecutor.scheduleAtFixedRate(() -> {
+            updateTelemetry();
+            checkForAnomalies();
+            SwingUtilities.invokeLater(() -> refreshGUI());
+        }, 0, PERIOD, TimeUnit.NANOSECONDS);
 
     }
 
     /**
-     * Helper method used to initialize the drones
+     * Helper method used to initialize 3 drones
      * @return a list of drones
      */
     private ArrayList<Drone> initializeDrones() {
 
-        /* Insert logic here */
+        ArrayList<Drone> drones = new ArrayList<>();
 
-        return null;
-    }
+        for (int i = 1; i <= NUM_DRONES; i++) {
+            drones.add(new Drone(i, DEFAULT_LONGITUDE, 
+                (DEFAULT_LATITUDE + ((i - 1) * DEFAULT_LATITUDE)), 
+                DEFAULT_ALTITUDE, FULL_BATTERY_LEVEL, DEFAULT_HEADING, 
+                DEFAULT_SPEED));
+        }
 
-    /**
-     * Helper method to initialize the monitor dashboard
-     */
-    private MonitorDashboard initializeMonitorDashboard() {
-
-        /* Insert logic here */
-
-        return null;
+        return drones;
     }
 
     /**
@@ -100,12 +146,11 @@ public class DroneMonitorApp {
      * @return a list of previous drone states
      */
     private void updateTelemetry() {
-        myDroneSnapshots = TelemetryGenerator.generateTelemetry();
+        myDroneSnapshots = myTelemetryGenerator.generateTelemetry(myDrones);
     }
 
     /**
      * Helper method used to check for anomalies
-     * @return
      */
     private void checkForAnomalies() {
         ArrayList<AnomalyRecord> theRecords = myAnomalyDetector.
@@ -113,6 +158,12 @@ public class DroneMonitorApp {
 
         if (theRecords.size() >= 1) {
             saveAnomalies(theRecords);
+
+            SwingUtilities.invokeLater(() -> {
+                for (AnomalyRecord record: theRecords) {
+                    myMonitorDashboard.addAlert(record);
+                }            
+            }); 
         }
     }
 
@@ -128,7 +179,7 @@ public class DroneMonitorApp {
      */
     private void refreshGUI() {
 
-        /* Insert logic here */
+        myMonitorDashboard.display(myDrones);
 
     }
 }
