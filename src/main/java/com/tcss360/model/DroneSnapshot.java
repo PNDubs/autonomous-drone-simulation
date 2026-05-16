@@ -28,7 +28,7 @@ public class DroneSnapshot {
     private final double myPreviousAltitude;
 
     /** The drones previous battery level */
-    private final int myPreviousBatteryLevel;
+    private final double myPreviousBatteryLevel;
 
     /** The drones previous heading */
     private final double myPreviousHeading;
@@ -86,7 +86,7 @@ public class DroneSnapshot {
      * Getter
      * @return the drones previous battery level
      */
-    public int getPreviousBatteryLevel() {
+    public double getPreviousBatteryLevel() {
         return myPreviousBatteryLevel;
     }
 
