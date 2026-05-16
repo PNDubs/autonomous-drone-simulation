@@ -28,10 +28,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import com.tcss360.model.AnomalyRecord;
 import com.tcss360.model.Drone;
+
+import java.io.IOException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
@@ -44,27 +52,21 @@ public class MonitorDashboard {
     private final JPanel myRootPanel;
 
     /** The drone map panel */
-    private final DroneMapPanel myMapPanel;
-
-    /** The text area for the alert log */
-    private final JTextArea myTextArea;
+    private JPanel myMapPanel;
 
     /** The alert log area */
-    private final JScrollPane myAlertLog;
+    private JTextArea myAlertLog;
 
     /** The alert log query area */
-    private final JPanel myQueryPanel;
+    private JPanel myQjeryPanel;
 
     /**
      * Constructor
      */
     public MonitorDashboard() {
-        myMapPanel = buildMapPanel();
-        myQueryPanel = buildQueryPanel();
-        myTextArea = buildTextArea();
-        myAlertLog = buildAlertLog();
-        myRootPanel = buildRootPanel();
-        buildFrame();
+
+        /* Insert Logic Here */
+
     }
 
     /**
@@ -73,8 +75,8 @@ public class MonitorDashboard {
      */
     public void display(ArrayList<Drone> theDrones) {
 
-        updateDroneTelemetry(theDrones);
-
+        /* Insert Logic Here */
+        
     }
 
     /**
@@ -83,85 +85,17 @@ public class MonitorDashboard {
      */
     public void addAlert(AnomalyRecord theRecord) {
 
-        myTextArea.append(theRecord.toString() + "\n");
+        /* Insert Logic Here */
 
     }
 
     /**
-     * Builds the map panel
-     * @return a completed map panel
+     * 
+     * @param theDrones the drone fleet
      */
-    private DroneMapPanel buildMapPanel() {
-        DroneMapPanel panel = new DroneMapPanel();
-        panel.setBorder(BorderFactory.createTitledBorder("Map"));
-        panel.setMinimumSize(new Dimension(400, 300));
-        panel.setBackground(Color.WHITE);
-        return panel;
-    }
+    private void updateDroneTelemetry(ArrayList<Drone> theDrones) {
 
-    /**
-     * Builds the query panel
-     * @return a completed query panel
-     */
-    private JPanel buildQueryPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("Query"));
-        panel.setPreferredSize(new Dimension(0, 120));
-        panel.setMinimumSize(new Dimension(400,120));
-        panel.add(new JLabel("query", SwingConstants.CENTER), BorderLayout.CENTER);
-        return panel;
-    }
-
-    /**
-     * Builds the alert text area
-     * @return a completed alert text area
-     */
-    private JTextArea buildTextArea() {
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        return textArea;
-    }
-
-    /**
-     * Builds the alert log
-     * @return a completed alert log
-     */
-    private JScrollPane buildAlertLog() {
-        JScrollPane alertScrollPane = new JScrollPane(myTextArea);
-        alertScrollPane.setBorder(BorderFactory.createTitledBorder("Alerts"));
-        alertScrollPane.setPreferredSize(new Dimension(220, 0));
-       
-        return alertScrollPane;
-    }
-
-    /**
-     * Builds the root panel for display in the frame
-     * @return a completed root panel
-     */
-    private JPanel buildRootPanel() {
-        JPanel rootPanel = new JPanel(new BorderLayout());
-        rootPanel.add(myMapPanel, BorderLayout.CENTER);
-        rootPanel.add(myQueryPanel, BorderLayout.SOUTH);
-        rootPanel.add(myAlertLog, BorderLayout.EAST);
-        return rootPanel;
-    }
-
-    /**
-     * Builds the frame for gui display
-     */
-    private void buildFrame() {
-        JFrame frame = new JFrame("Autonomous Drone Simulator");
-
-        frame.setJMenuBar(buildMenuBar());
-        frame.setContentPane(myRootPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(800,400));
-        frame.setSize(1000,650);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+        /* Insert Logic Here */
 
     /**
      * Helper method to build the menu bar
@@ -234,15 +168,14 @@ public class MonitorDashboard {
      * 
      * @param theDrones the drone fleet
      */
-    private void updateDroneTelemetry(ArrayList<Drone> theDrones) {
-        myMapPanel.setDrones(theDrones);
+    private void paintDronePositions(ArrayList<Drone> theDrones) {
 
         /* Insert Logic Here */
 
     }
 
     /**
-     *
+     * 
      */
     private void showQueryScreen() {
 
@@ -287,9 +220,36 @@ public class MonitorDashboard {
      * 
      * @param theFilePath the file save path
      */
-    private void exportAnomalyLogToCSV(String theFilePath) {
+    private void exportAnomalyLogToPDF(String theFilePath) {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
 
-        String logText = myTextArea.getText();
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            contentStream.newLineAtOffset(50, 750);
+
+            String logText = (myAlertLog == null) ? "" : myAlertLog.getText();
+            if (logText == null || logText.isEmpty()) {
+                contentStream.showText("No anomaly log entries available.");
+            } else {
+                String[] lines = logText.split("\\n");
+                int lineCount = 0;
+
+                for (String line : lines) {
+                    if (lineCount >= 45) {
+                        break;
+                    }
+                    contentStream.showText(line);
+                    contentStream.newLineAtOffset(0, -15);
+                    lineCount++;
+                }
+            }
+
+            contentStream.endText();
+            contentStream.close();
 
         try {
             try (java.io.FileWriter writer = new java.io.FileWriter(theFilePath)) {
@@ -299,30 +259,27 @@ public class MonitorDashboard {
         } catch (java.io.IOException e) {
             System.err.println("An error has occurred while exporting the Anomaly Log to CSV " + e);
         }
-
     }
 
     /**
      * Helper method for handling exit operations
      */
-    private void handleExit() {
+    private JMenuBar buildMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
 
-        int choice = JOptionPane.showConfirmDialog(
-            null,
-            "Are you sure you want to exit?",
-            "Exit",
-            JOptionPane.YES_NO_OPTION
-        );
+        JMenu fileMenu = new JMenu("File");
 
-        if (choice == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
+        JMenuItem exportPdfItem = new JMenuItem("Export Anomaly Log to PDF");
+        exportPdfItem.addActionListener(e -> exportAnomalyLogToPDF("anomaly_log.pdf"));
 
+        fileMenu.add(exportPdfItem);
+        menuBar.add(fileMenu);
+
+        return menuBar;
     }
 
-
     /**
-     * An innter class to act as a custom JPanel for drawing drone positions.
+     * 
      */
     private final class DroneMapPanel extends JPanel {
 
@@ -338,8 +295,7 @@ public class MonitorDashboard {
         /** The conversion rate from 1 meter to # px */
         private static final double METERS_TO_PIXELS = 4.0;
 
-        /** The drones to paint */
-        private ArrayList<Drone> myDrones = new ArrayList<>();
+        /* Insert Logic Here */
 
         /** The drone trails keyed by drone ID */
         private final Map<Integer, ArrayList<Point>> myDroneTrails = new HashMap<>();
