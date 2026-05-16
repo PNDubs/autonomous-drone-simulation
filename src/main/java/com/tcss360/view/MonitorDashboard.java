@@ -210,35 +210,34 @@ public class MonitorDashboard {
             PDPage page = new PDPage();
             document.addPage(page);
 
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA, 12);
-            contentStream.newLineAtOffset(50, 750);
-
-            String logText = (myAlertLog == null) ? "" : myAlertLog.getText();
-            if (logText == null || logText.isEmpty()) {
-                contentStream.showText("No anomaly log entries available.");
-            } else {
-                String[] lines = logText.split("\\n");
-                int lineCount = 0;
-
-                for (String line : lines) {
-                    if (lineCount >= 45) {
-                        break;
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                contentStream.newLineAtOffset(50, 750);
+                
+                String logText = (myTextArea == null) ? "" : myTextArea.getText();
+                if (logText == null || logText.isEmpty()) {
+                    contentStream.showText("No anomaly log entries available.");
+                } else {
+                    String[] lines = logText.split("\\n");
+                    int lineCount = 0;
+                    
+                    for (String line : lines) {
+                        if (lineCount >= 45) {
+                            break;
+                        }
+                        contentStream.showText(line);
+                        contentStream.newLineAtOffset(0, -15);
+                        lineCount++;
                     }
-                    contentStream.showText(line);
-                    contentStream.newLineAtOffset(0, -15);
-                    lineCount++;
                 }
+                
+                contentStream.endText();
             }
-
-            contentStream.endText();
-            contentStream.close();
 
             document.save(theFilePath);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("An error occured while exporting alert logs to PDF " + e);
         }
     }
   
