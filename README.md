@@ -19,7 +19,10 @@ From the project root, compile the project:
 
 ```bash
 mvn compile
+```
 
 Run the application from Main.java:
+
 ```bash
 mvn exec:java -Dexec.mainClass="com.tcss360.Main"
+```
