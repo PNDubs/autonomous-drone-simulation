@@ -24,6 +24,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import java.awt.event.ActionEvent;
 
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
@@ -153,8 +154,7 @@ public class MonitorDashboard {
         JMenu fileMenu = new JMenu("File");
 
         JMenuItem exportPdfItem = new JMenuItem("Export Anomaly Log to PDF");
-        exportPdfItem.addActionListener(e -> exportAnomalyLogToPDF("anomaly_log.pdf"));
-
+        exportPdfItem.addActionListener((ActionEvent e) -> exportAnomalyLogToPDF("anomaly_log.pdf"));
         fileMenu.add(exportPdfItem);
         menuBar.add(fileMenu);
 
