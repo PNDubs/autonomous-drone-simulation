@@ -47,7 +47,18 @@ public class AnomalyRecord {
             myAnomalyDetails = theAnomalyDetails;
 
     }
+    public AnomalyRecord(final UUID theRecordID,
+                         final int theDroneID,
+                         final LocalDateTime theTimestamp,
+                         final String theAnomalyType,
+                         final String theAnomalyDetails) {
 
+        myRecordID = theRecordID;
+        myDroneID = theDroneID;
+        myTimestamp = theTimestamp;
+        myAnomalyType = theAnomalyType;
+        myAnomalyDetails = theAnomalyDetails;
+    }
     /**
      * Getter
      * @return the record ID

@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.UUID;
 /**
  * The AnomalyDatabase class acts as the bridge between the controller and
  * the anomaly database.
@@ -55,7 +56,7 @@ public class AnomalyDatabase {
             for (AnomalyRecord record : theRecords) {
                 pstmt.setString(1, record.getRecordID().toString());
                 pstmt.setInt(2, record.getDroneID());
-                pstmt.setString(3, record.getTimestamp().toString());
+                pstmt.setString(3, record.getTimestap().toString());
                 pstmt.setString(4, record.getAnomalyType());
                 pstmt.setString(5, record.getAnomalyDetails());
                 pstmt.executeUpdate();
@@ -81,7 +82,9 @@ public class AnomalyDatabase {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     AnomalyRecord record = new AnomalyRecord(
+                            UUID.fromString(rs.getString("record_id")),
                             rs.getInt("drone_id"),
+                            LocalDateTime.parse(rs.getString("timestamp")),
                             rs.getString("anomaly_type"),
                             rs.getString("anomaly_details")
                     );
@@ -110,7 +113,9 @@ public class AnomalyDatabase {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     AnomalyRecord record = new AnomalyRecord(
+                            UUID.fromString(rs.getString("record_id")),
                             rs.getInt("drone_id"),
+                            LocalDateTime.parse(rs.getString("timestamp")),
                             rs.getString("anomaly_type"),
                             rs.getString("anomaly_details")
                     );
@@ -143,7 +148,9 @@ public class AnomalyDatabase {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     AnomalyRecord record = new AnomalyRecord(
+                            UUID.fromString(rs.getString("record_id")),
                             rs.getInt("drone_id"),
+                            LocalDateTime.parse(rs.getString("timestamp")),
                             rs.getString("anomaly_type"),
                             rs.getString("anomaly_details")
                     );
