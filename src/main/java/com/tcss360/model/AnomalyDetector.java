@@ -52,28 +52,54 @@ public class AnomalyDetector {
                 Drone drone = theDrones.get(i);
                 DroneSnapshot snapshot = theDroneSnapshots.get(i);
 
-                if (checkLowBattery(drone, snapshot)) {
+                boolean lowBattery = checkLowBattery(drone, snapshot);
+                boolean gpsSpoofing = checkGPSSpoofing(drone, snapshot);
+                boolean unsafeMovement = checkUnsafeMovement(drone, snapshot);
+
+                if (lowBattery) {
                     theRecords.add(createAnomalyRecord(drone.getID(),
-                        "LOW_BATTERY",
-                        "Battery at " + drone.getBatteryLevel() + "%"));
+                            "LOW_BATTERY",
+                            "Battery at " + drone.getBatteryLevel() + "%"));
                 }
-                if (checkGPSSpoofing(drone, snapshot)) {
+
+                if (gpsSpoofing) {
                     theRecords.add(createAnomalyRecord(drone.getID(),
-                        "GPS_SPOOFING",
-                        "GPS jumped from (" + snapshot.getPreviousLatitude() + ", "
-                        + snapshot.getPreviousLongitude() + ") to ("
-                        + drone.getLatitude() + ", " + drone.getLongitude() + ")"));
+                            "GPS_SPOOFING",
+                            "GPS jumped from (" + snapshot.getPreviousLatitude() + ", "
+                                    + snapshot.getPreviousLongitude() + ") to ("
+                                    + drone.getLatitude() + ", " + drone.getLongitude() + ")"));
                 }
-                if (checkUnsafeMovement(drone, snapshot)) {
+
+                if (unsafeMovement) {
                     theRecords.add(createAnomalyRecord(drone.getID(),
-                        "UNSAFE_MOVEMENT",
-                        "Heading changed from " + snapshot.getPreviousHeading()
-                        + " to " + drone.getHeading()));
+                            "UNSAFE_MOVEMENT",
+                            "Heading changed from " + snapshot.getPreviousHeading()
+                                    + " to " + drone.getHeading()));
                 }
+
+                if (checkCriticalAnomaly(lowBattery, gpsSpoofing, unsafeMovement)) {
+                    theRecords.add(createAnomalyRecord(drone.getID(),
+                            "CRITICAL_ANOMALY",
+                            "Multiple anomalies detected at the same time."));
+                }
+
+
             }
 
             return theRecords;
     }
+
+    /**
+     *Added low battery helper method in AnomalyDetector to detect battery threshold anomalies.
+     * @param theDrone
+     * @param theDroneSnapshot
+     * @return
+     */
+
+    private boolean checkLowBattery(Drone theDrone, DroneSnapshot theDroneSnapshot) {
+        return theDrone.getBatteryLevel() < myLowBatteryThreshold;
+    }
+
 
     /**
      *
@@ -81,6 +107,7 @@ public class AnomalyDetector {
      * @param theDroneSnapshot the previous drone state
      * @return true if anomaly, false otherwise
      */
+
     private boolean checkGPSSpoofing(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
@@ -101,6 +128,33 @@ public class AnomalyDetector {
 
             double change = Math.abs(theDrone.getHeading() - theDroneSnapshot.getPreviousHeading());
             return change > myHeadingThreshold;
+    }
+
+
+    /**
+     * Added advanced anomaly helper in AnomalyDetector to flag cases where multiple anomalies happen at the same time.
+     * @param theLowBattery
+     * @param theGPSSpoofing
+     * @param theUnsafeMovement
+     * @return
+     */
+
+    private boolean checkCriticalAnomaly(boolean theLowBattery,
+                                         boolean theGPSSpoofing,
+                                         boolean theUnsafeMovement) {
+        int anomalyCount = 0;
+
+        if (theLowBattery) {
+            anomalyCount++;
+        }
+        if (theGPSSpoofing) {
+            anomalyCount++;
+        }
+        if (theUnsafeMovement) {
+            anomalyCount++;
+        }
+
+        return anomalyCount >= 2;
     }
 
     /**
