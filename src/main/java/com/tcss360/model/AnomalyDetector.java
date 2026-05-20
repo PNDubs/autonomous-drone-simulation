@@ -21,7 +21,10 @@ public class AnomalyDetector {
     /** The battery level that indicates an anomaly */
     private final double myLowBatteryThreshold;
 
-    /** The change in longitude, latitude, or altitude that indicates an anomaly */
+    /** The change in altitude that indicates an anomaly */
+    private final double myAltitudeThreshold;
+
+    /** The change in longitude or latitude that indicates an anomaly */
     private final double myGPSJumpThreshold;
 
     /** The change in heading that indicates an anomaly */
@@ -30,19 +33,24 @@ public class AnomalyDetector {
     /**
      * Constructor
      * @param theLowBatteryThreshold the battery level indicating an anomaly
+     * @param theAltitudeThreshold the change in altitude indicating an anomaly
      * @param theGPSJumpThreshold the change in longitude or latitude indicating an anomaly
      * @param theHeadingThreshold the change in heading indicating an anomaly
      */
-    public AnomalyDetector(double theLowBatteryThreshold, 
-        double theGPSJumpThreshold, double theHeadingThreshold) {
+    public AnomalyDetector(double theLowBatteryThreshold,
+        double theAltitudeThreshold, double theGPSJumpThreshold,
+        double theHeadingThreshold) {
 
             myLowBatteryThreshold = theLowBatteryThreshold;
+            myAltitudeThreshold = theAltitudeThreshold;
             myGPSJumpThreshold = theGPSJumpThreshold;
             myHeadingThreshold = theHeadingThreshold;
     }
 
     /**
      * Detects anomalies in drones and facilitates the creation of anomaly records
+     * @param theDrones the current drone states
+     * @param theDroneSnapshots the previous drone states
      * @return array list of anomaly records
      */
     public ArrayList<AnomalyRecord> detectAnomalies(ArrayList<Drone> theDrones,
@@ -66,6 +74,12 @@ public class AnomalyDetector {
                         + snapshot.getPreviousLongitude() + ") to ("
                         + drone.getLatitude() + ", " + drone.getLongitude() + ")"));
                 }
+                if (checkAltitude(drone, snapshot)) {
+                    theRecords.add(createAnomalyRecord(drone.getID(),
+                        "ALTITUDE_CHANGE",
+                        "Altitude changed from " + snapshot.getPreviousAltitude()
+                        + " to " + drone.getAltitude()));
+                }
                 if (checkUnsafeMovement(drone, snapshot)) {
                     theRecords.add(createAnomalyRecord(drone.getID(),
                         "UNSAFE_MOVEMENT",
@@ -78,7 +92,19 @@ public class AnomalyDetector {
     }
 
     /**
-     * Checks if the latitude, longitude, or altitude change is within the set threshold
+     * Checks if the drone battery level is below the low battery threshold.
+     * @param theDrone the current drone state
+     * @return true if low battery, false otherwise
+     */
+    private boolean checkLowBattery(Drone theDrone) {
+        if (theDrone == null) {
+            return false;
+        }
+        return theDrone.getBatteryLevel() < myLowBatteryThreshold;
+    }
+
+    /**
+     * Checks if the horizontal GPS position jumped beyond the threshold.
      * @param theDrone the current drone state
      * @param theDroneSnapshot the previous drone state
      * @return true if anomaly, false otherwise
@@ -86,12 +112,31 @@ public class AnomalyDetector {
     private boolean checkGPSSpoofing(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
+            if (theDrone == null || theDroneSnapshot == null) {
+                return false;
+            }
+
             double latChange = theDrone.getLatitude() - theDroneSnapshot.getPreviousLatitude();
             double lonChange = theDrone.getLongitude() - theDroneSnapshot.getPreviousLongitude();
             double horizontalChange = Math.sqrt(latChange * latChange + lonChange * lonChange);
+            return horizontalChange > myGPSJumpThreshold + GPS_JUMP_TOLERANCE;
+    }
+
+    /**
+     * Checks if the altitude change exceeds the altitude threshold.
+     * @param theDrone the current drone state
+     * @param theDroneSnapshot the previous drone state
+     * @return true if anomaly, false otherwise
+     */
+    private boolean checkAltitude(Drone theDrone,
+        DroneSnapshot theDroneSnapshot) {
+
+            if (theDrone == null || theDroneSnapshot == null) {
+                return false;
+            }
+
             double altChange = Math.abs(theDrone.getAltitude() - theDroneSnapshot.getPreviousAltitude());
-            return horizontalChange > myGPSJumpThreshold + GPS_JUMP_TOLERANCE 
-                || altChange > myGPSJumpThreshold + GPS_JUMP_TOLERANCE;
+            return altChange > myAltitudeThreshold + GPS_JUMP_TOLERANCE;
     }
 
     /**
@@ -103,7 +148,11 @@ public class AnomalyDetector {
     private boolean checkUnsafeMovement(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
-            double rawChange = Math.abs(theDrone.getHeading() - 
+            if (theDrone == null || theDroneSnapshot == null) {
+                return false;
+            }
+
+            double rawChange = Math.abs(theDrone.getHeading() -
                 theDroneSnapshot.getPreviousHeading());
             double change = Math.min(rawChange, 360.0 - rawChange);
             return change > myHeadingThreshold;
@@ -123,15 +172,5 @@ public class AnomalyDetector {
                 theAnomalyType, theAnomalyDetails);
 
             return theRecord;
-    }
-
-    /**
-     * Checks if the drone battery level is below the low battery threshold.
-     * @param theDrone the current drone state
-     * @param theDroneSnapshot the previous drone state
-     * @return true if low battery, false otherwise
-     */
-    private boolean checkLowBattery(Drone theDrone) {
-        return theDrone.getBatteryLevel() < myLowBatteryThreshold;
     }
 }

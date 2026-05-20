@@ -59,13 +59,16 @@ public class DroneMonitorApp {
     /** Default latitude of 0 meters for initialization */
     private static final double DEFAULT_LATITUDE = 25.0;
 
-    /** 
-     * The change in longitude, latitude, or altitude constituting an
-     * anomaly. This equates to anything above 2m/s
+    /**
+     * The change in longitude or latitude constituting an anomaly.
+     * This equates to anything above 2m/s
      */
     private static final double GPS_JUMP_THRESHOLD = DEFAULT_SPEED / TICKS_PER_SECOND;
 
-    /** 
+    /** The change in altitude constituting an anomaly */
+    private static final double ALTITUDE_THRESHOLD = DEFAULT_SPEED / TICKS_PER_SECOND;
+
+    /**
      * The change in degrees constituting an anomaly equating to
      * 180 degrees / second
     */
@@ -102,7 +105,7 @@ public class DroneMonitorApp {
         myDroneSnapshots = new ArrayList<>();
         myTelemetryGenerator = new TelemetryGenerator();
         myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD,
-            GPS_JUMP_THRESHOLD, HEADING_THRESHOLD);
+            ALTITUDE_THRESHOLD, GPS_JUMP_THRESHOLD, HEADING_THRESHOLD);
         myMonitorDashboard = new MonitorDashboard();
         myAnomalyDatabase = new AnomalyDatabase();
         myExecutor = Executors.newSingleThreadScheduledExecutor();
