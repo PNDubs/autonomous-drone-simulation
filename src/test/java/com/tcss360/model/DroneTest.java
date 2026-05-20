@@ -13,7 +13,8 @@ import org.junit.Test;
 /**
  * Unit tests for the Drone class.
  * @author Matthew Park
- * @version 28 APR 2026
+ * @author Logan Black
+ * @version 15 May 2026
  */
 public class DroneTest {
 
@@ -79,7 +80,7 @@ public class DroneTest {
      */
     @Test
     public void testConstructorBatteryLevel() {
-        assertEquals(TEST_BATTERY, myDrone.getBatteryLevel());
+        assertEquals(TEST_BATTERY, myDrone.getBatteryLevel(), 0.0001);
     }
 
     /**
@@ -131,7 +132,7 @@ public class DroneTest {
     @Test
     public void testSetBatteryLevel() {
         myDrone.setBatteryLevel(50);
-        assertEquals(50, myDrone.getBatteryLevel());
+        assertEquals(50, myDrone.getBatteryLevel(), 0.0001);
     }
 
     /**

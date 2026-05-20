@@ -25,20 +25,29 @@ import com.tcss360.view.MonitorDashboard;
  * The DroneMonitorApp class is the main controller for the autonomous
  * drone simulation program
  * @author Logan Black
- * @version 10 May 2026
+ * @version 15 May 2026
  */
 public class DroneMonitorApp {
 
+    /** The refresh rate of the app */
+    private static final double TICKS_PER_SECOND = 60.0;
+
+    /** 
+     * System time period representative of 16_666_666.667 ns for 
+     * 60 Hz refresh rate 
+     */
+    private static final long PERIOD = (long) (1_000_000_000.0 / TICKS_PER_SECOND);
+
     /** The value representing a fully charged battery */
-    private static final int FULL_BATTERY_LEVEL = 100;
+    private static final double FULL_BATTERY_LEVEL = 100.0;
 
     /** The low battery level constituting an anomaly */
-    private static final int LOW_BATTERY_THRESHOLD = 15;
+    private static final double LOW_BATTERY_THRESHOLD = 15.0;
 
     /** Default heading of 0 degrees for initialization */
     private static final double DEFAULT_HEADING = 0.0;
 
-    /** Default speed of 3.0 meters / second for initialization */
+    /** Default speed of 2.0 meters / second for initialization */
     private static final double DEFAULT_SPEED = 2.0;
 
     /** Default altitude of 100 meters for initialization */
@@ -51,16 +60,16 @@ public class DroneMonitorApp {
     private static final double DEFAULT_LATITUDE = 25.0;
 
     /** 
-     * The change in longitude, latitude, or altitude in meters over 
-     * 0.25 seconds constituting an anomlay 
+     * The change in longitude, latitude, or altitude constituting an
+     * anomaly. This equates to anything above 2m/s
      */
-    private static final double GPS_JUMP_THRESHOLD = 2;
+    private static final double GPS_JUMP_THRESHOLD = DEFAULT_SPEED / TICKS_PER_SECOND;
 
-    /** The change in degrees over 0.25 seconds constituting an anomaly */
-    private static final double HEADING_THRESHOLD = 45.0;
-
-    /** System time period representative of 250_000_000 ns for 4 Hz refresh rate */
-    private static final long PERIOD = (long) (1_000_000_000.0 / 4.0);
+    /** 
+     * The change in degrees constituting an anomaly equating to
+     * 180 degrees / second
+    */
+    private static final double HEADING_THRESHOLD = 3.0;
 
     /** The number of drones to simulate */
     private static final int NUM_DRONES = 3;
@@ -92,8 +101,8 @@ public class DroneMonitorApp {
         myDrones = initializeDrones();
         myDroneSnapshots = new ArrayList<>();
         myTelemetryGenerator = new TelemetryGenerator();
-        myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD, 
-            HEADING_THRESHOLD, GPS_JUMP_THRESHOLD);
+        myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD,
+            GPS_JUMP_THRESHOLD, HEADING_THRESHOLD);
         myMonitorDashboard = new MonitorDashboard();
         myAnomalyDatabase = new AnomalyDatabase();
         myExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -149,6 +158,12 @@ public class DroneMonitorApp {
 
         if (theRecords.size() >= 1) {
             saveAnomalies(theRecords);
+
+            SwingUtilities.invokeLater(() -> {
+                for (AnomalyRecord record: theRecords) {
+                    myMonitorDashboard.addAlert(record);
+                }            
+            }); 
         }
     }
 

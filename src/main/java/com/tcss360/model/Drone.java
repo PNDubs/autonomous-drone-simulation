@@ -27,7 +27,7 @@ public class Drone {
     private double myAltitude;
 
     /** The current battery level of the Drone */
-    private int myBatteryLevel;
+    private double myBatteryLevel;
 
     /** The current heading of the Drone */
     private double myHeading;
@@ -46,7 +46,7 @@ public class Drone {
      * @param theSpeed the drones speed
      */
     public Drone(int theID, double theLongitude, double theLatitude, double 
-        theAltitude, int theBatteryLevel, double theHeading, double theSpeed) {
+        theAltitude, double theBatteryLevel, double theHeading, double theSpeed) {
 
             myID= theID;
             myLongitude = theLongitude;
@@ -93,7 +93,7 @@ public class Drone {
      * Getter
      * @return the Drone battery level
      */
-    public int getBatteryLevel() {
+    public double getBatteryLevel() {
         return myBatteryLevel;
     }
 
@@ -141,7 +141,7 @@ public class Drone {
      * Sets the drones battery level
      * @param theBatteryLevel the drones current battery level
      */
-    public void setBatteryLevel(int theBatteryLevel) {
+    public void setBatteryLevel(double theBatteryLevel) {
         myBatteryLevel = theBatteryLevel;
     }
 

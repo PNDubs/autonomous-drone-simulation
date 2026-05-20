@@ -12,21 +12,36 @@ import java.util.Random;
 /**
  * The TelemetryGenerator is designed to simulate a telemetry data stream.
  * @author Logan Black
- * @version 01 May 2026
+ * @version 15 May 2026
  */
 public final class TelemetryGenerator {
 
-    /** The percent chance of an anomaly to occur */
-    private static final int ANOMALY_PERCENT = 30;
+    /** The percent chance of an anomaly to occur. Default 1, Testing 0 */
+    private static final int ANOMALY_PERCENT = 1;
 
-    /** The number of ticks per second */
-    private static final double TICKS_PER_SECOND = 4;
+    /** The number of ticks per second. This must match DroneMonitorApp.PERIOD */
+    private static final double TICKS_PER_SECOND = 60.0;
 
     /** The default straight travel distance for scripted drone travel */
     private static final double STRAIGHT_DISTANCE = 10.0;
 
     /** The default circle radius for scripted drone travel */
     private static final double SCRIPTED_RADIUS = 10.0;
+
+    /** At 60 Hz represents approximately 2.01 m/s */
+    private static final double GPS_ORIGIN = 2.01 / TICKS_PER_SECOND;
+
+    /** At 60 Hz represents approximately 5 m/s */
+    private static final double GPS_BOUND = 5.0 / TICKS_PER_SECOND;
+
+    /** The minimum heading anomaly change amount */
+    private static final double HEADING_ORIGIN = 3.01;
+
+    /** The maximum heading anomaly change amount */
+    private static final double HEADING_BOUND = 3.33;
+
+    /** The amount the battery drains per tick approximatly 15 min to 15% */
+    private static final double BATTERY_DRAIN_PER_TICK = 0.001574074;
 
     /** The tick count state for telemetry generation */
     private int myTickCount;
@@ -58,12 +73,24 @@ public final class TelemetryGenerator {
             
             applyScriptedMovement(drone); // apply the scripted update
 
+            applyBatteryDrain(drone);
+
         }
 
         myTickCount++;
 
         return theSnapshots;
 
+    }
+
+    private void applyBatteryDrain(Drone theDrone) {
+        double newBatteryLevel = theDrone.getBatteryLevel() - BATTERY_DRAIN_PER_TICK;
+
+        if (newBatteryLevel < 0.0) {
+            newBatteryLevel = 0.0;
+        }
+
+        theDrone.setBatteryLevel(newBatteryLevel);
     }
 
     /**
@@ -144,19 +171,19 @@ public final class TelemetryGenerator {
 
         switch (select) {
             case 1 -> { // longitude change
-                double val = theRandom.nextDouble(0.25, 2.0);
+                double val = theRandom.nextDouble(GPS_ORIGIN, GPS_BOUND);
                 theDrone.setLongitude(theDrone.getLongitude() + val);
             }
             case 2 -> { // latitude change
-                double val = theRandom.nextDouble(0.25, 2.0);
+                double val = theRandom.nextDouble(GPS_ORIGIN, GPS_BOUND);
                 theDrone.setLatitude(theDrone.getLatitude() + val);
             }
             case 3 -> { // altitude change
-                double val = theRandom.nextDouble(0.25, 2.0);
+                double val = theRandom.nextDouble(GPS_ORIGIN, GPS_BOUND);
                 theDrone.setAltitude(theDrone.getAltitude() + val);
             }
             case 4 -> { // heading change
-                double val = theRandom.nextDouble(45.0, 50.0);
+                double val = theRandom.nextDouble(HEADING_ORIGIN, HEADING_BOUND);
                 int dir = theRandom.nextInt(2);
                 if (dir == 1) val *= -1;
                 theDrone.setHeading(normalizeHeading(theDrone.getHeading(), val));
