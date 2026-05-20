@@ -81,6 +81,18 @@ public class AnomalyDetector {
      * @param theDroneSnapshot the previous drone state
      * @return true if anomaly, false otherwise
      */
+    private boolean checkLowBattery(Drone theDrone,
+        DroneSnapshot theDroneSnapshot) {
+
+            return theDrone.getBatteryLevel() <= myLowBatteryThreshold;
+    }
+
+    /**
+     *
+     * @param theDrone the current drone state
+     * @param theDroneSnapshot the previous drone state
+     * @return true if anomaly, false otherwise
+     */
     private boolean checkGPSSpoofing(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
 
