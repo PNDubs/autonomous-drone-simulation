@@ -15,11 +15,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -36,6 +38,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import com.tcss360.model.AnomalyDatabase;
 import com.tcss360.model.AnomalyRecord;
 import com.tcss360.model.Drone;
 
@@ -61,10 +64,15 @@ public class MonitorDashboard {
     /** The alert log query area */
     private final JPanel myQueryPanel;
 
+    /** The anomaly database for querying records */
+    private final AnomalyDatabase myDatabase;
+
     /**
      * Constructor
+     * @param theDatabase the anomaly database
      */
-    public MonitorDashboard() {
+    public MonitorDashboard(AnomalyDatabase theDatabase) {
+        myDatabase = theDatabase;
         myMapPanel = buildMapPanel();
         myQueryPanel = buildQueryPanel();
         myTextArea = buildTextArea();
@@ -113,8 +121,14 @@ public class MonitorDashboard {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Query"));
         panel.setPreferredSize(new Dimension(0, 120));
-        panel.setMinimumSize(new Dimension(400,120));
-        panel.add(new JLabel("query", SwingConstants.CENTER), BorderLayout.CENTER);
+        panel.setMinimumSize(new Dimension(400, 120));
+
+        JLabel label = new JLabel("Search the anomaly database", SwingConstants.CENTER);
+        JButton queryButton = new JButton("Query Database");
+        queryButton.addActionListener(e -> showQueryScreen());
+
+        panel.add(label, BorderLayout.CENTER);
+        panel.add(queryButton, BorderLayout.SOUTH);
         return panel;
     }
 
@@ -296,21 +310,37 @@ public class MonitorDashboard {
         );
 
         switch (choice) {
-            case 0 ->                 {
-                    String input = JOptionPane.showInputDialog("Enter Drone ID:");
-                    if (input != null) {
-                        JOptionPane.showMessageDialog(null, "Querying anomalies for Drone ID: " + input);
-                    }                      }
-            case 1 ->                 {
-                    String input = JOptionPane.showInputDialog("Enter Anomaly Type (e.g. LOW_BATTERY):");
-                    if (input != null) {
-                        JOptionPane.showMessageDialog(null, "Querying anomalies of type: " + input);
-                    }                      }
+            case 0 -> {
+                String input = JOptionPane.showInputDialog("Enter Drone ID:");
+                if (input != null) {
+                    try {
+                        int droneID = Integer.parseInt(input);
+                        ArrayList<AnomalyRecord> records = myDatabase.getAnomaliesForDrone(droneID);
+                        showQueryResults(records);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Invalid Drone ID. Please enter a number.");
+                    }
+                }
+            }
+            case 1 -> {
+                String input = JOptionPane.showInputDialog("Enter Anomaly Type (e.g. LOW_BATTERY):");
+                if (input != null) {
+                    ArrayList<AnomalyRecord> records = myDatabase.getAnomaliesByType(input);
+                    showQueryResults(records);
+                }
+            }
             case 2 -> {
                 String start = JOptionPane.showInputDialog("Enter start time (yyyy-MM-ddTHH:mm:ss):");
                 String end = JOptionPane.showInputDialog("Enter end time (yyyy-MM-ddTHH:mm:ss):");
                 if (start != null && end != null) {
-                    JOptionPane.showMessageDialog(null, "Querying anomalies between: " + start + " and " + end);
+                    try {
+                        LocalDateTime startTime = LocalDateTime.parse(start);
+                        LocalDateTime endTime = LocalDateTime.parse(end);
+                        ArrayList<AnomalyRecord> records = myDatabase.getAnomaliesBetween(startTime, endTime);
+                        showQueryResults(records);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Invalid date format. Use yyyy-MM-ddTHH:mm:ss");
+                    }
                 }
             }
             default -> {
@@ -320,7 +350,30 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
+     * Displays query results in a scrollable dialog
+     * @param theRecords the list of anomaly records to display
+     */
+    private void showQueryResults(ArrayList<AnomalyRecord> theRecords) {
+        if (theRecords.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No anomalies found.");
+            return;
+        }
+
+        StringBuilder results = new StringBuilder();
+        for (AnomalyRecord record : theRecords) {
+            results.append(record.toString());
+            results.append("\n");
+        }
+
+        JTextArea textArea = new JTextArea(results.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+        JOptionPane.showMessageDialog(null, scrollPane, "Query Results", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     *
      * @param theFilePath the file save path
      */
     private void exportAnomalyLogToCSV(String theFilePath) {

@@ -106,8 +106,8 @@ public class DroneMonitorApp {
         myTelemetryGenerator = new TelemetryGenerator();
         myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD,
             ALTITUDE_THRESHOLD, GPS_JUMP_THRESHOLD, HEADING_THRESHOLD);
-        myMonitorDashboard = new MonitorDashboard();
         myAnomalyDatabase = new AnomalyDatabase();
+        myMonitorDashboard = new MonitorDashboard(myAnomalyDatabase);
         myExecutor = Executors.newSingleThreadScheduledExecutor();
     }
 
