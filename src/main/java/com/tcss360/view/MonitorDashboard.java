@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -192,6 +193,7 @@ public class MonitorDashboard {
 
         JMenu fileMenu = new JMenu("File");
         JMenuItem saveCSVItem = new JMenuItem("Save Anomaly Log to CSV");
+        saveCSVItem.addActionListener(event -> exportAnomalyLogToCSV());
         JMenuItem exportPdfItem = new JMenuItem("Export Anomaly Log to PDF");
         exportPdfItem.addActionListener(e -> exportAnomalyLogToPDF("anomaly_log.pdf"));
         JMenuItem exitItem = new JMenuItem("Exit");
@@ -199,10 +201,9 @@ public class MonitorDashboard {
 
         fileMenu.add(saveCSVItem);
         fileMenu.addSeparator();
-        fileMenu.add(exitItem);
-        fileMenu.addSeparator();
         fileMenu.add(exportPdfItem);
-
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
 
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutItem = new JMenuItem("About");
@@ -373,22 +374,102 @@ public class MonitorDashboard {
     }
 
     /**
-     *
-     * @param theFilePath the file save path
+     * Allows the user to save the anomaly log to a .csv file
      */
-    private void exportAnomalyLogToCSV(String theFilePath) {
+    private void exportAnomalyLogToCSV() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setSelectedFile(new java.io.File("Anomaly_log.csv"));
+
+        int result = fileChooser.showSaveDialog(myRootPanel);
+
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+        if (!filePath.toLowerCase().endsWith(".csv")) {
+            filePath += ".csv";
+        }
 
         String logText = myTextArea.getText();
 
         try {
-            try (java.io.FileWriter writer = new java.io.FileWriter(theFilePath)) {
+            try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
                 writer.write("Timestamp,DroneID,AnomalyType,AnomalyDetails\n");
-                writer.write(logText);
-            }
-        } catch (java.io.IOException e) {
-            System.err.println("An error has occurred while exporting the Anomaly Log to CSV " + e);
-        }
+                
+                if (logText == null || logText.isEmpty()) {
+                    writer.write("No anomaly log entries available.\n");
+                } else {
+                    String[] records = logText.split("\\n");
 
+                    for (String record : records) {
+                        if (record.isBlank()) {
+                            continue;
+                        }
+
+                        String droneID = "";
+                        String timestamp = "";
+                        String anomalyType = "";
+                        String anomalyDetails = "";
+
+                        int droneStart = record.indexOf("DroneID=");
+                        int timestampStart = record.indexOf("Timestamp=");
+                        int typeStart = record.indexOf("AnomalyType=");
+                        int detailsStart = record.indexOf("AnomalyDetails=");
+
+                        if (droneStart >= 0 && timestampStart >= 0
+                            && typeStart >= 0 && detailsStart >= 0) {
+
+                            droneID = record.substring(
+                                droneStart + "DroneID=".length(),
+                                timestampStart - 2
+                            );
+                            timestamp = record.substring(
+                                timestampStart + "Timestamp=".length(),
+                                typeStart - 2
+                            );
+                            anomalyType = record.substring(
+                                typeStart + "AnomalyType=".length(),
+                                detailsStart - 2
+                            );
+                            anomalyDetails = record.substring(
+                                detailsStart + "AnomalyDetails=".length(),
+                                record.length() - 1
+                            );
+                        } else {
+                            anomalyDetails = record;
+                        }
+
+                        anomalyDetails = anomalyDetails.replace("\"", "\"\"");
+
+                        writer.write(timestamp);
+                        writer.write(",");
+                        writer.write(droneID);
+                        writer.write(",");
+                        writer.write(anomalyType);
+                        writer.write(",\"");
+                        writer.write(anomalyDetails);
+                        writer.write("\"\n");
+                    }
+                }
+            }
+
+            JOptionPane.showMessageDialog(
+                myRootPanel, 
+                "Anomaly log exported to:\n: " + filePath,
+                "Export Complete",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+
+        } catch (java.io.IOException e) {
+            JOptionPane.showMessageDialog(
+                myRootPanel,
+                "An error occurred while exporting the anomaly log:\n" + e.getMessage(),
+                "Export Failed",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     /**
