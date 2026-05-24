@@ -11,6 +11,11 @@ Team Members:
 
 https://github.com/PNDubs/autonomous-drone-simulation
 
+## MVC Roles
+Model: Drone, DroneSnapshot, TelemetryGenerator, AnomalyDetector, AnomalyRecord, AnomalyDatabase
+View: MonitorDashboard
+Controller: DroneMonitorApp
+
 ## Compile and Run
 
 This project uses Maven and requires Java 21.
@@ -24,7 +29,7 @@ mvn compile
 Run the application from Main.java:
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.tcss360.Main"
+mvn exec:java -Dexec.mainClass="com.tcss360.controller.DroneMonitorApp"
 ```
 
 ## Issues

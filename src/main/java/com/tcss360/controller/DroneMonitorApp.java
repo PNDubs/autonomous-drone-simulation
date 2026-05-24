@@ -25,7 +25,7 @@ import com.tcss360.view.MonitorDashboard;
  * The DroneMonitorApp class is the main controller for the autonomous
  * drone simulation program
  * @author Logan Black
- * @version 15 May 2026
+ * @version 24 May 2026
  */
 public class DroneMonitorApp {
 
@@ -96,6 +96,14 @@ public class DroneMonitorApp {
 
     /** The system telemetry generation timer */
     private final ScheduledExecutorService myExecutor;
+
+    /**
+     * Main method for program start
+     * @param theArgs unused
+     */
+    public static void main(String[] theArgs) {
+        new DroneMonitorApp().start();
+    }
 
     /**
      * Constructor

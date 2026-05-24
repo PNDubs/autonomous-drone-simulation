@@ -46,7 +46,7 @@ import com.tcss360.model.Drone;
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
  * @author Logan Black
- * @version 15 May 2026
+ * @version 24 May 2026
  */
 public class MonitorDashboard {
 
