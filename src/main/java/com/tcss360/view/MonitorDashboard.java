@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -30,9 +32,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -49,6 +53,9 @@ import com.tcss360.model.Drone;
  * @version 24 May 2026
  */
 public class MonitorDashboard {
+
+    /** Matches decimal numbers so alert output can be rounded for readability */
+    private static final Pattern DECIMAL_PATTERN = Pattern.compile("-?\\d+\\.\\d+");
 
     /** Root panel for display inside myFrame */
     private final JPanel myRootPanel;
@@ -98,8 +105,40 @@ public class MonitorDashboard {
      */
     public void addAlert(AnomalyRecord theRecord) {
 
-        myTextArea.append(theRecord.toString() + "\n");
+        JScrollBar verticalScrollBar = myAlertLog.getVerticalScrollBar();
 
+        int currentValue = verticalScrollBar.getValue();
+        int maxValue = verticalScrollBar.getMaximum();
+        int visibleAmount = verticalScrollBar.getVisibleAmount();
+
+        boolean isAtBottom = currentValue + visibleAmount >= maxValue - 10;
+
+        myTextArea.append(formatAlert(theRecord) + "\n\n");
+
+        if (isAtBottom) {
+            myTextArea.setCaretPosition(myTextArea.getDocument().getLength());
+        } else {
+            SwingUtilities.invokeLater(() -> verticalScrollBar.setValue(currentValue));
+        }
+
+    }
+
+    /**
+     * Formats an anomaly record for readable display in the alert log.
+     * @param theRecord the anomaly record
+     * @return the formatted anomaly record
+     */
+    private String formatAlert(AnomalyRecord theRecord) {
+        Matcher matcher = DECIMAL_PATTERN.matcher(theRecord.toString());
+        StringBuffer formattedAlert = new StringBuffer();
+
+        while (matcher.find()) {
+            double value = Double.parseDouble(matcher.group());
+            matcher.appendReplacement(formattedAlert, String.format("%.4f", value));
+        }
+
+        matcher.appendTail(formattedAlert);
+        return formattedAlert.toString();
     }
 
     /**
@@ -582,12 +621,13 @@ public class MonitorDashboard {
                 );
 
                 String telemetry = String.format(
-                    "D%d lon:%.1f lat:%.1f alt:%.0f h:%.0f",
+                    "D%d lon:%.1f lat:%.1f alt:%.0f h:%.0f bat:%.1f%%",
                     drone.getID(),
                     drone.getLongitude(),
                     drone.getLatitude(),
                     drone.getAltitude(),
-                    drone.getHeading()
+                    drone.getHeading(),
+                    drone.getBatteryLevel()
                 );
 
                 FontMetrics metrics = g2.getFontMetrics();
