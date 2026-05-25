@@ -40,8 +40,8 @@ public class AnomalyRecordTest {
     }
 
     @Test
-    public void testToStringReturnsEmptyStringForNow() {
-        AnomalyRecord record = new AnomalyRecord(5,  "Low Battery", "Battery dropped below 15%");
-        assertEquals("", record.toString());
+    public void testToStringIsNotEmpty() {
+        AnomalyRecord record = new AnomalyRecord(1, "Low Battery", "Battery dropped below threshold");
+        assertFalse(record.toString().isEmpty());
     }
 }
