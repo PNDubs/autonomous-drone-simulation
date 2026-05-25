@@ -44,6 +44,3 @@ Run the application from Main.java:
 ```bash
 mvn exec:java -Dexec.mainClass="com.tcss360.controller.DroneMonitorApp"
 ```
-
-## Issues
-Merge Conflict: There were some issues when attempting to merge feature branches. The issue was solved by reviewing the incoming and current changes and accepting the neccesary changes.
