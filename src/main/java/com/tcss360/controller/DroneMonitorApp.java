@@ -20,6 +20,7 @@ import com.tcss360.model.Drone;
 import com.tcss360.model.DroneSnapshot;
 import com.tcss360.model.TelemetryGenerator;
 import com.tcss360.view.MonitorDashboard;
+import java.time.LocalDateTime;
 
 /**
  * The DroneMonitorApp class is the main controller for the autonomous
@@ -27,6 +28,9 @@ import com.tcss360.view.MonitorDashboard;
  * @author Logan Black
  * @version 10 May 2026
  */
+
+
+
 public class DroneMonitorApp {
 
     /** The value representing a fully charged battery */
@@ -95,6 +99,7 @@ public class DroneMonitorApp {
         myAnomalyDetector = new AnomalyDetector(LOW_BATTERY_THRESHOLD, 
             HEADING_THRESHOLD, GPS_JUMP_THRESHOLD);
         myMonitorDashboard = new MonitorDashboard();
+        myMonitorDashboard.setApp(this);
         myAnomalyDatabase = new AnomalyDatabase();
         myExecutor = Executors.newSingleThreadScheduledExecutor();
     }
@@ -159,6 +164,18 @@ public class DroneMonitorApp {
         myAnomalyDatabase.saveRecord(theRecords);
     }
 
+    public ArrayList<AnomalyRecord> getAnomaliesForDrone(final int theDroneID) {
+        return myAnomalyDatabase.getAnomaliesForDrone(theDroneID);
+    }
+
+    public ArrayList<AnomalyRecord> getAnomaliesByType(final String theType) {
+        return myAnomalyDatabase.getAnomaliesByType(theType);
+    }
+
+    public ArrayList<AnomalyRecord> getAnomaliesBetween(final LocalDateTime theStart,
+                                                        final LocalDateTime theEnd) {
+        return myAnomalyDatabase.getAnomaliesBetween(theStart, theEnd);
+    }
     /**
      * Helper method to refresh the MonitorDashboard
      */

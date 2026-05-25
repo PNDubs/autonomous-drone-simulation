@@ -25,6 +25,12 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.awt.event.ActionEvent;
+import com.tcss360.controller.DroneMonitorApp;
+
+import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
+import java.lang.StringBuilder;
+
 
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
@@ -32,6 +38,8 @@ import java.awt.event.ActionEvent;
  * @version 28 APR 2026
  */
 public class MonitorDashboard {
+
+    private DroneMonitorApp myApp;
 
     /** The drone table */
     private JTable myDroneTable;
@@ -52,6 +60,10 @@ public class MonitorDashboard {
 
         /* Insert Logic Here */
 
+    }
+
+    public void setApp(final DroneMonitorApp theApp) {
+        myApp = theApp;
     }
 
     /**
@@ -98,8 +110,38 @@ public class MonitorDashboard {
      * 
      */
     private void showQueryScreen() {
+        final String input = JOptionPane.showInputDialog(null, "Enter Drone ID:");
 
-        /* Insert Logic Here */
+        if (input == null || input.isBlank()) {
+            return;
+        }
+
+        try {
+            final int droneID = Integer.parseInt(input);
+            final ArrayList<AnomalyRecord> records = myApp.getAnomaliesForDrone(droneID);
+
+            if (records.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No anomaly records found for Drone ID " + droneID);
+            } else {
+                final StringBuilder resultText = new StringBuilder();
+
+                for (final AnomalyRecord record : records) {
+                    resultText.append(record.toString()).append("\n\n");
+                }
+
+                JTextArea textArea = new JTextArea(resultText.toString(), 15, 40);
+                textArea.setWrapStyleWord(true);
+                textArea.setLineWrap(true);
+                textArea.setEditable(false);
+
+                JOptionPane.showMessageDialog(null, new JScrollPane(textArea),
+                        "Query Results", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid integer Drone ID.");
+        }
+
 
     }
 
