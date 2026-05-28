@@ -25,6 +25,7 @@ import com.tcss360.view.MonitorDashboard;
  * The DroneMonitorApp class is the main controller for the autonomous
  * drone simulation program
  * @author Logan Black
+ * @author Matthew Park
  * @version 15 May 2026
  */
 public class DroneMonitorApp {

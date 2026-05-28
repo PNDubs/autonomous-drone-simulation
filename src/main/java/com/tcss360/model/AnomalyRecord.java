@@ -12,6 +12,7 @@ import java.util.UUID;
 /**
  * The AnomalyRecord class stores anomaly information in it's fields
  * @author Logan Black
+ * @author Matthew Park
  * @version 28 APR 2026
  */
 public class AnomalyRecord {
