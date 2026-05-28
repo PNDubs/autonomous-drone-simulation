@@ -50,7 +50,8 @@ import com.tcss360.model.Drone;
 /**
  * The MonitorDashboard class is the GUI for human-system interaction
  * @author Logan Black
- * @version 24 May 2026
+ * @author Matthew Park
+ * @version 15 May 2026
  */
 public class MonitorDashboard {
 
@@ -232,7 +233,7 @@ public class MonitorDashboard {
 
         JMenu fileMenu = new JMenu("File");
         JMenuItem saveCSVItem = new JMenuItem("Save Anomaly Log to CSV");
-        saveCSVItem.addActionListener(event -> exportAnomalyLogToCSV());
+        saveCSVItem.addActionListener(e -> handleSaveCSV());
         JMenuItem exportPdfItem = new JMenuItem("Export Anomaly Log to PDF");
         exportPdfItem.addActionListener(e -> exportAnomalyLogToPDF("anomaly_log.pdf"));
         JMenuItem exitItem = new JMenuItem("Exit");
@@ -413,7 +414,31 @@ public class MonitorDashboard {
     }
 
     /**
-     * Allows the user to save the anomaly log to a .csv file
+     * Opens a file chooser and saves the anomaly log to a CSV file
+     */
+    private void handleSaveCSV() {
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Anomaly Log to CSV");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+        fileChooser.setSelectedFile(new java.io.File("anomaly_log.csv"));
+
+        int result = fileChooser.showSaveDialog(myRootPanel);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!filePath.endsWith(".csv")) {
+                filePath = filePath + ".csv";
+            }
+            exportAnomalyLogToCSV(filePath);
+            JOptionPane.showMessageDialog(myRootPanel, "Anomaly log saved to " + filePath);
+        }
+
+    }
+
+    /**
+     *
+     * @param theFilePath the file save path
      */
     private void exportAnomalyLogToCSV() {
         JFileChooser fileChooser = new JFileChooser();

@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * The AnomalyDetector class compares a drones current state to its previous
  * state to check for anomalous behaviour.
  * @author Logan Black
+ * @author Matthew Park
  * @version 15 May 2026
  */
 public class AnomalyDetector {
