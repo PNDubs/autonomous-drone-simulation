@@ -99,6 +99,14 @@ public class DroneMonitorApp {
     private final ScheduledExecutorService myExecutor;
 
     /**
+     * Main method for program start
+     * @param theArgs unused
+     */
+    public static void main(String[] theArgs) {
+        new DroneMonitorApp().start();
+    }
+
+    /**
      * Constructor
      */
     public DroneMonitorApp() {

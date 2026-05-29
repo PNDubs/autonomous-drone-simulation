@@ -10,3 +10,6 @@ target/
 # IDE settings
 .idea/
 .vscode/
+
+#Databawse
+*.db

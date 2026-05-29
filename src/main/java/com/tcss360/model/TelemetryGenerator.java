@@ -16,8 +16,15 @@ import java.util.Random;
  */
 public final class TelemetryGenerator {
 
-    /** The percent chance of an anomaly to occur. Default 1, Testing 0 */
-    private static final int ANOMALY_PERCENT = 1;
+    /** 
+     * The percent chance of an anomaly to occur. 
+     * Default value is extremely low to mitigate anomaly spam. An anomaly has
+     * ANOMALY_PERCENT chance to spawn every tick (16.67 milliseconds).
+     * Default value goal: provide 1% chance of anomaly every 1 second across all drones.
+     * Default value formula: p = 1-0.99^(1 / 60) ≈ 0.0001675
+     * Testing: 1
+     * */
+    private static final double ANOMALY_PERCENT = 1;
 
     /** The number of ticks per second. This must match DroneMonitorApp.PERIOD */
     private static final double TICKS_PER_SECOND = 60.0;
@@ -67,7 +74,7 @@ public final class TelemetryGenerator {
 
             theSnapshots.add(new DroneSnapshot(drone)); // Always create the snapshot first
 
-            int anomaly = rand.nextInt(0, 100);
+            double anomaly = rand.nextDouble(0.0, 100.0);
 
             if (anomaly < ANOMALY_PERCENT) applyAnomaly(rand, drone); // possible anomaly applied to this scripted update
             

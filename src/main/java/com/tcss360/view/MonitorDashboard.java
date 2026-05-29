@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -30,10 +32,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.SwingUtilities;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -51,6 +54,9 @@ import com.tcss360.model.Drone;
  * @version 15 May 2026
  */
 public class MonitorDashboard {
+
+    /** Matches decimal numbers so alert output can be rounded for readability */
+    private static final Pattern DECIMAL_PATTERN = Pattern.compile("-?\\d+\\.\\d+");
 
     /** Root panel for display inside myFrame */
     private final JPanel myRootPanel;
@@ -100,8 +106,40 @@ public class MonitorDashboard {
      */
     public void addAlert(AnomalyRecord theRecord) {
 
-        myTextArea.append(theRecord.toString() + "\n");
+        JScrollBar verticalScrollBar = myAlertLog.getVerticalScrollBar();
 
+        int currentValue = verticalScrollBar.getValue();
+        int maxValue = verticalScrollBar.getMaximum();
+        int visibleAmount = verticalScrollBar.getVisibleAmount();
+
+        boolean isAtBottom = currentValue + visibleAmount >= maxValue - 10;
+
+        myTextArea.append(formatAlert(theRecord) + "\n\n");
+
+        if (isAtBottom) {
+            myTextArea.setCaretPosition(myTextArea.getDocument().getLength());
+        } else {
+            SwingUtilities.invokeLater(() -> verticalScrollBar.setValue(currentValue));
+        }
+
+    }
+
+    /**
+     * Formats an anomaly record for readable display in the alert log.
+     * @param theRecord the anomaly record
+     * @return the formatted anomaly record
+     */
+    private String formatAlert(AnomalyRecord theRecord) {
+        Matcher matcher = DECIMAL_PATTERN.matcher(theRecord.toString());
+        StringBuffer formattedAlert = new StringBuffer();
+
+        while (matcher.find()) {
+            double value = Double.parseDouble(matcher.group());
+            matcher.appendReplacement(formattedAlert, String.format("%.4f", value));
+        }
+
+        matcher.appendTail(formattedAlert);
+        return formattedAlert.toString();
     }
 
     /**
@@ -203,10 +241,9 @@ public class MonitorDashboard {
 
         fileMenu.add(saveCSVItem);
         fileMenu.addSeparator();
-        fileMenu.add(exitItem);
-        fileMenu.addSeparator();
         fileMenu.add(exportPdfItem);
-
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
 
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutItem = new JMenuItem("About");
@@ -403,19 +440,100 @@ public class MonitorDashboard {
      *
      * @param theFilePath the file save path
      */
-    private void exportAnomalyLogToCSV(String theFilePath) {
+    private void exportAnomalyLogToCSV() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setSelectedFile(new java.io.File("Anomaly_log.csv"));
+
+        int result = fileChooser.showSaveDialog(myRootPanel);
+
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+        if (!filePath.toLowerCase().endsWith(".csv")) {
+            filePath += ".csv";
+        }
 
         String logText = myTextArea.getText();
 
         try {
-            try (java.io.FileWriter writer = new java.io.FileWriter(theFilePath)) {
+            try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
                 writer.write("Timestamp,DroneID,AnomalyType,AnomalyDetails\n");
-                writer.write(logText);
-            }
-        } catch (java.io.IOException e) {
-            System.err.println("An error has occurred while exporting the Anomaly Log to CSV " + e);
-        }
+                
+                if (logText == null || logText.isEmpty()) {
+                    writer.write("No anomaly log entries available.\n");
+                } else {
+                    String[] records = logText.split("\\n");
 
+                    for (String record : records) {
+                        if (record.isBlank()) {
+                            continue;
+                        }
+
+                        String droneID = "";
+                        String timestamp = "";
+                        String anomalyType = "";
+                        String anomalyDetails = "";
+
+                        int droneStart = record.indexOf("DroneID=");
+                        int timestampStart = record.indexOf("Timestamp=");
+                        int typeStart = record.indexOf("AnomalyType=");
+                        int detailsStart = record.indexOf("AnomalyDetails=");
+
+                        if (droneStart >= 0 && timestampStart >= 0
+                            && typeStart >= 0 && detailsStart >= 0) {
+
+                            droneID = record.substring(
+                                droneStart + "DroneID=".length(),
+                                timestampStart - 2
+                            );
+                            timestamp = record.substring(
+                                timestampStart + "Timestamp=".length(),
+                                typeStart - 2
+                            );
+                            anomalyType = record.substring(
+                                typeStart + "AnomalyType=".length(),
+                                detailsStart - 2
+                            );
+                            anomalyDetails = record.substring(
+                                detailsStart + "AnomalyDetails=".length(),
+                                record.length() - 1
+                            );
+                        } else {
+                            anomalyDetails = record;
+                        }
+
+                        anomalyDetails = anomalyDetails.replace("\"", "\"\"");
+
+                        writer.write(timestamp);
+                        writer.write(",");
+                        writer.write(droneID);
+                        writer.write(",");
+                        writer.write(anomalyType);
+                        writer.write(",\"");
+                        writer.write(anomalyDetails);
+                        writer.write("\"\n");
+                    }
+                }
+            }
+
+            JOptionPane.showMessageDialog(
+                myRootPanel, 
+                "Anomaly log exported to:\n: " + filePath,
+                "Export Complete",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+
+        } catch (java.io.IOException e) {
+            JOptionPane.showMessageDialog(
+                myRootPanel,
+                "An error occurred while exporting the anomaly log:\n" + e.getMessage(),
+                "Export Failed",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     /**
@@ -528,12 +646,13 @@ public class MonitorDashboard {
                 );
 
                 String telemetry = String.format(
-                    "D%d lon:%.1f lat:%.1f alt:%.0f h:%.0f",
+                    "D%d lon:%.1f lat:%.1f alt:%.0f h:%.0f bat:%.1f%%",
                     drone.getID(),
                     drone.getLongitude(),
                     drone.getLatitude(),
                     drone.getAltitude(),
-                    drone.getHeading()
+                    drone.getHeading(),
+                    drone.getBatteryLevel()
                 );
 
                 FontMetrics metrics = g2.getFontMetrics();
