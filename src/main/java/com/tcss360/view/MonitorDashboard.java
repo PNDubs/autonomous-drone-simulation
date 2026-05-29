@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -437,29 +438,15 @@ public class MonitorDashboard {
     }
 
     /**
-     *
+     * Saves the anomaly log as a .csv file to the file path
      * @param theFilePath the file save path
      */
-    private void exportAnomalyLogToCSV() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setSelectedFile(new java.io.File("Anomaly_log.csv"));
-
-        int result = fileChooser.showSaveDialog(myRootPanel);
-
-        if (result != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-
-        String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-
-        if (!filePath.toLowerCase().endsWith(".csv")) {
-            filePath += ".csv";
-        }
+    private void exportAnomalyLogToCSV(String theFilePath) {
 
         String logText = myTextArea.getText();
 
         try {
-            try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
+            try (java.io.FileWriter writer = new java.io.FileWriter(theFilePath)) {
                 writer.write("Timestamp,DroneID,AnomalyType,AnomalyDetails\n");
                 
                 if (logText == null || logText.isEmpty()) {
@@ -521,7 +508,7 @@ public class MonitorDashboard {
 
             JOptionPane.showMessageDialog(
                 myRootPanel, 
-                "Anomaly log exported to:\n: " + filePath,
+                "Anomaly log exported to:\n: " + theFilePath,
                 "Export Complete",
                 JOptionPane.INFORMATION_MESSAGE
             );
