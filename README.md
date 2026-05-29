@@ -42,5 +42,5 @@ mvn compile
 Run the application from Main.java:
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.tcss360.controller.DroneMonitorApp"
+mvn exec:java -Dexec.mainClass="com.tcss360.controller.DroneMonitorApp
 ```
