@@ -27,11 +27,11 @@ anomalies.db is created in AnomalyDatabase.java initializeDatabase()
 
 Query saved recods from the GUI using the Query section and making a selection
 
-Export records to '.CSV' or '.PDF' using the file menu.
+Save and Export records to '.CSV' or '.PDF' using the file menu
 
 ## Compile and Run
 
-This project uses Maven and requires Java 21.
+This project uses Maven and requires Java 21
 
 From the project root, compile the project:
 
@@ -42,5 +42,5 @@ mvn compile
 Run the application from Main.java:
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.tcss360.controller.DroneMonitorApp
+mvn exec:java -Dexec.mainClass="com.tcss360.controller.DroneMonitorApp"
 ```
