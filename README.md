@@ -27,7 +27,7 @@ anomalies.db is created in AnomalyDatabase.java initializeDatabase()
 
 Query saved recods from the GUI using the Query section and making a selection
 
-Export records to '.CSV' or '.PDF' using the file menu.
+Save / Export records to '.CSV' or '.PDF' using the file menu
 
 ## Compile and Run
 
