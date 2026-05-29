@@ -44,3 +44,19 @@ Run the application from Main.java:
 ```bash
 mvn exec:java -Dexec.mainClass="com.tcss360.controller.DroneMonitorApp"
 ```
+
+## Running the Packaged JAR
+
+After packaging the project, the runnable JAR will be created in the `target/` directory.
+
+Package the project:
+
+```bash
+mvn clean package -Dmaven.test.skip=true
+```
+
+Run the JAR:
+
+```bash
+java -jar target/autonomous-drone-simulaation.jar
+```
