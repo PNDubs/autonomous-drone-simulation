@@ -9,24 +9,25 @@ package com.tcss360.model;
 import java.util.ArrayList;
 
 /**
- * The AnomalyDetector class compares a drones current state to its previous
- * state to check for anomalous behaviour.
+ * Detects abnormal drone behavior by comparing current drone state and telemetry data
+ * against configured anomaly thresholds.
+ *
  * @author Logan Black
  * @version 28 APR 2026
  */
 public class AnomalyDetector {
 
-    /** The battery level that indicates an anomaly */
+    /** Battery percentage threshold that indicates a low battery anomaly. */
     private final double myLowBatteryThreshold;
 
-    /** The change in longitude, latitude, or altitude that indicates an anomaly */
+    /** Distance threshold for detecting suspicious GPS position jumps. */
     private final double myGPSJumpThreshold;
 
-    /** The change in heading that indicates an anomaly */
+    /** Heading change threshold that indicates unsafe movement. */
     private final double myHeadingThreshold;
 
     /**
-     * Constructor
+     * Detects anomalies for each drone using the current drone state and its telemetry snapshot.
      * @param theLowBatteryThreshold the battery level indicating an anomaly
      * @param theGPSJumpThreshold the change in longitude or latitude indicating an anomaly
      * @param theHeadingThreshold the change in heading indicating an anomaly
@@ -90,10 +91,11 @@ public class AnomalyDetector {
     }
 
     /**
-     *Added low battery helper method in AnomalyDetector to detect battery threshold anomalies.
-     * @param theDrone
-     * @param theDroneSnapshot
-     * @return
+     * Checks whether the drone battery level is below the configured threshold.
+     *
+     * @param theDrone the current drone state
+     * @param theDroneSnapshot the telemetry snapshot associated with the drone
+     * @return true if the drone has a low battery anomaly, otherwise false
      */
 
     private boolean checkLowBattery(Drone theDrone, DroneSnapshot theDroneSnapshot) {
@@ -102,10 +104,12 @@ public class AnomalyDetector {
 
 
     /**
+     * Checks whether the drone position shows a suspicious GPS jump compared to
+     * the previous telemetry snapshot.
      *
      * @param theDrone the current drone state
-     * @param theDroneSnapshot the previous drone state
-     * @return true if anomaly, false otherwise
+     * @param theDroneSnapshot the telemetry snapshot associated with the drone
+     * @return true if the drone shows a GPS jump anomaly, otherwise false
      */
 
     private boolean checkGPSSpoofing(Drone theDrone,
@@ -118,10 +122,11 @@ public class AnomalyDetector {
     }
 
     /**
+     * Checks whether the drone heading changed enough to be considered unsafe movement.
      *
      * @param theDrone the current drone state
-     * @param theDroneSnapshot the previous drone state
-     * @return true if anomaly, false otherwise
+     * @param theDroneSnapshot the telemetry snapshot associated with the drone
+     * @return true if the drone shows an unsafe movement anomaly, otherwise false
      */
     private boolean checkUnsafeMovement(Drone theDrone,
         DroneSnapshot theDroneSnapshot) {
@@ -132,11 +137,12 @@ public class AnomalyDetector {
 
 
     /**
-     * Added advanced anomaly helper in AnomalyDetector to flag cases where multiple anomalies happen at the same time.
-     * @param theLowBattery
-     * @param theGPSSpoofing
-     * @param theUnsafeMovement
-     * @return
+     * Checks whether multiple anomalies occurred at the same time.
+     *
+     * @param theLowBattery whether a low battery anomaly was detected
+     * @param theGPSSpoofing whether a GPS spoofing anomaly was detected
+     * @param theUnsafeMovement whether an unsafe movement anomaly was detected
+     * @return true if two or more anomalies were detected, otherwise false
      */
 
     private boolean checkCriticalAnomaly(boolean theLowBattery,
@@ -158,11 +164,12 @@ public class AnomalyDetector {
     }
 
     /**
+     * Creates an anomaly record for a detected drone issue.
      *
-     * @param theDroneID the drones ID
-     * @param theAnomalyType the type of anomaly experienced
-     * @param theAnomalyDetails the details of the anomaly
-     * @return the anomaly record
+     * @param theDroneID the ID of the drone associated with the anomaly
+     * @param theAnomalyType the type of anomaly detected
+     * @param theAnomalyDetails the details describing the anomaly
+     * @return the created anomaly record
      */
     private AnomalyRecord createAnomalyRecord(int theDroneID,
         String theAnomalyType, String theAnomalyDetails) {

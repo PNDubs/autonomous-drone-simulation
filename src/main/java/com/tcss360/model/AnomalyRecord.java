@@ -16,26 +16,28 @@ import java.util.UUID;
  */
 public class AnomalyRecord {
 
-    /** The anomaly record ID */
+    /** Unique ID for this anomaly record. */
     private final UUID myRecordID;
 
-    /** The drone ID */
+    /** ID of the drone associated with this anomaly. */
     private final int myDroneID;
 
-    /** The date and time of the anomaly */
+    /** Date and time when the anomaly record was created. */
     private final LocalDateTime myTimestamp;
 
-    /** The anomaly type */
+    /** Type of anomaly that was detected. */
     private final String myAnomalyType;
 
-    /** The anomaly details */
+    /** Details describing the detected anomaly. */
     private final String myAnomalyDetails;
 
     /**
-     * Constructor
-     * @param theDroneID The drones ID
-     * @param theAnomalyType the anomaly type
-     * @param theAnomalyDetails the anomaly details
+     * Creates an anomaly record and automatically generates a unique record ID
+     * and timestamp.
+     *
+     * @param theDroneID the ID of the drone associated with the anomaly
+     * @param theAnomalyType the type of anomaly detected
+     * @param theAnomalyDetails the details describing the anomaly
      */
     public AnomalyRecord(int theDroneID, 
         String theAnomalyType, String theAnomalyDetails) {
@@ -47,6 +49,16 @@ public class AnomalyRecord {
             myAnomalyDetails = theAnomalyDetails;
 
     }
+
+    /**
+     * Creates an anomaly record with explicitly provided values.
+     *
+     * @param theRecordID the unique ID for the anomaly record
+     * @param theDroneID the ID of the drone associated with the anomaly
+     * @param theTimestamp the date and time of the anomaly
+     * @param theAnomalyType the type of anomaly detected
+     * @param theAnomalyDetails the details describing the anomaly
+     */
     public AnomalyRecord(final UUID theRecordID,
                          final int theDroneID,
                          final LocalDateTime theTimestamp,
@@ -60,15 +72,17 @@ public class AnomalyRecord {
         myAnomalyDetails = theAnomalyDetails;
     }
     /**
-     * Getter
-     * @return the record ID
+     * Returns the unique ID of this anomaly record.
+     *
+     * @return the anomaly record ID
      */
     public UUID getRecordID() {
         return myRecordID;
     }
 
     /**
-     * Getter
+     * Returns the ID of the drone associated with this anomaly.
+     *
      * @return the drone ID
      */
     public int getDroneID() {
@@ -76,15 +90,17 @@ public class AnomalyRecord {
     }
 
     /**
-     * Getter
-     * @return the anomaly date and time
+     * Returns the date and time of this anomaly record.
+     *
+     * @return the anomaly timestamp
      */
     public LocalDateTime getTimestap() {
         return myTimestamp;
     }
 
     /**
-     * Getter
+     * Returns the type of anomaly detected.
+     *
      * @return the anomaly type
      */
     public String getAnomalyType() {
@@ -92,7 +108,8 @@ public class AnomalyRecord {
     }
 
     /**
-     * Getter
+     * Returns the descriptive details of the anomaly.
+     *
      * @return the anomaly details
      */
     public String getAnomalyDetails() {
@@ -100,8 +117,9 @@ public class AnomalyRecord {
     }
 
     /**
-     * Overrides the default toString() method
-     * @return the anomaly record in a print friendly format
+     * Returns a readable string representation of this anomaly record.
+     *
+     * @return a formatted string describing the anomaly record
      */
     @Override
     public String toString() {

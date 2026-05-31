@@ -41,20 +41,20 @@ public class MonitorDashboard {
 
     private DroneMonitorApp myApp;
 
-    /** The drone table */
+    /** Table used to display drone information. */
     private JTable myDroneTable;
 
-    /** The drone map panel */
+    /** Panel used to display the drone map view. */
     private JPanel myMapPanel;
 
-    /** The alert log area */
+    /** Text area used to display the alert log. */
     private JTextArea myAlertLog;
 
-    /** The alert log query area */
+    /** Panel used for anomaly query results. */
     private JPanel myQjeryPanel;
 
     /**
-     * Constructor
+     * Creates a monitor dashboard.
      */
     public MonitorDashboard() {
 
@@ -62,13 +62,19 @@ public class MonitorDashboard {
 
     }
 
+    /**
+     * Sets the application controller used by the dashboard.
+     *
+     * @param theApp the application controller
+     */
     public void setApp(final DroneMonitorApp theApp) {
         myApp = theApp;
     }
 
     /**
-     * 
-     * @param theDrones the drone fleet
+     * Displays the dashboard using the provided drone data.
+     *
+     * @param theDrones the drone fleet to display
      */
     public void display(ArrayList<Drone> theDrones) {
 
@@ -77,8 +83,9 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
-     * @param theRecord an anomaly record
+     * Adds an anomaly record to the alert log.
+     *
+     * @param theRecord the anomaly record to add
      */
     public void addAlert(AnomalyRecord theRecord) {
 
@@ -87,8 +94,9 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
-     * @param theDrones the drone fleet
+     * Updates the displayed telemetry information for the given drones.
+     *
+     * @param theDrones the drone fleet to update
      */
     private void updateDroneTelemetry(ArrayList<Drone> theDrones) {
 
@@ -97,8 +105,9 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
-     * @param theDrones the drone fleet
+     * Draws the current drone positions on the map panel.
+     *
+     * @param theDrones the drone fleet to draw
      */
     private void paintDronePositions(ArrayList<Drone> theDrones) {
 
@@ -107,7 +116,7 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
+     * Displays a query prompt and shows anomaly records for the selected drone.
      */
     private void showQueryScreen() {
         final String input = JOptionPane.showInputDialog(null, "Enter Drone ID:");
@@ -146,8 +155,9 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
-     * @param theFilePath the file save path
+     * Exports the alert log to a PDF file.
+     *
+     * @param theFilePath the path of the file to save
      */
     private void exportAnomalyLogToPDF(String theFilePath) {
         try (PDDocument document = new PDDocument()) {
@@ -187,8 +197,9 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
-     * @return
+     * Builds the dashboard menu bar.
+     *
+     * @return the created menu bar
      */
     private JMenuBar buildMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -204,7 +215,7 @@ public class MonitorDashboard {
     }
 
     /**
-     * 
+     * Handles dashboard exit behavior.
      */
     private void handleExit() {
 

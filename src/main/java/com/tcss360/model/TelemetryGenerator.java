@@ -16,32 +16,34 @@ import java.util.Random;
  */
 public final class TelemetryGenerator {
 
-    /** The percent chance of an anomaly to occur */
+    /** Percent chance that a random anomaly occurs during telemetry generation. */
     private static final int ANOMALY_PERCENT = 30;
 
-    /** The number of ticks per second */
+    /** Number of telemetry ticks generated per second. */
     private static final double TICKS_PER_SECOND = 4;
 
-    /** The default straight travel distance for scripted drone travel */
+    /** Default straight-line travel distance used in scripted movement. */
     private static final double STRAIGHT_DISTANCE = 10.0;
 
-    /** The default circle radius for scripted drone travel */
+    /** Default turning radius used in scripted circular movement. */
     private static final double SCRIPTED_RADIUS = 10.0;
 
-    /** The tick count state for telemetry generation */
+    /** Tick counter used to track scripted telemetry movement over time. */
     private int myTickCount;
 
     /**
-     * Constructor
+     * Creates a telemetry generator with the tick count initialized to zero.
      */
     public TelemetryGenerator() {
         myTickCount = 0;
     }
 
     /**
-     * Generates a simulated telemetry stream. Random anomalous events occur
-     * with as a percent chance defined by ANOMALY_PERCENT
-     * @return array list of drone snapshots
+     * Generates telemetry snapshots for the given drones and applies
+     * scripted movement and random anomalies.
+     *
+     * @param theDrones the drones to generate telemetry for
+     * @return a list of generated drone snapshots
      */
     public ArrayList<DroneSnapshot> generateTelemetry(ArrayList<Drone> theDrones) {
 
@@ -67,7 +69,8 @@ public final class TelemetryGenerator {
     }
 
     /**
-     * This method is designed to apply scripted movement to each drone.
+     * Applies scripted movement to a drone based on the current telemetry tick.
+     *
      * @param theDrone the drone being updated
      */
     private void applyScriptedMovement(Drone theDrone) {
@@ -122,11 +125,11 @@ public final class TelemetryGenerator {
     }
 
     /**
-     * A helper method used to normalize a heading ensuring it's value 
-     * is always 0 thru 360 degrees
-     * @param theCurrentHeading The current drone heading in degrees
-     * @param theChange The change in heading in degrees
-     * @return the normalized heading 0 through 360 degrees
+     * Normalizes a heading value so it stays within the range 0 through 360 degrees.
+     *
+     * @param theCurrentHeading the current drone heading in degrees
+     * @param theChange the change in heading in degrees
+     * @return the normalized heading
      */
     private double normalizeHeading(double theCurrentHeading, double theChange) {
         double heading = theCurrentHeading + theChange;
@@ -134,8 +137,9 @@ public final class TelemetryGenerator {
     }
 
     /**
-     * A helper method used to apply random anomalies to drones.
-     * @param theRandom random object used to anomaly selection
+     * Applies a random anomaly to the given drone.
+     *
+     * @param theRandom the random object used to choose the anomaly
      * @param theDrone the drone receiving the anomaly
      */
     private void applyAnomaly(Random theRandom, Drone theDrone) {
