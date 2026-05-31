@@ -32,11 +32,6 @@ import javax.swing.JOptionPane;
 import java.lang.StringBuilder;
 
 
-/**
- * The MonitorDashboard class is the GUI for human-system interaction
- * @author Logan Black
- * @version 28 APR 2026
- */
 public class MonitorDashboard {
 
     private DroneMonitorApp myApp;
@@ -52,14 +47,29 @@ public class MonitorDashboard {
 
     /** Panel used for anomaly query results. */
     private JPanel myQjeryPanel;
+    /**
+     * The MonitorDashboard class is the GUI for human-system interaction
+     * @author Logan Black
+     * @version 28 APR 2026
+     */
+
+    private ArrayList<Drone> myDisplayedDrones;
 
     /**
      * Creates a monitor dashboard.
      */
     public MonitorDashboard() {
+        myDisplayedDrones = new ArrayList<>();
 
-        /* Insert Logic Here */
+        myMapPanel = new JPanel() {
+            @Override
+            protected void paintComponent(final java.awt.Graphics theGraphics) {
+                super.paintComponent(theGraphics);
+                paintDronePositions(myDisplayedDrones, theGraphics);
+            }
+        };
 
+        myMapPanel.setPreferredSize(new java.awt.Dimension(500, 400));
     }
 
     /**
@@ -76,10 +86,12 @@ public class MonitorDashboard {
      *
      * @param theDrones the drone fleet to display
      */
-    public void display(ArrayList<Drone> theDrones) {
+    public void display(final ArrayList<Drone> theDrones) {
+        myDisplayedDrones = new ArrayList<>(theDrones);
 
-        /* Insert Logic Here */
-        
+        if (myMapPanel != null) {
+            myMapPanel.repaint();
+        }
     }
 
     /**
@@ -104,15 +116,46 @@ public class MonitorDashboard {
 
     }
 
+    private void paintDronePositions(final ArrayList<Drone> theDrones) {
+        if (myMapPanel == null) {
+            return;
+        }
+
+        final java.awt.Graphics graphics = myMapPanel.getGraphics();
+
+        if (graphics == null) {
+            return;
+        }
+
+        paintDronePositions(theDrones, graphics);
+        graphics.dispose();
+    }
+
+
+
     /**
      * Draws the current drone positions on the map panel.
      *
      * @param theDrones the drone fleet to draw
      */
-    private void paintDronePositions(ArrayList<Drone> theDrones) {
+    private void paintDronePositions(final ArrayList<Drone> theDrones,
+                                     final java.awt.Graphics theGraphics) {
+        theGraphics.setColor(java.awt.Color.WHITE);
+        theGraphics.fillRect(0, 0, myMapPanel.getWidth(), myMapPanel.getHeight());
 
-        /* Insert Logic Here */
+        theGraphics.setColor(java.awt.Color.BLACK);
+        theGraphics.drawRect(20, 20, myMapPanel.getWidth() - 40, myMapPanel.getHeight() - 40);
 
+        for (Drone drone : theDrones) {
+            final int x = 50 + (int) (drone.getLongitude() * 5);
+            final int y = 50 + (int) (drone.getLatitude() * 5);
+
+            theGraphics.setColor(java.awt.Color.BLUE);
+            theGraphics.fillOval(x, y, 12, 12);
+
+            theGraphics.setColor(java.awt.Color.BLACK);
+            theGraphics.drawString("Drone " + drone.getID(), x + 14, y + 10);
+        }
     }
 
     /**
