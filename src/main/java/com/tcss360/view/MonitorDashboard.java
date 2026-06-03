@@ -422,8 +422,6 @@ public class MonitorDashboard {
      * Opens a file chooser and saves the anomaly log to a CSV file
      */
     private void handleSaveCSV() {
-        exportAnomalyLogToCSV();
-    }
 
     /**
      * Saves the anomaly log as a .csv file to the file path
@@ -431,6 +429,17 @@ public class MonitorDashboard {
      */
     private void exportAnomalyLogToCSV(String theFilePath) {
 
+        exportAnomalyLogToCSV(filePath);
+
+    }
+
+    /**
+     *
+     * @param theFilePath the file save path
+     */
+    private void exportAnomalyLogToCSV(String theFilePath) {
+
+        String filePath = theFilePath;
         String logText = myTextArea.getText();
 
         try {
