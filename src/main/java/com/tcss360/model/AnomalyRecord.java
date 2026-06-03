@@ -1,7 +1,7 @@
 /*
  * Course Project
  * TCSS 360 Spring 2026
- * Logan Black
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.model;
@@ -13,7 +13,7 @@ import java.util.UUID;
  * The AnomalyRecord class stores anomaly information in it's fields
  * @author Logan Black
  * @author Matthew Park
- * @version 28 APR 2026
+ * @version 02 June 2026
  */
 public class AnomalyRecord {
 

@@ -1,21 +1,24 @@
 /*
  * Course Project
  * TCSS 360 Spring 2026
- * Matthew Park
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.model;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Unit tests for the TelemetryGenerator class.
  * @author Matthew Park
- * @version 16 May 2026
+ * @author Logan Black
+ * @version 02 June 2026
  */
 public class TelemetryGeneratorTest {
 

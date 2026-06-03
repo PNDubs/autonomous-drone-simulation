@@ -1,3 +1,8 @@
+/*
+ * Course Project
+ * TCSS 360 Spring 2026
+ * Logan Black, Matthew Park, Ibrahim Cartan
+ */
 package com.tcss360.view;
 
 import static org.junit.Assert.*;
@@ -12,6 +17,9 @@ import org.junit.Test;
 /**
  * Unit tests for MonitorDashboard.
  * These tests verify the class based on its current placeholder implementation.
+ * @author Logan Black
+ * @author Unknown
+ * @version 02 June 2026
  */
 public class MonitorDashboardTest {
 
@@ -47,6 +55,7 @@ public class MonitorDashboardTest {
 
     /**
      * Confirms updateDroneTelemetry does not throw with an empty drone list.
+     * @throws Exception
      */
     @Test
     public void testUpdateDroneTelemetryDoesNotThrow() throws Exception {
@@ -62,6 +71,7 @@ public class MonitorDashboardTest {
 
     /**
      * Confirms paintDronePositions does not throw with an empty drone list.
+     * @throws Exception
      */
     @Test
     public void testPaintDronePositionsDoesNotThrow() throws Exception {
@@ -77,6 +87,7 @@ public class MonitorDashboardTest {
 
     /**
      * Confirms showQueryScreen does not throw in its current placeholder form.
+     * @throws Exception
      */
     @Test
     public void testShowQueryScreenDoesNotThrow() throws Exception {
@@ -88,7 +99,9 @@ public class MonitorDashboardTest {
     }
 
     /**
-     *Confirms exportAnomalyLogToPDF does not throw with a normal file path.     */
+     * Confirms exportAnomalyLogToPDF does not throw with a normal file path.
+     * @throws Exception
+     */
     @Test
     public void testExportAnomalyLogToPDFDoesNotThrow() throws Exception {
         MonitorDashboard dashboard = new MonitorDashboard();
@@ -101,6 +114,7 @@ public class MonitorDashboardTest {
 
     /**
      * Confirms buildMenuBar currently returns null.
+     * @throws Exception
      */
     @Test
     public void testBuildMenuBarReturnsMenuBar() throws Exception {
@@ -114,7 +128,8 @@ public class MonitorDashboardTest {
     }
 
     /**
-     * Confirms handleExit does not throw in its current placeholder form.
+     *  Confirms handleExit does not throw in its current placeholder form.
+     * @throws Exception
      */
     @Test
     public void testHandleExitDoesNotThrow() throws Exception {

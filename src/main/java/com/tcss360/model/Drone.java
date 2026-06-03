@@ -1,7 +1,7 @@
 /*
  * Course Project
  * TCSS 360 Spring 2026
- * Logan Black
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.model;
@@ -10,7 +10,7 @@ package com.tcss360.model;
  * The Drone class represents simulated drone objects and contains the
  * required identifying information in its fields.
  * @author Logan Black
- * @version 28 APR 2026
+ * @version 02 June 2026
  */
 public class Drone {
 

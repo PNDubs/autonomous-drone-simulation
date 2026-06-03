@@ -1,7 +1,7 @@
 /*
  * Course Project
  * TCSS 360 Spring 2026
- * Logan Black
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.model;
@@ -16,11 +16,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 /**
  * The AnomalyDatabase class acts as the bridge between the controller and
  * the anomaly database.
  * @author Logan Black
- * @version 28 APR 2026
+ * @author Unknown
+ * @version 02 June 2026
  */
 public class AnomalyDatabase {
 

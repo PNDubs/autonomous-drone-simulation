@@ -1,21 +1,32 @@
+/*
+ * Course Project
+ * TCSS 360 Spring 2026
+ * Logan Black, Matthew Park, Ibrahim Cartan
+ */
 package com.tcss360.controller;
 
-import static org.junit.Assert.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Timer;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import org.junit.Test;
 
 import com.tcss360.model.AnomalyDatabase;
 import com.tcss360.model.AnomalyDetector;
 import com.tcss360.model.AnomalyRecord;
 import com.tcss360.model.Drone;
 import com.tcss360.view.MonitorDashboard;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Timer;
-import org.junit.Test;
 
 /**
  * Unit tests for DroneMonitorApp.
  * These tests verify the class based on its current implementation.
+ * @author Logan Black
+ * @author Unknown
+ * @version 02 June 2026
  */
 public class DroneMonitorAppTest {
 
@@ -30,6 +41,7 @@ public class DroneMonitorAppTest {
 
     /**
      * Confirms the constructor initializes the snapshot list.
+     * @throws Exception
      */
     @Test
     public void testConstructorInitializesSnapshotList() throws Exception {
@@ -47,6 +59,7 @@ public class DroneMonitorAppTest {
     /**
      * Confirms the constructor currently leaves drones as null
      * because initializeDrones() returns null for now.
+     * @throws Exception
      */
     @Test
     public void testConstructorLeavesDronesNullForNow() throws Exception {
@@ -62,6 +75,7 @@ public class DroneMonitorAppTest {
 
     /**
      * Confirms the constructor creates an anomaly detector object.
+     * @throws Exception
      */
     @Test
     public void testConstructorInitializesAnomalyDetector() throws Exception {
@@ -77,6 +91,7 @@ public class DroneMonitorAppTest {
 
     /**
      * Confirms the constructor creates an anomaly database object.
+     * @throws Exception
      */
     @Test
     public void testConstructorInitializesAnomalyDatabase() throws Exception {
@@ -93,6 +108,7 @@ public class DroneMonitorAppTest {
     /**
      * Confirms the constructor currently leaves the dashboard as null
      * because initializeMonitorDashboard() returns null for now.
+     * @throws Exception
      */
     @Test
     public void testConstructorLeavesDashboardNullForNow() throws Exception {
@@ -107,7 +123,8 @@ public class DroneMonitorAppTest {
     }
 
     /**
-     * Confirms the constructor creates a timer object.
+     * 
+     * @throws Exception
      */
     @Test
     public void testConstructorInitializesTimer() throws Exception {
@@ -133,6 +150,7 @@ public class DroneMonitorAppTest {
 
     /**
      * Confirms initializeDrones() currently returns null.
+     * @throws Exception
      */
     @Test
     public void testInitializeDronesReturnsNullForNow() throws Exception {
@@ -148,6 +166,7 @@ public class DroneMonitorAppTest {
 
     /**
      * Confirms initializeMonitorDashboard() currently returns null.
+     * @throws Exception
      */
     @Test
     public void testInitializeMonitorDashboardReturnsNullForNow() throws Exception {
@@ -164,6 +183,7 @@ public class DroneMonitorAppTest {
     /**
      * Confirms updateTelemetry() sets the snapshot list to a non-null value.
      * TelemetryGenerator currently returns an empty list, so the result should exist.
+     * @throws Exception
      */
     @Test
     public void testUpdateTelemetrySetsSnapshotList() throws Exception {
@@ -185,6 +205,7 @@ public class DroneMonitorAppTest {
     /**
      * Confirms checkForAnomalies() does not throw.
      * The current detector returns an empty list, so nothing should be saved.
+     * @throws Exception
      */
     @Test
     public void testCheckForAnomaliesDoesNotThrow() throws Exception {
@@ -197,6 +218,7 @@ public class DroneMonitorAppTest {
 
     /**
      * Confirms saveAnomalies() does not throw with an empty record list.
+     * @throws Exception
      */
     @Test
     public void testSaveAnomaliesDoesNotThrow() throws Exception {
@@ -211,6 +233,7 @@ public class DroneMonitorAppTest {
 
     /**
      * Confirms refreshGUI() does not throw in its current placeholder form.
+     * @throws Exception
      */
     @Test
     public void testRefreshGUIDoesNotThrow() throws Exception {

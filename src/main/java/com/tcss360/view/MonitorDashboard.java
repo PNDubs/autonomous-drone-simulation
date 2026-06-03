@@ -1,7 +1,7 @@
 /*
  * Course Project
  * TCSS 360 Spring 2026
- * Logan Black
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.view;
@@ -52,7 +52,7 @@ import com.tcss360.model.Drone;
  * The MonitorDashboard class is the GUI for human-system interaction
  * @author Logan Black
  * @author Matthew Park
- * @version 15 May 2026
+ * @version 02 June 2026
  */
 public class MonitorDashboard {
 
@@ -261,6 +261,10 @@ public class MonitorDashboard {
         return menuBar;
     }
 
+    /**
+     * Facilitates exporting the anomaly log to a .PDF
+     * @param theFilePath the desired storage file path
+     */
     private void exportAnomalyLogToPDF(String theFilePath) {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
@@ -334,7 +338,7 @@ public class MonitorDashboard {
     }
 
     /**
-     *
+     * Helper method for initializing and showing the query screen
      */
     private void showQueryScreen() {
 
