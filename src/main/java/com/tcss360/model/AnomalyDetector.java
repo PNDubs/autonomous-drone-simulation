@@ -1,7 +1,7 @@
 /*
  * Course Project
  * TCSS 360 Spring 2026
- * Logan Black
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.model;
@@ -13,10 +13,11 @@ import java.util.ArrayList;
  * state to check for anomalous behaviour.
  * @author Logan Black
  * @author Matthew Park
- * @version 15 May 2026
+ * @version 02 June 2026
  */
 public class AnomalyDetector {
 
+    /** Built in tolerance for GPS jumps */
     private static final double GPS_JUMP_TOLERANCE = 0.00001;
 
     /** The battery level that indicates an anomaly */

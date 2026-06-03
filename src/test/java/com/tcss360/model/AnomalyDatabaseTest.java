@@ -1,16 +1,24 @@
+/*
+ * Course Project
+ * TCSS 360 Spring 2026
+ * Logan Black, Matthew Park, Ibrahim Cartan
+ */
 package com.tcss360.model;
-
-import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
  * Unit tests for AnomalyDatabase
  * These tests verify the class based on its current placeholder implementation.
+ * @author Logan Black
+ * @author Unknown
+ * @version 02 June 2026
  */
-
 public class AnomalyDatabaseTest {
 
     /**
@@ -26,7 +34,6 @@ public class AnomalyDatabaseTest {
     /**
      * Confirms getAnomaliesForDrone currently returns null.
      */
-
     @Test
     public void testAnomaliesForDroneReturnsEmptyListForNow() {
         AnomalyDatabase database = new AnomalyDatabase();
@@ -38,7 +45,6 @@ public class AnomalyDatabaseTest {
     /**
      * Confirms getAnomaliesByType currently returns null.
      */
-
     @Test
     public void testGetAnomaliesByTypeReturnsEmptyListForNow() {
         AnomalyDatabase database = new AnomalyDatabase();
@@ -50,7 +56,6 @@ public class AnomalyDatabaseTest {
     /**
      * Confirms getAnomaliesBetween currently returns null.
      */
-
     @Test
     public void testGetAnomaliesBetweenReturnsEmptyListForNow() {
         AnomalyDatabase database = new AnomalyDatabase();
@@ -61,7 +66,6 @@ public class AnomalyDatabaseTest {
     /**
      * Confirms exportToCSV does not throw an exception with a normal file path.
      */
-
     @Test
     public void testExportToCSVDoesNotThrow() {
         AnomalyDatabase database = new AnomalyDatabase();
@@ -71,7 +75,6 @@ public class AnomalyDatabaseTest {
     /**
      * Confirms close does not throw an exception.
      */
-
     @Test
     public void testCloseDoesNotThrow() {
         AnomalyDatabase database = new AnomalyDatabase();

@@ -1,7 +1,7 @@
 /*
- * Course Project - Autonomous Drone Simulation
+ * Course Project
  * TCSS 360 Spring 2026
- * Matthew Park
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.model;
@@ -14,7 +14,7 @@ import org.junit.Test;
  * Unit tests for the Drone class.
  * @author Matthew Park
  * @author Logan Black
- * @version 15 May 2026
+ * @version 02 June 2026
  */
 public class DroneTest {
 

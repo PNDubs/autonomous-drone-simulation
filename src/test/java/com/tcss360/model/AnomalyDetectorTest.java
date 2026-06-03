@@ -1,18 +1,32 @@
+/*
+ * Course Project
+ * TCSS 360 Spring 2026
+ * Logan Black, Matthew Park, Ibrahim Cartan
+ */
 package com.tcss360.model;
-
-import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
  * Unit tests for AnomalyDetector.
  * These tests check the class based on its current implementation.
+ * @author Logan Black
+ * @author Unknown
+ * @version 02 June 2026
  */
 public class AnomalyDetectorTest {
 
+    /**
+     * 
+     * @throws Exception
+     */
     @Test
     public void testConstructorStoresThresholdsCorrectly() throws Exception {
         AnomalyDetector detector = new AnomalyDetector(15.0, 20.0, 50.0, 30.0);
@@ -65,6 +79,7 @@ public class AnomalyDetectorTest {
 
     /**
      * Confirms the current low battery helper method returns false.
+     * @throws Exception
      */
     @Test
     public void testCheckAltitudeReturnsFalseForNow() throws Exception {
@@ -79,6 +94,7 @@ public class AnomalyDetectorTest {
 
     /**
      * Confirms the current GPS spoofing helper method return false.
+     * @throws Exception
      */
     @Test
     public void testCheckGPSSpoofingReturnsFalseForNow() throws Exception {
@@ -94,8 +110,8 @@ public class AnomalyDetectorTest {
 
     /**
      * Confirms the current unsafe movement helper method returns false
+     * @throws Exception
      */
-
     @Test
     public void testCheckUnsafeMovementReturnsFalseForNow() throws Exception {
         AnomalyDetector detector = new AnomalyDetector(15.0, 20.0, 50.0, 30.0);
@@ -110,8 +126,8 @@ public class AnomalyDetectorTest {
 
     /**
      * Confirms the private createAnomalyRecord method creates a valid record.
+     * @throws Exception
      */
-
     @Test
     public void testCreateAnomalyRecordReturnsValidRecord() throws Exception {
         AnomalyDetector detector = new AnomalyDetector(15.0, 20.0, 50.0, 30.0);

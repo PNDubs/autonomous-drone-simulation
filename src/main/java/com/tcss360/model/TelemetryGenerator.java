@@ -1,7 +1,7 @@
 /*
  * Course Project
  * TCSS 360 Spring 2026
- * Logan Black
+ * Logan Black, Matthew Park, Ibrahim Cartan
  */
 
 package com.tcss360.model;
@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  * The TelemetryGenerator is designed to simulate a telemetry data stream.
  * @author Logan Black
- * @version 15 May 2026
+ * @version 02 June 2026
  */
 public final class TelemetryGenerator {
 
@@ -90,6 +90,10 @@ public final class TelemetryGenerator {
 
     }
 
+    /**
+     * Helper method to apply battery drain to telemetry
+     * @param theDrone The drone affected by battery drain
+     */
     private void applyBatteryDrain(Drone theDrone) {
         double newBatteryLevel = theDrone.getBatteryLevel() - BATTERY_DRAIN_PER_TICK;
 
