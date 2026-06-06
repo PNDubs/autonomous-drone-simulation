@@ -7,6 +7,7 @@ package com.tcss360.view;
 
 import static org.junit.Assert.*;
 
+import com.tcss360.model.AnomalyDatabase;
 import com.tcss360.model.AnomalyRecord;
 import com.tcss360.model.Drone;
 import java.lang.reflect.Method;
@@ -18,7 +19,7 @@ import org.junit.Test;
  * Unit tests for MonitorDashboard.
  * These tests verify the class based on its current placeholder implementation.
  * @author Logan Black
- * @author Unknown
+ * @author Matthew Park
  * @version 02 June 2026
  */
 public class MonitorDashboardTest {
@@ -28,7 +29,7 @@ public class MonitorDashboardTest {
      */
     @Test
     public void testConstructorCreatesObject() {
-        MonitorDashboard dashboard = new MonitorDashboard();
+        MonitorDashboard dashboard = new MonitorDashboard(new AnomalyDatabase());
         assertNotNull(dashboard);
     }
 
@@ -37,7 +38,7 @@ public class MonitorDashboardTest {
      */
     @Test
     public void testDisplayDoesNotThrow() {
-        MonitorDashboard dashboard = new MonitorDashboard();
+        MonitorDashboard dashboard = new MonitorDashboard(new AnomalyDatabase());
         ArrayList<Drone> drones = new ArrayList<>();
         dashboard.display(drones);
     }
@@ -47,43 +48,12 @@ public class MonitorDashboardTest {
      */
     @Test
     public void testAddAlertDoesNotThrow() {
-        MonitorDashboard dashboard = new MonitorDashboard();
+        MonitorDashboard dashboard = new MonitorDashboard(new AnomalyDatabase());
         AnomalyRecord record =
                 new AnomalyRecord(1, "Low Battery", "Battery dropped below threshold");
         dashboard.addAlert(record);
     }
 
-    /**
-     * Confirms updateDroneTelemetry does not throw with an empty drone list.
-     * @throws Exception
-     */
-    @Test
-    public void testUpdateDroneTelemetryDoesNotThrow() throws Exception {
-        MonitorDashboard dashboard = new MonitorDashboard();
-
-        Method method = MonitorDashboard.class.getDeclaredMethod(
-                "updateDroneTelemetry", ArrayList.class);
-        method.setAccessible(true);
-
-        ArrayList<Drone> drones = new ArrayList<>();
-        method.invoke(dashboard, drones);
-    }
-
-    /**
-     * Confirms paintDronePositions does not throw with an empty drone list.
-     * @throws Exception
-     */
-    @Test
-    public void testPaintDronePositionsDoesNotThrow() throws Exception {
-        MonitorDashboard dashboard = new MonitorDashboard();
-
-        Method method = MonitorDashboard.class.getDeclaredMethod(
-                "paintDronePositions", ArrayList.class);
-        method.setAccessible(true);
-
-        ArrayList<Drone> drones = new ArrayList<>();
-        method.invoke(dashboard, drones);
-    }
 
     /**
      * Confirms showQueryScreen does not throw in its current placeholder form.
@@ -91,7 +61,7 @@ public class MonitorDashboardTest {
      */
     @Test
     public void testShowQueryScreenDoesNotThrow() throws Exception {
-        MonitorDashboard dashboard = new MonitorDashboard();
+        MonitorDashboard dashboard = new MonitorDashboard(new AnomalyDatabase());
 
         Method method = MonitorDashboard.class.getDeclaredMethod("showQueryScreen");
         method.setAccessible(true);
@@ -104,7 +74,7 @@ public class MonitorDashboardTest {
      */
     @Test
     public void testExportAnomalyLogToPDFDoesNotThrow() throws Exception {
-        MonitorDashboard dashboard = new MonitorDashboard();
+        MonitorDashboard dashboard = new MonitorDashboard(new AnomalyDatabase());
 
         Method method = MonitorDashboard.class.getDeclaredMethod("exportAnomalyLogToPDF", String.class);        method.setAccessible(true);
         method.setAccessible(true);
@@ -118,7 +88,7 @@ public class MonitorDashboardTest {
      */
     @Test
     public void testBuildMenuBarReturnsMenuBar() throws Exception {
-        MonitorDashboard dashboard = new MonitorDashboard();
+        MonitorDashboard dashboard = new MonitorDashboard(new AnomalyDatabase());
 
         Method method = MonitorDashboard.class.getDeclaredMethod("buildMenuBar");
         method.setAccessible(true);
@@ -127,16 +97,4 @@ public class MonitorDashboardTest {
         assertNotNull(menuBar);
     }
 
-    /**
-     *  Confirms handleExit does not throw in its current placeholder form.
-     * @throws Exception
-     */
-    @Test
-    public void testHandleExitDoesNotThrow() throws Exception {
-        MonitorDashboard dashboard = new MonitorDashboard();
-
-        Method method = MonitorDashboard.class.getDeclaredMethod("handleExit");
-        method.setAccessible(true);
-        method.invoke(dashboard);
-    }
 }

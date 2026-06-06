@@ -423,18 +423,24 @@ public class MonitorDashboard {
      */
     private void handleSaveCSV() {
 
-    /**
-     * Saves the anomaly log as a .csv file to the file path
-     * @param theFilePath the file save path
-     */
-    private void exportAnomalyLogToCSV(String theFilePath) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Anomaly Log as CSV");
+        fileChooser.setSelectedFile(new java.io.File("anomaly_log.csv"));
 
-        exportAnomalyLogToCSV(filePath);
+        int userSelection = fileChooser.showSaveDialog(myRootPanel);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!filePath.endsWith(".csv")) {
+                filePath = filePath + ".csv";
+            }
+            exportAnomalyLogToCSV(filePath);
+        }
 
     }
 
     /**
-     *
+     * Saves the anomaly log as a .csv file to the file path
      * @param theFilePath the file save path
      */
     private void exportAnomalyLogToCSV(String theFilePath) {

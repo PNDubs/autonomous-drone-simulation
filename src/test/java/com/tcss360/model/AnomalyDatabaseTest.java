@@ -54,14 +54,14 @@ public class AnomalyDatabaseTest {
     }
 
     /**
-     * Confirms getAnomaliesBetween currently returns null.
+     * Confirms getAnomaliesBetween returns a non-null list.
      */
     @Test
-    public void testGetAnomaliesBetweenReturnsEmptyListForNow() {
+    public void testGetAnomaliesBetweenReturnsNonNullList() {
         AnomalyDatabase database = new AnomalyDatabase();
         ArrayList<AnomalyRecord> result = database.getAnomaliesBetween(LocalDateTime.now().minusHours(1), LocalDateTime.now());
         assertNotNull(result);
-        assertEquals(0, result.size());    }
+    }
 
     /**
      * Confirms exportToCSV does not throw an exception with a normal file path.

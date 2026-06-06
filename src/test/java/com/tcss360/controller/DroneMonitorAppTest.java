@@ -8,8 +8,6 @@ package com.tcss360.controller;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Timer;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -25,7 +23,7 @@ import com.tcss360.view.MonitorDashboard;
  * Unit tests for DroneMonitorApp.
  * These tests verify the class based on its current implementation.
  * @author Logan Black
- * @author Unknown
+ * @author Matthew Park
  * @version 02 June 2026
  */
 public class DroneMonitorAppTest {
@@ -57,20 +55,20 @@ public class DroneMonitorAppTest {
     }
 
     /**
-     * Confirms the constructor currently leaves drones as null
-     * because initializeDrones() returns null for now.
+     * Confirms the constructor initializes the drone fleet with 3 drones.
      * @throws Exception
      */
     @Test
-    public void testConstructorLeavesDronesNullForNow() throws Exception {
+    public void testConstructorInitializesDrones() throws Exception {
         DroneMonitorApp app = new DroneMonitorApp();
 
         Field dronesField = DroneMonitorApp.class.getDeclaredField("myDrones");
         dronesField.setAccessible(true);
 
-        Object drones = dronesField.get(app);
+        ArrayList<?> drones = (ArrayList<?>) dronesField.get(app);
 
-        assertNull(drones);
+        assertNotNull(drones);
+        assertEquals(3, drones.size());
     }
 
     /**
@@ -106,12 +104,11 @@ public class DroneMonitorAppTest {
     }
 
     /**
-     * Confirms the constructor currently leaves the dashboard as null
-     * because initializeMonitorDashboard() returns null for now.
+     * Confirms the constructor initializes the monitor dashboard.
      * @throws Exception
      */
     @Test
-    public void testConstructorLeavesDashboardNullForNow() throws Exception {
+    public void testConstructorInitializesDashboard() throws Exception {
         DroneMonitorApp app = new DroneMonitorApp();
 
         Field dashboardField = DroneMonitorApp.class.getDeclaredField("myMonitorDashboard");
@@ -119,23 +116,23 @@ public class DroneMonitorAppTest {
 
         MonitorDashboard dashboard = (MonitorDashboard) dashboardField.get(app);
 
-        assertNull(dashboard);
+        assertNotNull(dashboard);
     }
 
     /**
-     * 
+     * Confirms the constructor initializes the scheduled executor service.
      * @throws Exception
      */
     @Test
     public void testConstructorInitializesTimer() throws Exception {
         DroneMonitorApp app = new DroneMonitorApp();
 
-        Field timerField = DroneMonitorApp.class.getDeclaredField("myUpdateTimer");
+        Field timerField = DroneMonitorApp.class.getDeclaredField("myExecutor");
         timerField.setAccessible(true);
 
-        Timer timer = (Timer) timerField.get(app);
+        Object executor = timerField.get(app);
 
-        assertNotNull(timer);
+        assertNotNull(executor);
     }
 
     /**
@@ -149,40 +146,24 @@ public class DroneMonitorAppTest {
     }
 
     /**
-     * Confirms initializeDrones() currently returns null.
+     * Confirms initializeDrones() returns a list of 3 drones.
      * @throws Exception
      */
     @Test
-    public void testInitializeDronesReturnsNullForNow() throws Exception {
+    public void testInitializeDronesReturnsList() throws Exception {
         DroneMonitorApp app = new DroneMonitorApp();
 
         Method method = DroneMonitorApp.class.getDeclaredMethod("initializeDrones");
         method.setAccessible(true);
 
-        ArrayList<Drone> drones = (ArrayList<Drone>) method.invoke(app);
+        ArrayList<?> drones = (ArrayList<?>) method.invoke(app);
 
-        assertNull(drones);
+        assertNotNull(drones);
+        assertEquals(3, drones.size());
     }
 
     /**
-     * Confirms initializeMonitorDashboard() currently returns null.
-     * @throws Exception
-     */
-    @Test
-    public void testInitializeMonitorDashboardReturnsNullForNow() throws Exception {
-        DroneMonitorApp app = new DroneMonitorApp();
-
-        Method method = DroneMonitorApp.class.getDeclaredMethod("initializeMonitorDashboard");
-        method.setAccessible(true);
-
-        MonitorDashboard dashboard = (MonitorDashboard) method.invoke(app);
-
-        assertNull(dashboard);
-    }
-
-    /**
-     * Confirms updateTelemetry() sets the snapshot list to a non-null value.
-     * TelemetryGenerator currently returns an empty list, so the result should exist.
+     * Confirms updateTelemetry() sets the snapshot list to match the drone count.
      * @throws Exception
      */
     @Test
@@ -199,21 +180,24 @@ public class DroneMonitorAppTest {
         ArrayList<?> snapshots = (ArrayList<?>) snapshotsField.get(app);
 
         assertNotNull(snapshots);
-        assertEquals(0, snapshots.size());
+        assertEquals(3, snapshots.size());
     }
 
     /**
-     * Confirms checkForAnomalies() does not throw.
-     * The current detector returns an empty list, so nothing should be saved.
+     * Confirms checkForAnomalies() does not throw after telemetry is updated.
      * @throws Exception
      */
     @Test
     public void testCheckForAnomaliesDoesNotThrow() throws Exception {
         DroneMonitorApp app = new DroneMonitorApp();
 
-        Method method = DroneMonitorApp.class.getDeclaredMethod("checkForAnomalies");
-        method.setAccessible(true);
-        method.invoke(app);
+        Method updateMethod = DroneMonitorApp.class.getDeclaredMethod("updateTelemetry");
+        updateMethod.setAccessible(true);
+        updateMethod.invoke(app);
+
+        Method checkMethod = DroneMonitorApp.class.getDeclaredMethod("checkForAnomalies");
+        checkMethod.setAccessible(true);
+        checkMethod.invoke(app);
     }
 
     /**
