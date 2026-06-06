@@ -18,13 +18,13 @@ import org.junit.Test;
  * Unit tests for AnomalyDetector.
  * These tests check the class based on its current implementation.
  * @author Logan Black
- * @author Unknown
+ * @author Matthew Park
  * @version 02 June 2026
  */
 public class AnomalyDetectorTest {
 
     /**
-     * 
+     * Confirms the constructor stores all four threshold values correctly.
      * @throws Exception
      */
     @Test
