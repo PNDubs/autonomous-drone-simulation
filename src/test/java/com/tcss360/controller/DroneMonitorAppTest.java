@@ -8,15 +8,14 @@ package com.tcss360.controller;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import com.tcss360.model.AnomalyDatabase;
 import com.tcss360.model.AnomalyDetector;
 import com.tcss360.model.AnomalyRecord;
-import com.tcss360.model.Drone;
 import com.tcss360.view.MonitorDashboard;
 
 /**

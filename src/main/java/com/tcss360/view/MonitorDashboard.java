@@ -37,7 +37,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -445,7 +444,6 @@ public class MonitorDashboard {
      */
     private void exportAnomalyLogToCSV(String theFilePath) {
 
-        String filePath = theFilePath;
         String logText = myTextArea.getText();
 
         try {

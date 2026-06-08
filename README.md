@@ -4,8 +4,8 @@ A Java-based Maven project that simulates a fleet of drones and random anomalous
 
 Team Members:
 * Logan Black
-* Ibrahim Cartan
 * Matthew Park
+* Ibrahim Cartan
 
 ## GitHub Repo Link
 
@@ -58,5 +58,5 @@ mvn clean package -Dmaven.test.skip=true
 Run the JAR:
 
 ```bash
-java -jar target/autonomous-drone-simulaation.jar
+java -jar target/autonomous-drone-simulation.jar
 ```

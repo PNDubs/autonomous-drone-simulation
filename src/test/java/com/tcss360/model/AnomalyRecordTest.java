@@ -22,7 +22,7 @@ import org.junit.Test;
 public class AnomalyRecordTest {
 
     /**
-     * 
+     * Tests the anomaly record constructor for drone ID
      */
     @Test
     public void testConstructorStoresDroneIDCorrectly() {
@@ -31,7 +31,7 @@ public class AnomalyRecordTest {
     }
 
     /**
-     * 
+     * Test the anomaly record constructor for the type
      */
     @Test
     public void testConstructorStoresAnomalyTypeCorrectly() {
@@ -40,7 +40,7 @@ public class AnomalyRecordTest {
     }
 
     /**
-     * 
+     * Test the anomaly record constructor for the details
      */
     @Test
     public void testConstructorStoresAnomalyDetailsCorrectly() {
@@ -49,7 +49,7 @@ public class AnomalyRecordTest {
     }
 
     /**
-     * 
+     * Test the anomaly record for non-null ID
      */
     @Test
     public void testRecordIDIsNotNull() {
@@ -59,7 +59,7 @@ public class AnomalyRecordTest {
     }
 
     /**
-     * 
+     * Test the timestap for non-null timestap
      */
     @Test
     public void testTimestampIsNotNull() {
@@ -69,7 +69,7 @@ public class AnomalyRecordTest {
     }
 
     /**
-     * 
+     * Test toString for non emptry strings
      */
     @Test
     public void testToStringReturnsNonEmptyString() {
