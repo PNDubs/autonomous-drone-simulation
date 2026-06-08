@@ -1,0 +1,761 @@
+commit c68d372e01cd805dc9fa54134edc09e1ebaf66f4
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Mon Jun 8 15:51:34 2026 -0700
+
+    Added final versions of UML and SRS
+
+commit f3aff3ddab3cd28d4cb36d877316ce36d8cbf6db
+Author: Logan <logan_black@aol.com>
+Date:   Mon Jun 8 15:47:34 2026 -0700
+
+    Javadoc changes and unused import cleanup
+
+commit e13d4e208b77a212ddfc43f6252486a7ffce0435
+Merge: 41e9caf 7d4101c
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Sat Jun 6 15:05:27 2026 -0700
+
+    Merge pull request #18 from PNDubs/matthew_week_7
+    
+    Fix MonitorDashboard compile error, update broken tests, and clean up…
+
+commit 7d4101c6d15eb896c4cbba765cdc8767a51f0216
+Author: Matthew <leepark@uw.edu>
+Date:   Sat Jun 6 14:23:26 2026 -0700
+
+    Fix MonitorDashboard compile error, update broken tests, and clean up Javadoc - 61 tests run, 0 failures
+
+commit 41e9cafef98b0635d331c23befe706c0653b2cac
+Merge: 44b7dbc 20d85f6
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Wed Jun 3 08:27:42 2026 -0700
+
+    Merge pull request #17 from PNDubs/matthew_week_7
+    
+    Restored handleSaveCSV file chooser logic and split from exportAnomal…
+
+commit 20d85f68c64b1564b03e631019f64f20741f890e
+Merge: 5699454 44b7dbc
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Wed Jun 3 08:27:29 2026 -0700
+
+    Merge branch 'main' into matthew_week_7
+
+commit 44b7dbcd8f1f530b1400367df82392b421e72429
+Author: Logan <logan_black@aol.com>
+Date:   Tue Jun 2 17:15:58 2026 -0700
+
+    Mild javadoc updates ensuring uniformity
+
+commit 56994543f96f5303e8a083fa3ea68524402650c1
+Author: Matthew <leepark@uw.edu>
+Date:   Fri May 29 22:25:17 2026 -0700
+
+    Restored handleSaveCSV file chooser logic and split from exportAnomalyLogToCSV
+
+commit 70878a4bef6d05d3dc033869aa857493f11a1887
+Merge: 4c3c652 d6dd01c
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Thu May 28 22:15:59 2026 -0700
+
+    Merge pull request #16 from PNDubs/matthew_week_7
+    
+    Matthew week 7
+
+commit d6dd01c44415e7c50211d3d1d08c3b1ec07e1283
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 28 22:15:17 2026 -0700
+
+    Fixed MonitorDashboard compile error after merging Logan's CSV update
+
+commit 9840256647b3c73102b527a494d3f90a1c261312
+Merge: 8276a21 2984d18
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 28 22:03:39 2026 -0700
+
+    Merge branch 'matthew_week_7' of https://github.com/PNDubs/autonomous-drone-simulation into matthew_week_7
+
+commit 8276a21bbf9f7848256819f73d32fea8d399e55d
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 28 22:02:18 2026 -0700
+
+    Fixed AnomalyRecordTest toString test to match implemented method
+
+commit 4c3c652e8a3965509b3e49fcf0d82e96fd6ab13e
+Author: Logan <logan_black@aol.com>
+Date:   Thu May 28 19:47:33 2026 -0700
+
+    updated readme
+
+commit c34d44e6e2deaf730ed9ec31e2cce6b98d9e54d9
+Merge: 1079b52 067ed15
+Author: Logan <logan_black@aol.com>
+Date:   Thu May 28 19:45:32 2026 -0700
+
+    Merge branch 'main' of https://github.com/PNDubs/autonomous-drone-simulation
+
+commit 1079b5217b39b40921d956322cc3469b24eabee2
+Author: Logan <logan_black@aol.com>
+Date:   Thu May 28 19:43:47 2026 -0700
+
+    added instructinos to generate / execute .JAR files
+
+commit 067ed153ad97dc5e8f2d5bf12362dec8413488c7
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Thu May 28 19:20:26 2026 -0700
+
+    Update README.md
+
+commit 70fa0e5f1acd470f5194b6867f9d21b39381e00f
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Thu May 28 19:14:24 2026 -0700
+
+    Update README.md
+
+commit 1cbcd0ecea482b1add7b4e633fd26c03cf56f00a
+Author: Logan <logan_black@aol.com>
+Date:   Thu May 28 17:27:28 2026 -0700
+
+    resolved MonitorDashboard save to .csv bugs
+
+commit 61a2f46987a0f7bb8a23e083b4ff1ddede5ed5e6
+Merge: 1a8a352 2984d18
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Thu May 28 02:06:56 2026 -0700
+
+    Merge pull request #15 from PNDubs/matthew_week_7
+    
+    Matthew week 9
+
+commit 2984d1819af9be02d6c0988e4f74d67a6a233c95
+Merge: 5b158f0 1a8a352
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Thu May 28 02:06:13 2026 -0700
+
+    Merge branch 'main' into matthew_week_7
+
+commit 5b158f07a7752d2b9608be5eb3e8cf9ed5b586a6
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 28 01:41:29 2026 -0700
+
+    Connected Save Anomaly Log to CSV menu item to file chooser dialog
+
+commit 289824d2445ce6f05e21d13a30b68394687b2498
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 28 01:40:02 2026 -0700
+
+    Connected Save Anomaly Log to CSV menu item to file chooser dialog
+
+commit 1a8a35218b15458ac91d15330cb80408d1dcca2e
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Mon May 25 14:26:44 2026 -0700
+
+    Update README.md
+
+commit 4335ecd79fe2689b61a0303d03062743c2fe0bba
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Sun May 24 17:20:26 2026 -0700
+
+    Added SRS
+
+commit 24e93609c08bb9601c2f20e26dd9ef99c78d4600
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Sun May 24 17:19:58 2026 -0700
+
+    Added UML
+
+commit 880a74410b27f0787e39895c3e28adacc58df739
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Sun May 24 17:19:03 2026 -0700
+
+    Delete UML/drone-UML-iteration2.png
+
+commit 99708339bb9c0b4cac245593e9d4e4106bb25922
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Sun May 24 17:18:56 2026 -0700
+
+    Delete UML/drone-UML-iteration1.png
+
+commit 8fc7094d54a8d6545b8c2dd12f72c1b68455d80d
+Author: Logan <logan_black@aol.com>
+Date:   Sun May 24 07:14:50 2026 -0700
+
+    fixed gitignore bug to ignore .db files
+
+commit 99c4b9c26bf2daa4d7e742dbd7417289c0c048ac
+Author: Logan <logan_black@aol.com>
+Date:   Sun May 24 07:08:49 2026 -0700
+
+    updated readme, fixed alert scroll bug, formatted alerts, updated telemtry with battery %
+
+commit db01236fdbb00a5e248e39885050bfe4cd2375d7
+Author: Logan <logan_black@aol.com>
+Date:   Sun May 24 06:14:24 2026 -0700
+
+    updated readme with MVC roles and moved main() to controller.
+
+commit 5e05ceaebd8ac47c0dc34e862730695db8f85e98
+Author: Logan <logan_black@aol.com>
+Date:   Sat May 23 07:28:37 2026 -0700
+
+    Ignore SQLite database files
+
+commit 44c548f5efe2ba47a4505129cf61bde9d9d74e96
+Author: Logan <logan_black@aol.com>
+Date:   Sat May 23 07:26:17 2026 -0700
+
+    implemented save to csv
+
+commit a762ce5ef8ac42a0c85f886960bc2cfb55824b60
+Merge: f1eb907 21213a4
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Thu May 21 22:39:54 2026 -0700
+
+    Merge pull request #14 from PNDubs/matthew_week_7
+    
+    Connected query screen to AnomalyDatabase for real results
+
+commit 21213a47079e61dd563b6cf586b56043ddd99cd1
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 21 22:38:41 2026 -0700
+
+    Connected query screen to AnomalyDatabase for real results
+
+commit f1eb9070e6a8db3973da569f9961b0f42b0f63ad
+Merge: 25da176 a80f562
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Wed May 20 10:22:47 2026 -0700
+
+    Merge pull request #13 from PNDubs/matthew_week_7
+    
+    Matthew week 8
+
+commit a80f562a7a21ec64aea1da4e84fdd2ce7bc61572
+Author: Matthew <leepark@uw.edu>
+Date:   Wed May 20 10:05:59 2026 -0700
+
+    Updated AnomalyDetector to 4-parameter constructor with separate altitude threshold and checkAltitude method
+
+commit 3499736bed719e34f6e54ce0eb3b359723af6817
+Merge: a45a426 25da176
+Author: Matthew <leepark@uw.edu>
+Date:   Wed May 20 08:58:35 2026 -0700
+
+    Merge remote-tracking branch 'origin/main' into matthew_week_7
+
+commit a45a4269a8dd86ca508616ba8842c78136300289
+Author: Matthew <leepark@uw.edu>
+Date:   Wed May 20 08:55:45 2026 -0700
+
+    updated AnomalyDetector method logic
+
+commit 25da17668158521bf35158dec1afed51fac6f5e3
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Mon May 18 19:51:52 2026 -0700
+
+    Added UML iterations to project
+
+commit 3c634e5f77314da049e55e01d77ad955facd4b03
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Sun May 17 18:51:50 2026 -0700
+
+    Update README.md
+
+commit c628573c1c8a641046e55ca78fd31f27216856a5
+Merge: c7e240b e467847
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Sat May 16 22:56:07 2026 -0700
+
+    Merge pull request #12 from PNDubs/matthew_week_7
+    
+    fixed TelemetryGeneratorTest to match updated TelemetryGenerator
+
+commit e46784799134858d72c59ee6fe77efe0edad80e7
+Author: Matthew <leepark@uw.edu>
+Date:   Sat May 16 22:55:28 2026 -0700
+
+    fixed TelemetryGeneratorTest to match updated TelemetryGenerator
+
+commit c7e240b3546fe3c339b3d5accaffb76d0670695e
+Author: Logan <logan_black@aol.com>
+Date:   Sat May 16 00:12:42 2026 -0700
+
+    extended map drone trail length
+
+commit c9213e30d96d4bfd969d244291578ef604f1d203
+Author: Logan <logan_black@aol.com>
+Date:   Sat May 16 00:06:59 2026 -0700
+
+    update pom & warning fixes in MonitorDashboard
+
+commit 36352fe12e52d0237cf337842965bb4410bc2b27
+Merge: bdb32fa 45e108f
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 23:47:56 2026 -0700
+
+    Merge pull request #11 from PNDubs/ibrahim-week5
+    
+    Ibrahim week5
+
+commit 45e108f0c656e99fbd390b76d17895e66539db57
+Merge: 7c31fda bdb32fa
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 23:47:42 2026 -0700
+
+    Merge branch 'main' into ibrahim-week5
+
+commit bdb32fae3289438223588be3aaf896c7bb8ad4de
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 23:19:19 2026 -0700
+
+    added tolerance to drone & dronesnapshot tests after battery changed to double.
+
+commit 77135e146e52c0a87b44ae437e875f2e880fe39c
+Merge: b1cc9cb abdc1b4
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 23:12:19 2026 -0700
+
+    Merge branch 'main' of https://github.com/PNDubs/autonomous-drone-simulation
+
+commit abdc1b4b080e59dd87aa0d3c2504ed99601c9154
+Merge: 0148ec4 2825dff
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 23:10:04 2026 -0700
+
+    Merge pull request #9 from PNDubs/revert-8-ibrahim-week5-clean
+    
+    Revert "Ibrahim week5 clean"
+
+commit 2825dff544b0fd1509a60e6f0108edbc9679f317
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 23:09:48 2026 -0700
+
+    Revert "Ibrahim week5 clean"
+
+commit b1cc9cb8f966021bdae032eeb92ed6c9d105e17c
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 23:02:05 2026 -0700
+
+    update display()
+
+commit 0148ec434597d6ea9eee7a7963421e2d05a9d7fb
+Merge: 1cf1b5a 02e5be2
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 23:00:10 2026 -0700
+
+    Merge pull request #8 from PNDubs/ibrahim-week5-clean
+    
+    Ibrahim week5 clean
+
+commit 02e5be294fe573996667cc6e21ae43c760ce33a6
+Merge: f685100 1cf1b5a
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 23:00:00 2026 -0700
+
+    Merge branch 'main' into ibrahim-week5-clean
+
+commit 1cf1b5af1e5b2f4c470e88045d4f4fa29e9cb7c4
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 19:57:29 2026 -0700
+
+    Update README.md
+
+commit fb27238438d787286bd08e6218676763a7e175ef
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Fri May 15 19:56:32 2026 -0700
+
+    Update README.md
+
+commit b9a0a7c6146c689959288a50bc4ab151295f39c7
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 19:54:21 2026 -0700
+
+    Significant updates to DroneMonitorApp, AnomalyDetector, Drone, DroneSnapshot, TelemetryGenerator, and MonitorDashboard.
+
+commit 646d65f91f145f7e3e851c5ea6928c764b8d9bd3
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 17:20:25 2026 -0700
+
+    Remove .DS_Store files
+
+commit f370fc2d260c4fcded2a372b93df5a651d223bca
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 17:17:13 2026 -0700
+
+    Ignore IDE settings files
+
+commit 603d7ae0c444e760fa008a44c3d8bad6ff871009
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 17:12:45 2026 -0700
+
+    Updated gitignore
+
+commit ee2c31d66dbc043ea995fc662ede56ec4508a828
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 15 17:12:15 2026 -0700
+
+    Added gitignore
+
+commit f6851009c28c3bccfb0a354de5c07f1eaddaa489
+Author: IbrahimCart <artanlinked@gmail.com>
+Date:   Mon May 11 01:17:13 2026 -0700
+
+    Implement anomaly log export to PDF
+
+commit fc22f7dd1b79b8eca756e74c78243facc3680f36
+Author: IbrahimCart <artanlinked@gmail.com>
+Date:   Mon May 11 00:41:52 2026 -0700
+
+    Implement AnomalyDatabase method logic
+
+commit 84c0f274d4e38515621b9eca7aec2e8fa9a1de10
+Merge: 041396f 21ad9f0
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Thu May 14 23:59:32 2026 -0700
+
+    Merge pull request #7 from PNDubs/matthew_week_5
+    
+    Matthew week 5
+
+commit 21ad9f0822176fe2c154839803070202cebed46c
+Merge: 47df481 041396f
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Thu May 14 23:57:40 2026 -0700
+
+    Merge pull request #6 from PNDubs/main
+    
+    test
+
+commit 47df481597c680a5329c79ec80b3a0e70ad78b1f
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 14 23:50:16 2026 -0700
+
+    implemented exportAnomalyLogToCSV and handleExit methods
+
+commit 041396fa910df36a7ba1bf59d9af944246b5a6c9
+Merge: bcabfa6 35cb7f0
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Thu May 14 23:43:07 2026 -0700
+
+    Merge pull request #5 from PNDubs/matthew_week_5
+    
+    implemented showQueryScreen method in MonitorDashboard
+
+commit 35cb7f0923f9e74be326f11f6b0907c88001dcea
+Author: Matthew <leepark@uw.edu>
+Date:   Thu May 14 23:13:59 2026 -0700
+
+    implemented showQueryScreen method in MonitorDashboard
+
+commit bcabfa662258b174a81ea8d760ccc5bde9c79420
+Merge: 9f5f582 c2951dc
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Tue May 12 23:16:22 2026 -0700
+
+    Merge pull request #4 from PNDubs/matthew_week_5
+    
+    implemented refreshGUI, display, and addAlert methods
+
+commit c2951dc0195a34fe2628bc903b7470de2b143af0
+Author: Matthew <leepark@uw.edu>
+Date:   Tue May 12 23:15:11 2026 -0700
+
+    implemented refreshGUI, display, and addAlert methods
+
+commit 9f5f58238c4d66878bcbd2c40815f807bcf26bff
+Merge: 60c9b31 9cf9f90
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Mon May 11 08:23:34 2026 -0700
+
+    Merge pull request #3 from PNDubs/matthew_week_5
+    
+    Matthew week 5
+
+commit 9cf9f90d9ff40f96e06ecbf08e6efbad4c868735
+Merge: a255390 60c9b31
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Mon May 11 08:23:21 2026 -0700
+
+    Merge branch 'main' into matthew_week_5
+
+commit 7c31fda818db84f39d51e7f6346b5547add9d619
+Author: IbrahimCart <artanlinked@gmail.com>
+Date:   Mon May 11 01:17:13 2026 -0700
+
+    Implement anomaly log export to PDF
+
+commit aef7787fd24847e76762d1828ad27ccf96abf1ff
+Author: IbrahimCart <artanlinked@gmail.com>
+Date:   Mon May 11 00:41:52 2026 -0700
+
+    Implement AnomalyDatabase method logic
+
+commit 1a82d879ce4b0986e2ec8a5cd42145fa5c41f7f8
+Author: IbrahimCart <artanlinked@gmail.com>
+Date:   Sun May 10 23:48:24 2026 -0700
+
+    Add gitignore and remove tracked build files
+
+commit a25539042b262c336ec7fa346ac0a2ca0338ca5f
+Author: Matthew <leepark@uw.edu>
+Date:   Sun May 10 23:36:05 2026 -0700
+
+    implemented AnomalyDetector method logic
+
+commit e20bde1ff0a76ba7e807c4d6014cde72fda5ada1
+Author: Matthew <leepark@uw.edu>
+Date:   Sun May 10 23:18:45 2026 -0700
+
+    implemented AnomalyDetector and AnomalyDatabase method logic
+
+commit 60c9b3148b7843776eb0d0515305d8c73b2bb237
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Sun May 10 18:21:36 2026 -0700
+
+    Update README.md
+
+commit 81f5a3ae29fe0a4a736b4414c01ea1c7b2beb5d9
+Author: Logan <logan_black@aol.com>
+Date:   Sun May 10 18:10:25 2026 -0700
+
+    README.md updated
+
+commit 7d81bcc37aaf7af26ac23189dbf72866999c2185
+Author: Logan <logan_black@aol.com>
+Date:   Sun May 10 18:07:37 2026 -0700
+
+    Major updates to GUI
+
+commit 64030b2d65c190fee8d11cc83a484efc64d8fa0b
+Merge: 5c9ebac b4b30c4
+Author: Logan <logan_black@aol.com>
+Date:   Sun May 10 18:06:58 2026 -0700
+
+    Major updates to GUI
+
+commit 5c9ebaccecafc85901dfe609494e197f7b0be693
+Author: Logan <logan_black@aol.com>
+Date:   Sun May 10 18:04:03 2026 -0700
+
+    Major updates to GUI
+
+commit b4b30c46c94901f675d037c6c5e40d465692ee23
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Sun May 10 15:32:39 2026 -0700
+
+    Update README.md
+
+commit 0de616a263fbdca8731fd781c4194b871a35a8c2
+Author: Logan <logan_black@aol.com>
+Date:   Thu May 7 18:39:27 2026 -0700
+
+    minor code arrangement and spelling updates
+
+commit f68fcddb0fbf62f3baada19fe84d052a21ee162e
+Author: IbrahimCart <artanlinked@gmail.com>
+Date:   Sun May 3 16:04:34 2026 -0700
+
+    Add unit tests for MonitorDashboard
+
+commit 2b912d03560ca565c3f36f54aadae6807c981aae
+Author: Ibrahim Cartan <okrioaks@uw.edu>
+Date:   Sun May 3 14:43:31 2026 -0700
+
+    Add unit tests for DroneMonitorApp
+
+commit 0446a408f382c4d085a305507b0beb86417c63f0
+Author: Ibrahim Cartan <okrioaks@uw.edu>
+Date:   Sat May 2 18:49:48 2026 -0700
+
+    Add unit tests for AnomalyDatabase
+
+commit 2a5508f8518db19c8261e6086ba0b9c619d7fb96
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 1 22:58:50 2026 -0700
+
+    Further TelemetryGenerator refinement
+
+commit b1350ba0cd1811638fd49527909b4616b6ac1bc9
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 1 22:56:06 2026 -0700
+
+    implemented TelemetryGenerator logic
+
+commit 5c4a905d80ac9ca7ae7d09122039295424d86b66
+Merge: 06d21cb 8244525
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 1 22:54:37 2026 -0700
+
+    Merge branch 'main' of https://github.com/PNDubs/autonomous-drone-simulation
+
+commit 06d21cbea81883e189623bdd91551b2e2b72b378
+Author: Logan <logan_black@aol.com>
+Date:   Fri May 1 22:54:20 2026 -0700
+
+    implemented TelemetryGenerator logic
+
+commit bf2f0b9083fc6c4e1a31d77813b8ea036e796f88
+Author: Matthew <leepark@uw.edu>
+Date:   Fri May 1 22:35:38 2026 -0700
+
+    implemented AnomalyDetector method logic
+
+commit 824452519fa36265ae069995dcd03c89df1a4863
+Merge: 85a3f0f c87bf3e
+Author: Matthew Park <matthewpark2006@gmail.com>
+Date:   Fri May 1 22:12:46 2026 -0700
+
+    Merge pull request #1 from PNDubs/matthew_week_5
+    
+    Matthew week 5
+
+commit f63d734c9ddf2b8fc9e3d04aca415bec8ca4511b
+Author: Ibrahim Cartan <okrioaks@uw.edu>
+Date:   Thu Apr 30 23:07:06 2026 -0700
+
+    Add unit tests for AnomalyDetector
+
+commit 85a3f0f985ee292dd8bc2c061b77e2d2ee4ff972
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Thu Apr 30 23:00:06 2026 -0700
+
+    Update TelemetryGenerator.java
+
+commit 32f7804cd74b3ff0ed71b9e3d27638607e60dc00
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Thu Apr 30 22:13:19 2026 -0700
+
+    Update README.md
+
+commit 5184d3321d932479716c88115317d275e45590f3
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Thu Apr 30 22:09:06 2026 -0700
+
+    Update README.md
+
+commit 9fe974fd34366d7452f41b69340070cc2f8db5c3
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Thu Apr 30 22:07:21 2026 -0700
+
+    Update README.md
+
+commit 817b9ebcd2b1026cc2d73f684608d9b9c8d1d866
+Author: Logan <logan_black@aol.com>
+Date:   Thu Apr 30 21:25:41 2026 -0700
+
+    added TelemetryGenerator anomalous behavior
+
+commit de9431d2f1e9317d161d9fb5128dccfcdd05b8f6
+Author: Logan <logan_black@aol.com>
+Date:   Thu Apr 30 20:16:07 2026 -0700
+
+    implemented initialize drone in DoneMonitorApp and began work on TelemetryGenerator
+
+commit e299b59e9cdd001346a963587a3d611ead000990
+Author: Ibrahim Cartan <okrioaks@uw.edu>
+Date:   Thu Apr 30 16:57:31 2026 -0700
+
+    Add unit tests for AnomalyRecord
+
+commit c87bf3e086f49c8d677c1088ec5ff98afbae95a3
+Author: Matthew <leepark@uw.edu>
+Date:   Thu Apr 30 16:53:44 2026 -0700
+
+    implemented unit tests for Drone and DroneSnapshot
+
+commit 0b7d1b403c80cc5d3104ccff7f5a58ec72eaa133
+Author: Ibrahim Cartan <okrioaks@uw.edu>
+Date:   Thu Apr 30 15:58:24 2026 -0700
+
+    Add unit tests for TelemetryGenerator
+
+commit 3449e1ac7fa226029fabb813cead83218172d138
+Author: Matthew <leepark@uw.edu>
+Date:   Wed Apr 29 23:29:03 2026 -0700
+
+    added unit test structure for Drone and DroneSnapshot
+
+commit e210d6c4c5592e6651c627e1f35560be4f328095
+Author: Matthew <leepark@uw.edu>
+Date:   Tue Apr 28 23:54:45 2026 -0700
+
+    added unit test structure for Drone and DroneSnapshot
+
+commit a93dd565c2825b3b02579d40b74f198ac4371496
+Author: Matthew <leepark@uw.edu>
+Date:   Tue Apr 28 22:18:10 2026 -0700
+
+    implemented AnomalyRecord toString method
+
+commit bd2117e69af61cf10a8182d564d4e84a6ec92561
+Author: Logan <logan_black@aol.com>
+Date:   Tue Apr 28 06:23:53 2026 -0700
+
+    implemented MonitorDashboard fields, method signatures, and javadoc
+
+commit a69c75d7454a665e219820e1c188c26b62ce7452
+Author: Logan <logan_black@aol.com>
+Date:   Tue Apr 28 06:01:37 2026 -0700
+
+    DroneMonitorApp overhaul and addition of Main
+
+commit c46493d0c104e4f4b24009cff18f51039d7f3bc7
+Author: Logan <logan_black@aol.com>
+Date:   Tue Apr 28 05:06:53 2026 -0700
+
+    implemented fields, constructors, methods, method signatures, and documentation for model package
+
+commit ed4776fa561d11daedcf7b5029d09231055f7092
+Author: Logan <logan_black@aol.com>
+Date:   Tue Apr 28 03:34:24 2026 -0700
+
+    wrote Drone fields and methods
+
+commit a0c0e1e411fe9989a9e311ac7a0ca956e18c204d
+Author: Logan <logan_black@aol.com>
+Date:   Mon Apr 27 22:55:58 2026 -0700
+
+    added project classes
+
+commit 9f6135c6a0e6dc74ad1702e1d7492e216f4eca39
+Author: Logan <logan_black@aol.com>
+Date:   Mon Apr 27 22:47:32 2026 -0700
+
+    updated packages to model, view, controller
+
+commit 295cee5e0a7283d6330250bba3020efa0257a5ad
+Author: Logan <logan_black@aol.com>
+Date:   Mon Apr 27 22:45:09 2026 -0700
+
+    updated pom to java 21
+
+commit 61d1afa1227faa3be81a325375d3e1927a4370ce
+Author: Logan <logan_black@aol.com>
+Date:   Mon Apr 27 22:41:26 2026 -0700
+
+    updated project to java 21
+
+commit 7922d6bb5e0a217914763d698df1c072f8bea51f
+Merge: 490c808 9104569
+Author: Logan <logan_black@aol.com>
+Date:   Mon Apr 27 22:30:35 2026 -0700
+
+    Merge branch 'main' of https://github.com/PNDubs/autonomous-drone-simulation
+
+commit 490c80820a70032a3262bef0fb7dd09c74ff6574
+Author: Logan <logan_black@aol.com>
+Date:   Mon Apr 27 22:17:45 2026 -0700
+
+    initial commit
+
+commit 91045696a15733bb9625e293bd63bbba23247787
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Mon Apr 27 22:11:31 2026 -0700
+
+    Update README.md
+
+commit 8f0bb308a372332a04ee38424c99f63aa16ba4ea
+Author: Logan <153964587+PNDubs@users.noreply.github.com>
+Date:   Mon Apr 27 21:18:59 2026 -0700
+
+    Initial commit
